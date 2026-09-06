@@ -14,7 +14,7 @@ Diese Schritte vor dem Workshop ausführen. Zeitbedarf: etwa 15 Minuten. Der [Se
 ## 2. Repository einrichten
 
 ```bash
-git clone <repo-url> mcp-chopen-2026
+git clone https://github.com/ivorycode/mcp-chopen-2026.git mcp-chopen-2026
 cd mcp-chopen-2026
 ```
 
