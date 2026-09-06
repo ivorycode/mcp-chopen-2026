@@ -12,7 +12,7 @@ Alle drei Szenarien verwenden dieselben lokal enthaltenen Tools (`searchProducts
 
 ## Vorbereitung: minimaler Durchstich
 
-Führe vorab den [Setup-Check](../00-setup-check/README.md) aus: Er prüft Node.js/npm und einen echten API-Aufruf mit einem günstigen Modell. Dort stehen auch die Schritte für API-Keys und die Installation eines KI-Assistenten für Teil 2. Der zusätzliche Webshop-Funktionstest steht in [README_SETUP.md](../README_SETUP.md).
+Führe vorab den [Setup-Check](../00-setup-check/README.md) aus: Er prüft Node.js/npm und einen echten API-Aufruf mit einem günstigen Modell. Dort stehen auch die Schritte für API-Keys und die Installation eines KI-Assistenten für Teil 2. Die vollständige Vorbereitung (Software, Konten, Repository, API-Zugang) steht in [README_SETUP.md](../README_SETUP.md).
 
 ## Unterlagen nach Block
 
