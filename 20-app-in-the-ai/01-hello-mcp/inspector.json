@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "hello-mcp-http": {
+      "type": "http",
+      "url": "http://localhost:3040/mcp",
+      "protocolEra": "modern"
+    },
+    "hello-mcp-stdio": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["src/stdio.ts"],
+      "protocolEra": "modern"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "webshop-local": {
+      "type": "http",
+      "url": "http://localhost:3044/mcp",
+      "protocolEra": "modern"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "tool-calling-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Minimal-Demo: ein Tool-Call mit dem Vercel AI SDK, zum Live-Vorprogrammieren zu Beginn von Block 1",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node src/index.ts",
+    "start:logged": "node src/index.ts --log-wire",
+    "test": "node --test src/*.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.49",
+    "@ai-sdk/google": "^4.0.64",
+    "@ai-sdk/openai": "^4.0.46",
+    "ai": "^7.0.77",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  }
+}

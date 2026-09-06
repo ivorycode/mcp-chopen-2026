@@ -1,0 +1,27 @@
+{
+  "name": "tool-calling-basics",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Demo: Tool-Calling-Schleife als Node-CLI mit dem Vercel AI SDK und den Webshop-Tools aus lokalen Shop-Core",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node src/agent-loop.ts",
+    "manual": "node src/manual-loop.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.41",
+    "@ai-sdk/google": "^4.0.50",
+    "@ai-sdk/openai": "^4.0.46",
+    "ai": "^7.0.77",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  }
+}

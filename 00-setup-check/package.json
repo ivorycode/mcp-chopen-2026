@@ -1,0 +1,16 @@
+{
+  "name": "workshop-setup-check",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "check": "node check.mjs"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "4.0.41",
+    "@ai-sdk/google": "4.0.50",
+    "@ai-sdk/openai": "4.0.46",
+    "ai": "7.0.77"
+  }
+}
