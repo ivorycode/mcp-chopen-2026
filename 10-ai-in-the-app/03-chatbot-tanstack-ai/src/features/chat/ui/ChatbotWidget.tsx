@@ -33,6 +33,9 @@ type MessagePart = ChatMessage['parts'][number]
 type ToolCallPart = Extract<MessagePart, { type: 'tool-call' }>
 
 function isVisiblePart(part: MessagePart, mode: ChatMode) {
+  // Leere Text-Parts überspringen: Während des Streamings kann ein Text-Part
+  // noch ohne Inhalt sein. Sonst blitzt eine leere Blase auf, und eine reine
+  // Tool-Antwort im Workspace hinterliesse eine leere Nachricht.
   if (part.type === 'text') return Boolean(part.content)
   if (part.type !== 'tool-call') return false
   if (mode === 'workspace') return true

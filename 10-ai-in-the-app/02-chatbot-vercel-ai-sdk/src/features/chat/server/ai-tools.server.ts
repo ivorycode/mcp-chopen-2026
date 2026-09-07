@@ -53,7 +53,7 @@ export const shopTools = {
     description: toolDescriptions.getCart,
     inputSchema: emptyInput,
     execute: forSession((_loginId): CartResult => {
-      // TODO Schritt 2: toolHandlers.getCart(loginId)
+      // TODO Schritt 1: toolHandlers.getCart(loginId)
       return NOT_IMPLEMENTED
     }),
   }),
@@ -62,7 +62,7 @@ export const shopTools = {
     description: toolDescriptions.addToCart,
     inputSchema: addToCartInput,
     execute: forSession((_loginId, _input): CartResult => {
-      // TODO Schritt 3: toolHandlers.addToCart(loginId, input), async und Promise<CartResult>
+      // TODO Schritt 2: toolHandlers.addToCart(loginId, input), async und Promise<CartResult>
       return NOT_IMPLEMENTED
     }),
   }),
@@ -71,7 +71,7 @@ export const shopTools = {
     description: toolDescriptions.removeFromCart,
     inputSchema: removeFromCartInput,
     execute: forSession((_loginId, _input): CartResult => {
-      // TODO Schritt 4: toolHandlers.removeFromCart(loginId, input)
+      // TODO Schritt 3: toolHandlers.removeFromCart(loginId, input)
       return NOT_IMPLEMENTED
     }),
   }),
@@ -82,7 +82,7 @@ export const shopTools = {
     description: toolDescriptions.checkout,
     inputSchema: emptyInput,
     execute: forSession((_loginId): CheckoutToolResult => {
-      // TODO Schritt 6: toolHandlers.checkout(loginId)
+      // TODO Schritt 5: toolHandlers.checkout(loginId)
       return NOT_IMPLEMENTED
     }),
   }),

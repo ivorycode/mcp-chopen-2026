@@ -53,11 +53,11 @@ export function ToolPartView({
     case 'tool-getCart':
     case 'tool-addToCart':
     case 'tool-removeFromCart':
-      // TODO Schritt 5: CartResult als Tabelle mit Artikel, Menge und Preisen rendern.
+      // TODO Schritt 4: CartResult als Tabelle mit Artikel, Menge und Preisen rendern.
       return <pre>{JSON.stringify(part, null, 2)}</pre>
 
     case 'tool-checkout':
-      // TODO Schritt 6: approval-requested mit actions.onApprove beantworten;
+      // TODO Schritt 5: approval-requested mit actions.onApprove beantworten;
       // danach Fehler, Abbruch und Bestellbestätigung darstellen.
       return <pre>{JSON.stringify(part, null, 2)}</pre>
 

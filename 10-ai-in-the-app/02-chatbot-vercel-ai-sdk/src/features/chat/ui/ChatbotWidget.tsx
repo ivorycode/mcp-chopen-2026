@@ -37,6 +37,9 @@ import type { WidgetActions } from './ToolPartView.tsx'
 // der Assistant nur als Fehler- oder Freigabetext; interne Parts wie
 // step-start bleiben verborgen.
 function isVisiblePart(part: ShopPart, mode: ChatMode): boolean {
+  // Leere Text-Parts überspringen: Das SDK legt den Text-Part schon beim Start
+  // der Antwort an, noch ohne Inhalt. Sonst blitzt eine leere Blase auf, und
+  // eine reine Tool-Antwort im Workspace hinterliesse eine leere Nachricht.
   if (part.type === 'text') return Boolean(part.text)
   return mode === 'workspace'
     ? isToolUIPart(part)
@@ -105,7 +108,7 @@ export default function ChatbotWidget({
       if (part.type === 'tool-searchProducts' && part.output.ok) {
         dispatchShopSearch(part.output.searchTerm)
       }
-      // TODO Schritt 5: Nach erfolgreichen Cart-Tools dispatchCartChanged auslösen.
+      // TODO Schritt 4: Nach erfolgreichen Cart-Tools dispatchCartChanged auslösen.
     }
   }, [messages])
 

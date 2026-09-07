@@ -54,7 +54,7 @@ export const chatRouteHandlers = {
       }),
       tools: shopTools,
       // Human-in-the-loop: checkout wird erst nach Freigabe im Widget ausgeführt.
-      // TODO Schritt 6: toolApproval für checkout aktivieren.
+      // TODO Schritt 5: toolApproval für checkout aktivieren.
       stopWhen: isStepCount(chatLimits.maxSteps),
       maxOutputTokens: chatLimits.maxOutputTokens,
       temperature: 0.2,

@@ -26,7 +26,7 @@ Prüfen: `curl http://localhost:4040/health` → `{"ok":true,"articles":94,…}`
 ```bash
 cd 10-ai-in-the-app/02-chatbot-vercel-ai-sdk   # vom Repository-Wurzelverzeichnis aus
 npm ci
-cp .env.example .env
+cp .env.example .env # nur das erste mal, API_KEY eintragen
 npm run dev
 ```
 
@@ -41,9 +41,7 @@ Dann http://localhost:3031 öffnen und oben ein Demo-Konto wählen: `restaurant-
 
 ## 3. Was du hier machst
 
-Öffne den **Assistant** unten rechts im Shop und sende «Suche Milch» – die Suche ist als
-Tool bereits angebunden und steuert die sichtbare Produktliste. «Zeig mir meinen Warenkorb»
-antwortet dagegen mit «Noch nicht implementiert».
+Öffne den **Assistant** unten rechts im Shop oder wechsle auf das **Tab "SHOP CHAT"** und sende «Suche Milch» – die Suche ist als Tool bereits angebunden und steuert die sichtbare Produktliste. «Zeig mir meinen Warenkorb» antwortet dagegen mit «Noch nicht implementiert».
 
 Genau diese Lücke schliesst du in der Übung:
 
@@ -54,3 +52,4 @@ Genau diese Lücke schliesst du in der Übung:
 
 Schritte, Prüfungen und Testbefehle: [EXERCISE.md](EXERCISE.md).
 Fertige Lösung zum Vergleich: [`../02-chatbot-vercel-ai-sdk-solution`](../02-chatbot-vercel-ai-sdk-solution/README.md).
+
