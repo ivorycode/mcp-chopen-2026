@@ -9,6 +9,8 @@ import {
 } from '@modelcontextprotocol/client'
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio'
 
+import { startMockCatalog, testMcpToolContract } from './mcp-tool-contract.mjs'
+
 const projectRoot = new URL('../', import.meta.url)
 const expectedTools = [
   'addToCart',
@@ -34,12 +36,7 @@ async function freePort() {
 test('real Streamable HTTP exposes the account-based MCP tools', async (t) => {
   const port = await freePort()
   const mockPort = await freePort()
-  const mock = spawn(process.execPath, ['server.mjs'], {
-    cwd: new URL('../../../01-mock-api/', import.meta.url),
-    env: { ...process.env, PORT: String(mockPort) },
-    stdio: ['ignore', 'pipe', 'pipe'],
-  })
-  t.after(() => mock.kill())
+  await startMockCatalog(t, mockPort)
   const server = spawn(
     process.execPath,
     [
@@ -121,6 +118,8 @@ test('real Streamable HTTP exposes the account-based MCP tools', async (t) => {
   ])
   const cartUi = await client.readResource({ uri: 'ui://webshop/cart-ui.html' })
   assert.match(cartUi.contents[0]?.text ?? '', /Webshop Warenkorb/)
+
+  await testMcpToolContract(t, client)
 
   const cart = await client.callTool({
     name: 'getCart',
@@ -218,11 +217,17 @@ test('real Streamable HTTP exposes the account-based MCP tools', async (t) => {
 })
 
 test('real stdio uses the same MCP server factory', async (t) => {
+  const catalogOrigin = await startMockCatalog(t, await freePort())
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: ['src/features/mcp/stdio.ts'],
     cwd: new URL('.', projectRoot).pathname,
     stderr: 'inherit',
+    env: {
+      ...process.env,
+      CATALOG_MODE: 'mock',
+      MOCK_CATALOG_ORIGIN: catalogOrigin,
+    },
   })
   const client = new Client({ name: 'stdio-smoke', version: '1.0.0' })
   t.after(() => client.close())
@@ -234,4 +239,5 @@ test('real stdio uses the same MCP server factory', async (t) => {
     arguments: { loginId: 'hotel-alpenblick' },
   })
   assert.equal(result.structuredContent?.ok, true)
+  await testMcpToolContract(t, client)
 })

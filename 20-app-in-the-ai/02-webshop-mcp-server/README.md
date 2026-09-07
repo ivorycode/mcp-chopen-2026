@@ -39,3 +39,7 @@ npm run test:browser
 Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Echte Provider, externe Hosts und native WebMCP-Registrierung werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
 
 `npm run test:exercise` prüft die fertig ausgefüllte Übung und ist vor dem Ausfüllen absichtlich rot. Die normale Testsuite prüft das Starter-Gerüst; Details zum Abschluss stehen in `EXERCISE.md`.
+
+Nur den MCP-Server prüfen: `npm run test:mcp`. Mit einem echten LLM: `npm run test:mcp:llm`
+(Provider und API-Key erforderlich). Szenarien, Limits und Berichte stehen in
+[docs/MCP-TESTING.md](docs/MCP-TESTING.md).

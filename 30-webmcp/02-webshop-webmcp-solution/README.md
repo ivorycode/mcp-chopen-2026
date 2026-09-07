@@ -108,3 +108,7 @@ Playwright setzt dieses Ziel automatisch für seinen isolierten Test-Webshop.
 Die Testports 43554 (Webshop) und 43555 (Mock-Katalog) sind für den manuellen
 Dev-Start nicht nötig. Manuellen Host vor einem E2E-Lauf beenden, da Host und
 Sandbox dieselben Ports verwenden.
+
+Nur den MCP-Server prüfen: `npm run test:mcp`. Mit einem echten LLM: `npm run test:mcp:llm`
+(Provider und API-Key erforderlich). Szenarien, Limits und Berichte stehen in
+[docs/MCP-TESTING.md](docs/MCP-TESTING.md).

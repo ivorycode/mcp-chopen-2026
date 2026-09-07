@@ -1,6 +1,6 @@
 # Übungen im Workshop
 
-Die Übungen stehen hier in der Reihenfolge des Workshops. Die vollständigen Anleitungen bleiben als `EXERCISE.md` in den jeweiligen Projektverzeichnissen. Vorbereitung und Tagesprogramm findest du in [WORKSHOP.md](WORKSHOP.md).
+Die Übungen stehen hier in der Reihenfolge des Workshops. Die vollständigen Anleitungen befinden sich als `EXERCISE.md` in den jeweiligen Projektverzeichnissen. Vorbereitung und Tagesprogramm findest du in [WORKSHOP.md](WORKSHOP.md).
 
 | Block | Übung | Kurzbeschreibung |
 |---|---|---|

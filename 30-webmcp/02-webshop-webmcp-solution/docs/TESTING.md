@@ -8,6 +8,9 @@
 - `test/mcp-smoke.test.mjs`: echter MCP-Client über Streamable HTTP und stdio; prüft Tools, Resources, Kontotrennung und dass Web-API und MCP denselben Zustand teilen.
 - `test/prod-process.test.mjs`: Produktionsstart über `server.mjs` mit Healthcheck, Assets und MCP-Resources.
 
+Nur MCP: `npm run test:mcp`. Die vollständige Tool-Abdeckung über beide Transporte
+und der separat gestartete LLM-Test (`npm run test:mcp:llm`) sind in [MCP-TESTING.md](MCP-TESTING.md) beschrieben.
+
 Module, die unter `node --test` laufen, importieren mit expliziter Dateiendung; deshalb tragen alle Imports im Projekt die Endung.
 
 ## E2E-Tests mit Playwright
@@ -27,7 +30,7 @@ npm run test:e2e -- --project webshop-desktop --headed
 | `mcp-apps-desktop` | `test/e2e/mcp-apps/` | Such- und Warenkorb-App im lokalen Testhost                                             |
 | `mcp-apps-mobile`  | `test/e2e/mcp-apps/` | dieselben Tests mit Pixel-7-Emulation                                                   |
 
-Die Chat-Tests simulieren den AI-SDK-Nachrichtenstream und brauchen keinen Modellanbieter. Echte Modellaufrufe werden nicht getestet.
+Die Chat-Tests simulieren den AI-SDK-Nachrichtenstream und brauchen keinen Modellanbieter. Echte Modellaufrufe werden separat mit `npm run test:mcp:llm` gegen den MCP-Server geprüft.
 
 Playwright startet automatisch vier lokale Dienste; die Ports müssen frei sein:
 

@@ -18,7 +18,9 @@
     "test:e2e": "playwright test",
     "test:e2e:webshop": "playwright test --project=webshop-desktop --project=webshop-mobile",
     "test:browser": "playwright test",
-    "test:exercise": "cross-env EXERCISE_COMPLETE=1 node --test test/mcp-smoke.test.mjs"
+    "test:exercise": "cross-env EXERCISE_COMPLETE=1 node --test test/mcp-smoke.test.mjs test/mcp-llm-client.test.mjs",
+    "test:mcp": "node --test test/mcp-smoke.test.mjs",
+    "test:mcp:llm": "node --test test/mcp-llm.eval.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.41",

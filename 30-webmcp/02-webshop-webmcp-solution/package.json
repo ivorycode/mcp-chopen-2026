@@ -20,7 +20,9 @@
     "check": "prettier --write . && eslint --fix",
     "test:e2e": "playwright test",
     "test:e2e:webshop": "playwright test --project=webshop-desktop --project=webshop-mobile",
-    "test:e2e:mcp-apps": "playwright test --project=mcp-apps-desktop --project=mcp-apps-mobile"
+    "test:e2e:mcp-apps": "playwright test --project=mcp-apps-desktop --project=mcp-apps-mobile",
+    "test:mcp": "npm run build:apps && node --test test/mcp-smoke.test.mjs",
+    "test:mcp:llm": "node --test test/mcp-llm.eval.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.41",

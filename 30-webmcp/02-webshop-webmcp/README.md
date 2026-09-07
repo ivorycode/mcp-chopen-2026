@@ -51,3 +51,7 @@ Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich H
 `npm run test:exercise` prüft die fertig ausgefüllte Übung und ist vor dem Ausfüllen absichtlich rot. Die normale Testsuite prüft das Starter-Gerüst; Details zum Abschluss stehen in `EXERCISE.md`.
 
 `npm run test:e2e:mcp-apps` prüft die fertigen MCP Apps im lokalen Host (beim App-Starter erst nach dem Ausfüllen).
+
+Nur den MCP-Server prüfen: `npm run test:mcp`. Mit einem echten LLM: `npm run test:mcp:llm`
+(Provider und API-Key erforderlich). Szenarien, Limits und Berichte stehen in
+[docs/MCP-TESTING.md](docs/MCP-TESTING.md).

@@ -35,7 +35,8 @@ Für ein einheitliches Kontoresultat ergänze einen Helfer `cartPayload(loginId,
 ## 5. Automatisch und im Host prüfen
 
 - `npm test`, `npm run typecheck`, `npm run build`, `npm run test:browser`: lauffähige Grundlage und vorbereitete Lücken.
-- Nach dem Ausfüllen `npm run test:exercise`: echter MCP-SDK-Client gegen HTTP und stdio; prüft Schemas, Kontoisolation, Mehrfach-Add, gemeinsamen Browserzustand und Checkout. Die Grundprüfungen tolerieren teilweise ausgefüllte Callbacks; die Abnahme verlangt alle fertigen Tools.
+- Nach dem Ausfüllen `npm run test:exercise`: echter MCP-SDK-Client gegen HTTP und stdio; prüft alle sechs Tool-Aufrufe, Textantworten, Schemas, Fehlerfälle, Kontoisolation, Mehrfach-Add, Entfernen, gemeinsamen Browserzustand, Checkout und Bestellhistorie. Die Grundprüfungen tolerieren teilweise ausgefüllte Callbacks; die Abnahme verlangt alle fertigen Tools.
+- Optional nach dem Ausfüllen: `npm run test:mcp:llm` mit Provider und API-Key. Prüft Einkauf, Entfernen, bestätigten Checkout und Kontorückfragen durch ein echtes Modell; siehe [docs/MCP-TESTING.md](docs/MCP-TESTING.md).
 - Im Inspector alle sechs Tools aufrufen. Für eine erreichbare Remote-URL Toolliste, Suche, Cart und Checkout in ChatGPT und Claude prüfen; Goose best effort. Zugang und Hosting sind separate Voraussetzungen; keinen Sondertransport implementieren.
 
 Bonus: Cart als Resource; Human-in-the-loop über einen MCP-Request. Der optionale öffentliche Guard liegt in `src/features/mcp/public-demo-guard.server.ts`; lokal bleibt er aus.
