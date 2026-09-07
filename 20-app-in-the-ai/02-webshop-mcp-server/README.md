@@ -63,7 +63,7 @@ Die `inspector.json` enthält zwei Ziele: **webshop-local** für deinen Server a
 leeren Server mit einem fertig implementierten.
 
 Weil ein externer Assistent das Session-Cookie des Browsers nicht hat, nennt er das Konto
-als Tool-Argument `loginId`. Später bindest du den Server zusätzlich in Claude Code und
+als Tool-Argument `loginId`. Später bindest du den Server zusätzlich in Claude Desktop und
 ChatGPT ein.
 
 Schritte, Prüfungen und Testbefehle: [EXERCISE.md](EXERCISE.md).

@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1320" viewBox="0 0 1900 1320" role="img" aria-labelledby="title desc">
+  <title id="title">Aufrufwege der drei Zugänge: Chat, MCP und WebMCP treffen sich in derselben Shop-Logik</title>
+  <desc id="desc">Fünf Einstiege oben: Mensch im Webshop, Agent im Browser für WebMCP, Chat-Widget, externer Agent bzw. MCP-Host, und MCP Apps im Host. Mensch ruft die React-Oberfläche auf, die die Web-API unter /api nutzt. Der Browser-Agent ruft dieselbe Web-API über document.modelContext auf. Das Chat-Widget ruft /api/chat auf, das mit einem Sprachmodell im Wechsel steht und AI-SDK-Tools ausführt. Der externe Agent ruft den MCP-Endpunkt /mcp auf, MCP Apps rufen denselben Endpunkt über callServerTool auf. AI-SDK-Tools und der MCP-Endpunkt rufen beide dieselbe Tool-Handler-Schicht auf. Web-API und Tool-Handler münden beide im selben Shop-Modul, das einen Katalogdienst abfragt und Warenkörbe sowie Bestellungen im Prozessspeicher hält. Gelb hervorgehobene Boxen sind die drei Stellen, an denen ein Sprachmodell entscheidet, welches Tool mit welchen Argumenten aufgerufen wird: der Browser-Agent, der externe Agent, und das Sprachmodell hinter dem Chat.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-llm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#c47c36"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .title { font-size: 28px; font-weight: 700; }
+      .node { font-size: 20px; font-weight: 600; }
+      .node-sub { font-size: 16px; fill: #475569; }
+      .node-code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 17px; fill: #172033; }
+      .label { font-size: 19px; fill: #475569; }
+      .line { fill: none; stroke: #475569; stroke-width: 2.5; marker-end: url(#arrow); }
+      .line-llm { fill: none; stroke: #c47c36; stroke-width: 2.5; marker-end: url(#arrow-llm); marker-start: url(#arrow-llm); }
+      .actor-node { fill: #f8fafc; stroke: #64748b; stroke-width: 2; }
+      .llm-node { fill: #fff4d6; stroke: #c47c36; stroke-width: 2.5; }
+      .adapter-node { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+      .logic-node { fill: #f0fdfa; stroke: #0f766e; stroke-width: 2; }
+      .data-node { fill: #ecfdf5; stroke: #059669; stroke-width: 2; }
+      .legend { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1900" height="1320" fill="#fff"/>
+  <text x="950" y="44" text-anchor="middle" class="title">Die drei Zugänge im Vergleich: ein Vertrag, drei Adapter</text>
+  <text x="950" y="74" text-anchor="middle" class="label">Alle Aufrufwege münden im selben Shop-Modul mit demselben Zustand</text>
+
+  <!-- Row 1: Einstiege -->
+  <rect x="60" y="140" width="300" height="120" rx="14" class="actor-node"/>
+  <text x="210" y="207" text-anchor="middle" class="node">Mensch im Webshop</text>
+
+  <rect x="390" y="140" width="300" height="120" rx="14" class="llm-node"/>
+  <text x="540" y="190" text-anchor="middle" class="node">Agent im Browser</text>
+  <text x="540" y="218" text-anchor="middle" class="node-sub">(WebMCP)</text>
+
+  <rect x="720" y="140" width="300" height="120" rx="14" class="actor-node"/>
+  <text x="870" y="190" text-anchor="middle" class="node">Chat-Widget</text>
+  <text x="870" y="218" text-anchor="middle" class="node-sub">(features/chat)</text>
+
+  <rect x="1050" y="140" width="300" height="120" rx="14" class="llm-node"/>
+  <text x="1200" y="190" text-anchor="middle" class="node">Externer Agent</text>
+  <text x="1200" y="218" text-anchor="middle" class="node-sub">MCP-Host</text>
+
+  <rect x="1380" y="140" width="380" height="120" rx="14" class="actor-node"/>
+  <text x="1570" y="190" text-anchor="middle" class="node">MCP Apps im Host</text>
+  <text x="1570" y="218" text-anchor="middle" class="node-sub">(features/mcp-apps)</text>
+
+  <!-- Row 2: Adapter -->
+  <rect x="60" y="340" width="300" height="120" rx="14" class="adapter-node"/>
+  <text x="210" y="390" text-anchor="middle" class="node">React-Oberfläche</text>
+  <text x="210" y="418" text-anchor="middle" class="node-sub">(routes/, components/)</text>
+
+  <rect x="390" y="340" width="300" height="120" rx="14" class="adapter-node"/>
+  <text x="540" y="390" text-anchor="middle" class="node-code">document.modelContext</text>
+  <text x="540" y="418" text-anchor="middle" class="node-sub">(features/webmcp)</text>
+
+  <rect x="720" y="340" width="300" height="120" rx="14" class="adapter-node"/>
+  <text x="870" y="407" text-anchor="middle" class="node-code">/api/chat</text>
+
+  <rect x="1050" y="340" width="300" height="120" rx="14" class="adapter-node"/>
+  <text x="1200" y="390" text-anchor="middle" class="node-code">MCP-Endpunkt /mcp</text>
+  <text x="1200" y="418" text-anchor="middle" class="node-sub">(features/mcp)</text>
+
+  <!-- Row 3: Protokoll- und Modellschicht -->
+  <rect x="205" y="560" width="340" height="120" rx="14" class="logic-node"/>
+  <text x="375" y="627" text-anchor="middle" class="node-code">Web-API /api/*</text>
+
+  <rect x="560" y="560" width="190" height="120" rx="14" class="llm-node"/>
+  <text x="655" y="627" text-anchor="middle" class="node">Sprachmodell</text>
+
+  <rect x="780" y="560" width="300" height="120" rx="14" class="logic-node"/>
+  <text x="930" y="627" text-anchor="middle" class="node">AI-SDK-Tools</text>
+
+  <!-- Row 4: Shop-Schicht -->
+  <rect x="205" y="760" width="340" height="120" rx="14" class="data-node"/>
+  <text x="375" y="810" text-anchor="middle" class="node">Shop-Modul</text>
+  <text x="375" y="838" text-anchor="middle" class="node-sub">(lib/shop.server.ts)</text>
+
+  <rect x="1050" y="760" width="300" height="120" rx="14" class="logic-node"/>
+  <text x="1200" y="810" text-anchor="middle" class="node">Tool-Handler</text>
+  <text x="1200" y="838" text-anchor="middle" class="node-sub">(lib/tools)</text>
+
+  <!-- Row 5: Datenhaltung -->
+  <rect x="60" y="960" width="300" height="140" rx="14" class="data-node"/>
+  <text x="210" y="1037" text-anchor="middle" class="node">Mock- oder Live-Katalog</text>
+
+  <rect x="420" y="960" width="340" height="140" rx="14" class="data-node"/>
+  <text x="590" y="1002" text-anchor="middle" class="node">Warenkörbe und</text>
+  <text x="590" y="1030" text-anchor="middle" class="node">Bestellungen im</text>
+  <text x="590" y="1058" text-anchor="middle" class="node">Prozessspeicher</text>
+
+  <!-- Pfeile: Row1 -> Row2 -->
+  <path d="M 210 260 V 340" class="line"/>
+  <path d="M 540 260 V 340" class="line"/>
+  <path d="M 870 260 V 340" class="line"/>
+  <path d="M 1200 260 V 340" class="line"/>
+  <path d="M 1570 260 V 300 H 1200 V 340" class="line"/>
+  <text x="1385" y="290" text-anchor="middle" class="label">callServerTool</text>
+
+  <!-- Pfeile: Row2 -> Row3 -->
+  <path d="M 210 460 V 510 H 375 V 560" class="line"/>
+  <path d="M 540 460 V 510 H 375 V 560" class="line"/>
+  <path d="M 870 460 V 505 H 930 V 560" class="line"/>
+  <path d="M 870 460 V 505 H 655 V 560" class="line-llm"/>
+  <path d="M 1200 460 V 760" class="line"/>
+
+  <!-- Pfeile: Row3 -> Row4 -->
+  <path d="M 375 680 V 760" class="line"/>
+  <path d="M 930 680 V 720 H 1200 V 760" class="line"/>
+  <path d="M 1050 820 H 545" class="line"/>
+
+  <!-- Pfeile: Row4 -> Row5 -->
+  <path d="M 375 880 V 920 H 210 V 960" class="line"/>
+  <path d="M 375 880 V 920 H 590 V 960" class="line"/>
+
+  <!-- Legende -->
+  <rect x="60" y="1150" width="1780" height="110" rx="14" class="legend"/>
+  <text x="90" y="1188" class="label">Pfeile zeigen Aufrufwege, Rückgaben sind weggelassen.</text>
+  <text x="90" y="1218" class="label"><tspan style="font-weight:700;fill:#c47c36">Gelb</tspan> hinterlegte Boxen: hier entscheidet ein Sprachmodell, welches Tool mit welchen Argumenten aufgerufen wird.</text>
+</svg>

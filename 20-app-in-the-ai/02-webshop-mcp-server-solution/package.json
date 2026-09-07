@@ -6,7 +6,7 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "dev": "vite dev --port 3042",
+    "dev": "vite dev --port 3041",
     "build": "vite build",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "node --test \"src/**/*.test.ts\" \"test/**/*.test.mjs\"",

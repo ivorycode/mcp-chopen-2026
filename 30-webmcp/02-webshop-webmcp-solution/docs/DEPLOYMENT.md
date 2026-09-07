@@ -8,7 +8,7 @@ Die öffentliche Demo verwendet den read-only Live-Katalog. Checkout schreibt au
 
 ## Einmalig einrichten
 
-Voraussetzung: [Fly CLI](https://fly.io/docs/flyctl/install/) installiert. Ist der App-Name bereits vergeben, einen eindeutigen Namen wählen und `app` in `fly.toml` sowie die URL von `webshop-fly` in `inspector.json` anpassen. Beim Anlegen denselben Namen verwenden:
+Voraussetzung: [Fly CLI](https://fly.io/docs/flyctl/install/) installiert. Ist der App-Name bereits vergeben, einen eindeutigen Namen wählen und `app` in `fly.toml` sowie die URL von `webshop-remote` in `inspector.json` anpassen. Beim Anlegen denselben Namen verwenden:
 
 ```bash
 fly auth login
@@ -69,13 +69,13 @@ curl --fail http://localhost:3000/health
 
 Die deployte App hat **einen** öffentlichen Streamable-HTTP-Endpunkt: `https://mcp-webshop-demo.fly.dev/mcp`. Darüber liefert der Server die MCP-Tools und die beiden MCP-App-Resources **Webshop Produktsuche** (`ui://webshop/search-ui.html`) und **Webshop Warenkorb** (`ui://webshop/cart-ui.html`). WebMCP läuft ausschliesslich im Browser und kann nicht mit dem Inspector verbunden werden.
 
-Die mitgelieferte [`inspector.json`](../inspector.json) enthält `webshop-local` für `http://localhost:3052/mcp` und `webshop-fly` für die Fly-App. Beide verwenden `protocolEra: "modern"`, weil der Server die MCP-Revision 2026-07-28 verwendet.
+Die mitgelieferte [`inspector.json`](../inspector.json) enthält `webshop-local` für `http://localhost:3052/mcp` und `webshop-remote` für die Fly-App. Beide verwenden `protocolEra: "modern"`, weil der Server die MCP-Revision 2026-07-28 verwendet.
 
 ```bash
 npm run inspector
 ```
 
-Im Inspector `webshop-fly` auswählen und verbinden. Falls die App auf null Machines skaliert wurde, zuerst mit `fly deploy --ha=false` wieder deployen.
+Im Inspector `webshop-remote` auswählen und verbinden. Falls die App auf null Machines skaliert wurde, zuerst mit `fly deploy --ha=false` wieder deployen.
 
 **Produktsuche:** `searchProducts` mit `{ "term": "Vollmilch", "loginId": "restaurant-baeren" }` aufrufen. Das Resultat muss `ok: true` und Produktkarten enthalten; im MCP-App-Bereich erscheint die Produktsuche.
 

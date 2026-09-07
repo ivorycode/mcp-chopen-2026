@@ -588,6 +588,8 @@ const getWeather = tool({
 
 ## 4 · Die drei Zugänge im Vergleich
 
+![Aufrufwege der drei Zugänge: Mensch, Browser-Agent, Chat-Widget, externer Agent und MCP Apps als fünf Einstiege oben. Mensch und Browser-Agent nutzen beide die Web-API. Das Chat-Widget ruft /api/chat auf, das mit einem Sprachmodell im Wechsel steht und AI-SDK-Tools ausführt. Der externe Agent und MCP Apps rufen beide den MCP-Endpunkt auf. AI-SDK-Tools und der MCP-Endpunkt rufen beide dieselbe Tool-Handler-Schicht auf. Web-API und Tool-Handler münden beide im selben Shop-Modul mit Katalogdienst und In-Memory-Zustand. Gelb hervorgehobene Boxen sind die drei Stellen, an denen ein Sprachmodell entscheidet, welches Tool aufgerufen wird.](slides-assets/drei-zugaenge-architektur.svg)
+
 | | Chat in der App | MCP / MCP Apps | WebMCP |
 |---|---|---|---|
 | Einstieg | Unser Chat | Externer KI-Host | Agent im geöffneten Tab |
@@ -601,6 +603,7 @@ const getWeather = tool({
 <ul>
 <li>16:50–17:00 · Auswertung und Fragen.</li>
 <li>Modellzugang beschreibt die Zuständigkeit, nicht ein bestimmtes Bezahlmodell.</li>
+<li>Aufrufweg-Diagramm nachgezeichnet aus <a href="../30-webmcp/02-webshop-webmcp-solution/docs/ARCHITECTURE.md"><code>../30-webmcp/02-webshop-webmcp-solution/docs/ARCHITECTURE.md</code></a>. Bearbeitbare Grafik: <a href="slides-assets/drei-zugaenge-architektur.svg"><code>slides-assets/drei-zugaenge-architektur.svg</code></a>.</li>
 <li>Grundlage: <a href="WORKSHOP.md"><code>WORKSHOP.md</code></a>, Patterns für die gemeinsame Auswertung.</li>
 </ul>
 </details>

@@ -6,7 +6,7 @@ Du machst einen bestehenden Webshop für externe AI-Assistenten bedienbar. Am En
 kann ein MCP-Client Produkte suchen, den Warenkorb eines Demo-Kontos lesen und
 verändern, eine Bestellung abschliessen und die Bestellhistorie anzeigen.
 Du prüfst diese Funktionen zuerst direkt im MCP Inspector und anschliessend in
-Claude Code oder ChatGPT mit natürlichsprachlichen Aufträgen.
+Claude Desktop oder ChatGPT mit natürlichsprachlichen Aufträgen.
 
 In der vorherigen Stufe steckt die AI **in der Anwendung**: Der Chat im Webshop
 ruft Shop-Funktionen auf. Jetzt wird die **Anwendung für eine externe AI**
@@ -56,7 +56,7 @@ beweist deshalb noch nicht, dass er einkaufen kann.
 ```text
 Browser / eingebauter Chat ── Web-API / Chat-Adapter ─┐
                                                    ├─ Shop-Logik ─ Katalog auf :4040
-Inspector / Claude Code / ChatGPT ─ HTTP /mcp ───────┘
+Inspector / Claude Desktop / ChatGPT ─ HTTP /mcp ─────┘
                          ein Shop-Prozess auf :3041
 
 MCP-Client ─ stdio ─ separater Node-Prozess ─ Shop-Logik ─ Katalog auf :4040
@@ -95,12 +95,12 @@ Die folgenden Shell-Befehle sind für macOS, Linux oder WSL mit Bash/Zsh gedacht
 Ersetze `/pfad/zu/mcp-chopen-2026` jeweils durch deinen lokalen Repository-Pfad.
 Lass die Server in getrennten Terminals laufen:
 
-| Terminal | Aufgabe                             | Läuft während der Übung weiter? |
-| -------- | ----------------------------------- | ------------------------------- |
-| A        | Katalog-Mock auf Port 4040          | Ja                              |
-| B        | Webshop und HTTP-MCP auf Port 3041  | Ja                              |
-| C        | Tests, Inspector oder Claude Code   | Je nach Schritt                 |
-| D        | Optionaler HTTPS-Tunnel für ChatGPT | Während des ChatGPT-Tests       |
+| Terminal | Aufgabe                            | Läuft während der Übung weiter? |
+| -------- | ---------------------------------- | ------------------------------- |
+| A        | Katalog-Mock auf Port 4040         | Ja                              |
+| B        | Webshop und HTTP-MCP auf Port 3041 | Ja                              |
+| C        | Tests oder Inspector               | Je nach Schritt                 |
+| D        | HTTPS-Tunnel für die Host-Tests    | Während Schritt 6 bis 8         |
 
 ### 1.2 Terminal A: Katalog starten
 
@@ -140,8 +140,8 @@ ENABLE_PUBLIC_MCP_GUARDS=false
 Die Vorlage enthält sie bereits. Für Shop, MCP Inspector und automatische Tests
 dürfen die Modell-API-Keys leer bleiben. Für den eingebauten AI-Chat aktivierst
 du genau einen Provider-Block aus `.env.example` und trägst den passenden Key
-ein; siehe [Setup-Check](../../00-setup-check/README.md). Die Anmeldung in Claude
-Code beziehungsweise ChatGPT erfolgt separat vom Provider des Shop-Chats.
+ein; siehe [Setup-Check](../../00-setup-check/README.md). Dein Zugang zu Claude Desktop
+beziehungsweise ChatGPT ist davon unabhängig.
 
 Starte den Webshop:
 
@@ -694,102 +694,23 @@ wird vom Inspector nicht nachträglich übernommen.
 Warenkorb. Änderungen sind deshalb nicht im Browser auf Port 3041 sichtbar.
 Auch ein neu gestarteter stdio-Prozess beginnt wieder ohne Warenkorb und Historie.
 
-## 6. In Claude Code einbinden
+## 6. HTTPS-Endpunkt für Claude Desktop und ChatGPT vorbereiten
 
-Für diesen Test verwendest du **HTTP**, damit du die Auswirkungen im Browser
-vergleichen kannst. Katalog und Shop müssen auf Port 4040 und 3041 laufen.
+Für die beiden folgenden Host-Tests verwenden wir einen HTTPS-Tunnel zu
+**Port 3041**. Damit bleibt derselbe laufende Shop-Prozess im Spiel wie beim
+Inspector und im Browser, und du kannst die Auswirkungen jedes Tool-Aufrufs
+dort vergleichen. Katalog und Shop müssen auf Port 4040 und 3041 laufen.
 
-### 6.1 CLI vorbereiten und Server registrieren
+Auch in Claude Desktop verbindet sich ein **Custom Connector** aus Anthropics
+Cloud mit deinem Server. Für diesen Einrichtungsweg reicht
+`http://localhost:3041/mcp` deshalb nicht. Lokale Desktop-Server über stdio
+sind ein anderer Einrichtungsweg. Siehe die
+[Claude-Netzwerkanforderungen](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
+Für ChatGPT gilt dasselbe: Eine lokale URL ist von dort nicht erreichbar.
+Alternativ unterstützt OpenAI Secure MCP Tunnel; siehe
+[OpenAI: Verbindung testen](https://developers.openai.com/plugins/deploy/connect-chatgpt).
 
-Falls Claude Code noch fehlt, installiere es unter macOS mit Homebrew:
-
-```bash
-brew install --cask claude-code
-claude --version
-```
-
-Für Linux, Windows oder WSL stehen die Installationsbefehle im offiziellen
-[Claude-Code-Quickstart](https://code.claude.com/docs/en/quickstart).
-Beim ersten Start von `claude` erfolgt die Anmeldung für deinen Claude-Zugang.
-
-Führe im Starter-Ordner aus:
-
-```bash
-claude mcp add --transport http --scope local webshop http://localhost:3041/mcp
-claude mcp get webshop
-claude mcp list
-claude
-```
-
-Der Name `webshop` bezeichnet diese Verbindung. `--scope local` speichert sie
-für dich und das aktuelle Projekt. Gib anschliessend **in Claude Code** ein:
-
-```text
-/mcp
-```
-
-Prüfe, dass `webshop` verbunden ist und sechs Tools anbietet. Falls die Sitzung
-schon vor der Registrierung lief, starte sie neu. Verwaltung und HTTP-Optionen
-sind in der [Claude-Code-MCP-Dokumentation](https://code.claude.com/docs/en/mcp)
-beschrieben.
-
-### 6.2 Mit echten Aufträgen testen
-
-Gib diesen Auftrag in Claude Code ein:
-
-```text
-Teste die MCP-Verbindung webshop. Bediene den Shop ausschliesslich über deren
-MCP-Tools; ändere keine Projektdateien und verwende keine Shell- oder Browser-
-Aufrufe als Ersatz. Mein Demo-Konto ist hotel-alpenblick.
-Suche Milch und lege zwei Verkaufseinheiten eines gefundenen Artikels in meinen
-Warenkorb. Zeige danach den Warenkorb. Bestelle noch nichts.
-```
-
-Prüfe die ausgeführten Tools und Argumente: Die Artikelnummer muss aus einer
-Suche stammen, und die Warenkorb-Aufrufe müssen deine `loginId` verwenden.
-Lade den Shop im Browser mit demselben Konto neu und vergleiche die Menge.
-Falls bereits Artikel vorhanden waren, wird die Menge erhöht.
-
-Teste als Folgeauftrag das Entfernen:
-
-```text
-Entferne den soeben hinzugefügten Artikel vollständig aus meinem Warenkorb und
-zeige den verbleibenden Inhalt. Bestelle weiterhin nichts.
-```
-
-Füge anschliessend wieder einen Artikel hinzu und lass dir vor dem Checkout
-die Positionen und den Gesamtbetrag zeigen. Erst danach erteilst du die Freigabe:
-
-```text
-Ja, schliesse jetzt die Demo-Bestellung für den gezeigten Warenkorb von
-hotel-alpenblick ab. Nenne die Bestellnummer und zeige danach die Bestellhistorie.
-```
-
-Bestätige eine zusätzlich angezeigte Host-Freigabe für diesen gewünschten
-Tool-Aufruf. Vergleiche die zurückgegebene Bestellnummer mit `getOrders` im
-Inspector und mit der Browser-Historie. Das Modell darf keine Nummer erfinden.
-
-Optionaler Gegencheck in einer neuen Unterhaltung: Bitte um einen Einkauf ohne
-Kontoangabe. Der Assistent soll nach dem Konto fragen, bevor er einen Warenkorb
-verändert. Das Schema erzwingt eine ID, aber nicht, dass ein Modell sie korrekt
-beim Benutzer erfragt; deshalb ist dieser Host-Test zusätzlich wichtig.
-
-Falls du die Verbindung nach dem Workshop entfernen möchtest, beende Claude
-Code und führe im selben Projekt aus:
-
-```bash
-claude mcp remove webshop
-```
-
-## 7. In ChatGPT einbinden
-
-Dieser Abschnitt beschreibt **ChatGPT im Web**. Der dokumentierte Weg nutzt
-einen erreichbaren HTTPS-Endpunkt. Eine lokale URL wie `http://localhost:3041/mcp`
-ist von ChatGPT aus nicht direkt erreichbar. Alternativ unterstützt OpenAI
-Secure MCP Tunnel; hier verwenden wir einen HTTPS-Tunnel zum bestehenden
-HTTP-Endpunkt. Siehe [OpenAI: Verbindung testen](https://developers.openai.com/plugins/deploy/connect-chatgpt).
-
-### 7.1 HTTPS-Adresse für deinen lokalen Shop erzeugen
+### 6.1 HTTPS-Adresse für deinen lokalen Shop erzeugen
 
 Wenn dir bereits eine HTTPS-Adresse **deiner bearbeiteten Instanz** zur Verfügung
 steht, verwende sie. Die URL einer fremden Musterlösung testet nicht deinen Code.
@@ -823,6 +744,8 @@ Ersetze `dein-tunnel.ngrok.app` durch deinen tatsächlichen Hostnamen, ohne
 vermeidet eine Änderung der Projektkonfiguration. Der Neustart leert den
 Demo-Zustand; bereite deinen Testwarenkorb anschliessend neu vor.
 
+### 6.2 Tunnel vor der Host-Einrichtung prüfen
+
 Prüfe in einem freien Terminal deine tatsächliche URL:
 
 ```bash
@@ -831,20 +754,121 @@ npx @modelcontextprotocol/inspector@latest --web --server-url https://dein-tunne
 ```
 
 Rufe über diese Inspector-Verbindung mindestens `searchProducts` und `getCart`
-auf. Damit prüfst du den kompletten Weg durch den Tunnel vor der ChatGPT-Anbindung.
-Katalog, Shop und Tunnel müssen während des Tests laufen; der Katalog selbst
-braucht keine öffentliche Adresse.
+auf. Damit prüfst du den kompletten Weg durch den Tunnel unabhängig von der
+Einrichtung in Claude Desktop oder ChatGPT. Katalog, Shop und Tunnel müssen
+während der Host-Tests laufen; der Katalog selbst braucht keine öffentliche
+Adresse.
 
 Der Tunnel macht den lokalen Demo-Shop erreichbar. Verwende hier ausschliesslich
 Demo-Daten: `loginId` ist kein Zugriffsschutz. Der vorbereitete öffentliche Guard
 in `src/features/mcp/public-demo-guard.server.ts` begrenzt bei Aktivierung Requests,
-ersetzt aber keine Authentifizierung. Beende den Tunnel nach dem Test mit `Ctrl+C`.
+ersetzt aber keine Authentifizierung. Beende den Tunnel nach den Host-Tests mit
+`Ctrl+C`.
 
-### 7.2 Developer Mode aktivieren und Verbindung anlegen
+## 7. In Claude Desktop einbinden
+
+Verwende eine aktuelle, angemeldete **Claude-Desktop-App** und öffne dort den
+**Chat**. In dieser Stufe prüfst du die Tool-Aufrufe und ihre Ergebnisse als
+Text und strukturierte Daten; interaktive Produktkarten und Warenkorbbuttons
+erscheinen erst mit der MCP-App-Erweiterung der nächsten Übung. Weil Claude
+Desktop diese eingebetteten Oberflächen später direkt im Chat anzeigen kann,
+verwenden wir schon hier denselben Host. Die Claude-Code-CLI eignet sich
+ebenfalls für reine [MCP-Tool-Aufrufe](https://code.claude.com/docs/en/mcp);
+für die spätere Prüfung der eingebetteten Oberflächen verwenden wir den
+[Desktop-Chat](https://support.claude.com/en/articles/13454812-use-interactive-connectors-in-claude).
+
+### 7.1 Custom Connector hinzufügen
+
+Bereite zuerst den HTTPS-Endpunkt aus Abschnitt 6 vor. Die folgenden
+Menübezeichnungen entsprechen der Dokumentation vom **7. September 2026**.
+
+1. Öffne in Claude Desktop **Customize → Connectors**. Je nach Version findest
+   du den Bereich unter **Settings → Connectors**.
+2. Wähle **+ → Add custom connector**. Verwende als Namen **Workshop Webshop**
+   und als Server-URL deine HTTPS-Adresse inklusive `/mcp`, beispielsweise
+   `https://dein-tunnel.ngrok.app/mcp`.
+3. Bestätige mit **Add** und verbinde den Connector, falls **Connect** angeboten
+   wird. Die Demo benötigt keine OAuth-Zugangsdaten; `loginId` bleibt ein Tool-Argument.
+4. Öffne einen neuen Chat und aktiviere **Workshop Webshop** über **+ → Connectors**
+   für diese Unterhaltung.
+
+Prüfe, dass der Connector verbunden ist und sechs Tools anbietet. Bei
+Team-/Enterprise-Konten muss ein Owner den Custom Connector zuerst für die
+Organisation hinzufügen. Falls dir der Eintrag fehlt, kläre die Freigabe mit
+der Workshop-Leitung; der lokale Inspector-Ablauf bleibt möglich.
+Quelle: [Claude: Custom Connectors einrichten](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
+
+### 7.2 Mit echten Aufträgen testen
+
+Gib diesen Auftrag in Claude Desktop ein:
+
+```text
+Verwende den Connector Workshop Webshop. Bediene den Shop ausschliesslich über
+dessen MCP-Tools. Mein Demo-Konto ist hotel-alpenblick.
+Suche Milch und lege zwei Verkaufseinheiten eines gefundenen Artikels in meinen
+Warenkorb. Zeige danach den Warenkorb. Bestelle noch nichts.
+```
+
+Prüfe die ausgeführten Tools und Argumente: Die Artikelnummer muss aus einer
+Suche stammen, und die Warenkorb-Aufrufe müssen deine `loginId` verwenden.
+Lade den Shop im Browser mit demselben Konto neu und vergleiche die Menge.
+Falls bereits Artikel vorhanden waren, wird die Menge erhöht.
+
+Teste als Folgeauftrag das Entfernen:
+
+```text
+Entferne den soeben hinzugefügten Artikel vollständig aus meinem Warenkorb und
+zeige den verbleibenden Inhalt. Bestelle weiterhin nichts.
+```
+
+Bereite dann eine Bestellung vor:
+
+```text
+Lege wieder eine Verkaufseinheit desselben Artikels in den Warenkorb von
+hotel-alpenblick. Zeige alle Positionen und den Gesamtbetrag und frage mich
+vor dem Checkout nach meiner Bestätigung.
+```
+
+Prüfe die angezeigten Positionen und den Gesamtbetrag und erteile erst danach
+die Freigabe:
+
+```text
+Ja, schliesse jetzt die Demo-Bestellung für den gezeigten Warenkorb von
+hotel-alpenblick ab. Nenne die Bestellnummer und zeige danach die Bestellhistorie.
+```
+
+Bestätige eine zusätzlich angezeigte Host-Freigabe für diesen gewünschten
+Tool-Aufruf. Vergleiche die zurückgegebene Bestellnummer mit `getOrders` im
+Inspector und mit der Browser-Historie. Das Modell darf keine Nummer erfinden.
+
+Optionaler Gegencheck in einer neuen Unterhaltung: Bitte um einen Einkauf ohne
+Kontoangabe. Der Assistent soll nach dem Konto fragen, bevor er einen Warenkorb
+verändert. Das Schema erzwingt eine ID, aber nicht, dass ein Modell sie korrekt
+beim Benutzer erfragt; deshalb ist dieser Host-Test zusätzlich wichtig.
+
+### 7.3 Verbindung aktualisieren und entfernen
+
+Nach Änderungen an Toolnamen, Schemas oder Beschreibungen starte den Shop
+gegebenenfalls neu und öffne einen neuen Chat. Prüfe bei Verbindungsproblemen,
+ob der Connector für die Unterhaltung aktiviert ist, und trenne beziehungsweise
+verbinde ihn erneut.
+
+Ändert sich die Tunnel-URL, entferne den Custom Connector und füge ihn mit der
+neuen URL hinzu. Nach dem Workshop kannst du ihn unter **Connectors** über
+**… → Remove** entfernen. Beende den Tunnel mit `Ctrl+C`, sobald du ihn auch
+für den ChatGPT-Test nicht mehr brauchst.
+
+## 8. In ChatGPT einbinden
+
+Dieser Abschnitt beschreibt **ChatGPT im Web**. Verwende den HTTPS-Endpunkt aus
+Abschnitt 6; Katalog, Shop und Tunnel müssen weiterlaufen. Du kannst dieselbe
+URL wie für Claude Desktop verwenden.
+
+### 8.1 Developer Mode aktivieren und Verbindung anlegen
 
 Die Menübezeichnungen entsprechen der offiziellen Dokumentation vom
 **7. September 2026**; Verfügbarkeit und Freigabe hängen vom Konto und den
-Workspace-Regeln ab. Fehlt die Funktion, führe den Host-Test mit Claude Code
+Workspace-Regeln ab. Fehlt die Funktion, führe den Host-Test mit Claude Desktop
 durch und halte ChatGPT als noch nicht geprüft fest.
 
 1. Öffne ChatGPT im Web und gehe zu **Settings → Security and login**.
@@ -861,11 +885,11 @@ Dieser Modus unterstützt auch schreibende Tools. Zusätzliche Tools namens
 Toolnamen bleiben erhalten. Details:
 [OpenAI: ChatGPT Developer Mode](https://developers.openai.com/api/docs/guides/developer-mode).
 
-### 7.3 Verbindung in einer Unterhaltung verwenden
+### 8.2 Verbindung in einer Unterhaltung verwenden
 
 Beginne eine neue Unterhaltung, wähle im Plus-Menü **Developer mode** und
 aktiviere `Workshop Webshop`. Verwende danach die Einkaufs-, Entfernen- und
-Checkout-Aufträge aus Schritt 6.2 mit diesem Verbindungsnamen.
+Checkout-Aufträge aus Schritt 7.2 mit diesem Verbindungsnamen.
 
 Kontrolliere Toolname, `loginId`, Artikelnummer und Menge in den angezeigten
 Aufrufen. Prüfe Warenkorb und Bestellnummer zusätzlich im lokalen Browser
@@ -879,7 +903,7 @@ die Tunnel-Adresse, muss auch die hinterlegte MCP-URL aktualisiert beziehungswei
 die Verbindung neu angelegt werden. Dieser Aktualisierungsablauf steht in der
 [OpenAI-Anleitung zum Testen](https://developers.openai.com/plugins/deploy/connect-chatgpt).
 
-## 8. Abschluss und Fehlersuche
+## 9. Abschluss und Fehlersuche
 
 ### Abnahmekriterien
 
@@ -909,7 +933,7 @@ Bestellnummer, die ausgeführten Prüfungen und allenfalls noch offene Host-Test
 | Checkout schlägt fehl                                 | `getCart` aufrufen und prüfen, ob das richtige Konto einen gefüllten Warenkorb hat.                         |
 | `npm test` grün, aber Einkauf unvollständig           | `npm run test:exercise` ausführen; nur dieser Befehl verlangt im Starter die fertigen Callbacks.            |
 | Playwright meldet fehlenden Browser                   | `npx playwright install chromium` ausführen.                                                                |
-| ChatGPT verbindet nicht                               | Öffentliche HTTPS-URL inklusive `/mcp` im Inspector prüfen; Tunnel und Shop müssen laufen.                  |
+| Claude Desktop oder ChatGPT verbindet nicht           | Öffentliche HTTPS-URL inklusive `/mcp` im Inspector prüfen; Tunnel und Shop müssen laufen.                  |
 | Tunnel liefert `Blocked request`                      | Tatsächlichen Tunnel-Host über `__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS` erlauben und Vite neu starten.      |
 | Host kennt alte Tools oder alte URL                   | Verbindung aktualisieren beziehungsweise neu anlegen und neue Unterhaltung starten.                         |
 
