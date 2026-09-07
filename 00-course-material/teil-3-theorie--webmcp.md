@@ -24,7 +24,7 @@ Einstiegspunkt ist `document.modelContext`, ein `EventTarget` mit drei Methoden:
 ```ts
 document.modelContext.registerTool(tool, { signal }); // Promise<void>
 document.modelContext.getTools(); // Promise<RegisteredTool[]>
-document.modelContext.executeTool(tool, input); // Promise<string | null>
+document.modelContext.executeTool(tool, JSON.stringify(input)); // Promise<string | null>
 ```
 
 ### Verhältnis zu MCP
@@ -67,7 +67,7 @@ await document.modelContext.registerTool(
 - **Kein `unregisterTool()`**: Abgemeldet wird über das `AbortSignal`, das bei der Registrierung mitgegeben wurde. Das passt zu React: Registrierung im `useEffect`, Cleanup ruft `controller.abort()`. Ein erneutes `registerTool` mit demselben Namen ersetzt das Tool.
 - `execute(input, { signal })`: `input` ist bereits ein Objekt (kein JSON-String). Das `signal` meldet, wenn der Agent die Ausführung abbricht; es kann an `fetch` weitergegeben werden.
 - **Rückgabe**: ein beliebiger JSON-serialisierbarer Wert, synchron oder als Promise. Der Browser ruft `JSON.stringify` auf und übergibt den String an den Agenten. Eine Exception oder ein abgelehntes Promise ist ein Tool-Fehler. Im Workshop liefern die Tools `{ ok: false, error }` als Wert, damit das Modell den Fehler lesen und reagieren kann (derselbe Contract wie in Teil 1 und 2).
-- `getTools()` liefert die Tools alphabetisch, mit `inputSchema`, `annotations`, `origin` und `window`. `executeTool(tool, input)` führt eines aus und liefert den JSON-String (oder `null`, wenn das Tool eine Navigation ausgelöst hat). Beide sind für seiteneigene Agenten und für Tests gedacht; die Tool-Konsole in den Beispielen baut darauf auf.
+- `getTools()` liefert die Tools alphabetisch, mit `inputSchema`, `annotations`, `origin` und `window`. Chrome liefert `inputSchema` dabei als JSON-String; zum Untersuchen des Schemas dient `JSON.parse(tool.inputSchema)`. `executeTool(tool, JSON.stringify(input))` führt ein Tool mit als JSON-String serialisierten Eingaben aus und liefert den JSON-String (oder `null`, wenn das Tool eine Navigation ausgelöst hat). Auch eine leere Eingabe muss als `'{}'` übergeben werden. Beide Methoden sind für seiteneigene Agenten und für Tests gedacht; die Tool-Konsole in den Beispielen baut darauf auf. Siehe die [Chrome-Anleitung zu `executeTool()`](https://developer.chrome.com/docs/ai/webmcp/imperative-api#execute-tool).
 - Event `toolchange` auf `document.modelContext`, wenn Tools hinzukommen, ändern oder entfernt werden. Chromium feuert zusätzlich `toolactivated` und `toolcancel` auf `window` (noch nicht in der Spezifikation).
 
 ### Deklarativ: `<form toolname>`

@@ -27,11 +27,13 @@ form.addEventListener('submit', (event) => {
   event.preventDefault()
   const data = Object.fromEntries(new FormData(form))
   const added = addTodo(data.text, data.priority)
-  form.reset()
 
   // Nur wenn ein Agent das Formular ausgelöst hat, gibt es respondWith().
   if (event.agentInvoked) {
     event.respondWith(Promise.resolve({ ok: true, added, count: todos().length }))
+  } else {
+    // reset() würde einen noch laufenden WebMCP-Tool-Aufruf abbrechen.
+    form.reset()
   }
 })
 

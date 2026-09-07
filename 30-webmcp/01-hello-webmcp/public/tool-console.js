@@ -19,8 +19,10 @@ async function refresh() {
 function showInfo() {
   const tool = tools.find((t) => t.name === select.value)
   if (!tool) return (info.textContent = '')
-  info.textContent = `${tool.description}\nreadOnlyHint: ${tool.annotations?.readOnlyHint ?? false}\ninputSchema: ${JSON.stringify(tool.inputSchema)}`
-  const props = Object.keys(tool.inputSchema?.properties ?? {})
+  // getTools() liefert inputSchema in Chrome als JSON-String.
+  const schema = JSON.parse(tool.inputSchema)
+  info.textContent = `${tool.description}\nreadOnlyHint: ${tool.annotations?.readOnlyHint ?? false}\ninputSchema: ${JSON.stringify(schema)}`
+  const props = Object.keys(schema.properties ?? {})
   input.value = JSON.stringify(Object.fromEntries(props.map((p) => [p, ''])))
 }
 
@@ -28,8 +30,9 @@ async function execute() {
   const tool = tools.find((t) => t.name === select.value)
   if (!tool) return
   try {
-    // executeTool() liefert den serialisierten JSON-String (oder null bei Navigation).
-    const raw = await document.modelContext.executeTool(tool, JSON.parse(input.value))
+    // Eingabe lokal validieren; Chrome erwartet und liefert JSON-Strings
+    // (Resultat null bei Navigation).
+    const raw = await document.modelContext.executeTool(tool, JSON.stringify(JSON.parse(input.value)))
     output.textContent = raw === null ? 'null (Navigation)' : JSON.stringify(JSON.parse(raw), null, 2)
   } catch (error) {
     output.textContent = `Fehler: ${error.message ?? error}`
