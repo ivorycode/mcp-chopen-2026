@@ -106,7 +106,7 @@ export async function main() {
   } finally {
     console.log('\nFür Teil 2 des Workshops:')
     console.log('Installiere Claude Desktop oder ChatGPT Desktop und melde dich dort an.')
-    console.log('Anleitung und Download-Links stehen im README.md.')
+    console.log('Anleitung und Download-Links stehen in README_SETUP.md im Wurzelverzeichnis.')
     console.log('Die Installation dieser Programme wird hier nicht automatisch geprüft.')
   }
 }
