@@ -39,7 +39,12 @@ type ToolData = Record<string, unknown> & { ok: boolean }
 /** MCP-Resultat: Text für das Modell, strukturierte Daten für Host und App. */
 function toolResult(data: ToolData, text: string) {
   return {
-    content: [{ type: 'text' as const, text }],
+    // Manche Hosts geben nur content an das Modell weiter. Die Daten müssen
+    // auch dort stehen, damit Folgeaufrufe z. B. Artikelnummern verwenden können.
+    content: [
+      { type: 'text' as const, text },
+      { type: 'text' as const, text: JSON.stringify(data) },
+    ],
     structuredContent: data,
     ...(data.ok ? {} : { isError: true }),
   }

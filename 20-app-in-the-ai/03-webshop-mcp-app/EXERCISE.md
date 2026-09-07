@@ -82,8 +82,10 @@ Search-App: Produktkarten
 Host → MCP-Server → aktualisierter Warenkorb → App
 ```
 
-`content` enthält Text für das Modell; `structuredContent` enthält die Daten
-für die App. Die Resource-URI ist eine MCP-Adresse und keine Browser-URL.
+`content` enthält eine Kurzmeldung und die JSON-Ergebnisdaten als Text für das
+Modell; `structuredContent` enthält dieselben Daten für die App. Damit kann das
+Modell auch dann mit Artikelnummern weiterarbeiten, wenn der Host nur `content`
+in seinen Kontext übernimmt. Die Resource-URI ist eine MCP-Adresse und keine Browser-URL.
 Die App ruft Tools über den Host auf. Für einen Buttonklick ist kein neuer
 Modellentscheid erforderlich. Der Server prüft weiterhin Konto und Warenkorbregeln.
 

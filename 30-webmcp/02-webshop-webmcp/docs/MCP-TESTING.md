@@ -9,9 +9,11 @@ HTML-Resources. Die Tests laufen auch als Teil von `npm test`.
 
 `test/mcp-smoke.test.mjs` prüft Tool-Registrierung, stufenspezifische Metadaten
 und den gemeinsamen Zustand von HTTP-MCP und Web-API. Die lokale Hilfsdatei
-`test/mcp-tool-contract.mjs` ergänzt für **beide Transporte** je sieben Subtests:
+`test/mcp-tool-contract.mjs` ergänzt für **beide Transporte** je acht Subtests:
 
 - Suche mit und ohne Konto, echte Mock-Produkte, maximal fünf Treffer und Textantwort.
+- Einkauf nur aus `content`: Produkt anhand der Bezeichnung auswählen, Artikelnummer,
+  Preis und Verkaufseinheit lesen, zwei Einheiten hinzufügen und Warenkorb prüfen.
 - Erfolg mit leerer Trefferliste bei unbekanntem Suchbegriff.
 - Unbekannte Konten bei allen sechs Tools samt Hinweisen auf gültige Konten.
 - Schemafehler: fehlende Pflichtfelder, leere Strings, falsche Typen und Mengengrenzen.
@@ -26,6 +28,20 @@ Erst `npm run test:exercise` aktiviert dort die vollständige Abnahme; vor dem
 Ausfüllen ist sie absichtlich rot. In allen nachfolgenden Stufen sind die
 MCP-Callbacks bereits gelöst und werden immer vollständig getestet. Die Starter
 für MCP Apps und WebMCP behalten ihre eigenen, späteren Übungslücken.
+
+## Modellkontext und MCP Apps
+
+Jedes Tool liefert in `content` eine Kurzmeldung und einen zweiten Textblock mit
+JSON-Ergebnisdaten. `structuredContent` enthält dieselben Daten für Clients und
+MCP Apps. So bleiben Artikelnummern, Bezeichnungen, Preise, Verkaufseinheiten und
+Warenkorbpositionen auch für Hosts verfügbar, die nur `content` ans Modell geben.
+Die Suche liefert weiterhin höchstens fünf Artikel.
+
+Der Regressionstest wertet für die Produktauswahl und Folgeaufrufe ausschliesslich
+`content` aus. Er verwendet keinen LLM und ersetzt keinen manuellen Abnahmetest in
+Claude Desktop. Nach einem Deployment dort in einer neuen Unterhaltung prüfen:
+«Verwende das Demo-Konto restaurant-baeren. Suche Zutaten für Omeletten im
+Transgourmet Webshop und lege sie in meinen Warenkorb. Schliesse keine Bestellung ab.»
 
 ## LLM-Evaluation über einen echten MCP-Client
 

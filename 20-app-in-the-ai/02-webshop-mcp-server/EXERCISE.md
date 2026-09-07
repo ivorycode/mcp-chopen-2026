@@ -277,9 +277,14 @@ Der vorhandene Helfer `toolResult(data, text)` erzeugt:
 
 | Feld                | Zweck                                                         |
 | ------------------- | ------------------------------------------------------------- |
-| `content`           | Text für das Modell und für Clients, die nur Text anzeigen    |
+| `content`           | Kurzmeldung und JSON-Ergebnisdaten als Text für das Modell    |
 | `structuredContent` | Die unveränderten strukturierten Ergebnisdaten für den Client |
 | `isError: true`     | Markiert einen fachlichen Fehler, wenn `data.ok` falsch ist   |
+
+Der Helfer serialisiert `data` zusätzlich in einen zweiten Textblock. Einige
+Hosts geben nur `content` an das Modell weiter. Ohne die JSON-Daten sähe es bei
+der Suche nur die Trefferzahl und könnte keine Artikelnummer für `addToCart`
+übernehmen. Die strukturierte Antwort bleibt für den Client ebenfalls erhalten.
 
 Gib deshalb immer Daten **und** einen passenden Text zurück. Ein Fehler darf
 nicht mit einer Erfolgsmeldung beschrieben werden. Die bestehenden Handler

@@ -272,4 +272,65 @@ export async function testMcpToolContract(t, client) {
       assert.deepEqual(success(await call('getOrders')).orders, before.orders)
     },
   )
+
+  await t.test(
+    'a content-only client can search, add and verify products without UI data',
+    async () => {
+      // Some hosts pass only content to the model, while the App gets structuredContent.
+      const callFromText = async (name, args = {}) => {
+        const result = await client.callTool({
+          name,
+          arguments: { loginId: 'kantine-campus', ...args },
+        })
+        assert.notEqual(result.isError, true, text(result))
+        const json = result.content.find((block) => {
+          if (block.type !== 'text') return false
+          try {
+            return JSON.parse(block.text)?.ok === true
+          } catch {
+            return false
+          }
+        })
+        assert.ok(
+          json,
+          `${name}: content must include usable product/cart data`,
+        )
+        return JSON.parse(json.text)
+      }
+      const search = await callFromText('searchProducts', { term: 'Milch' })
+      const product = search.articles.find((article) =>
+        article.description.includes('Vollmilch'),
+      )
+      assert.ok(product, 'Model must be able to select a product by its name')
+      assert.equal(typeof product.articleNumber, 'string')
+      assert.ok(product.articleNumber.length > 0)
+      assert.equal(typeof product.price, 'number')
+      assert.ok(product.unitText)
+      assert.ok(product.sellAmount > 0)
+      assert.ok(product.sellUnit)
+      try {
+        const added = await callFromText('addToCart', {
+          articleNumber: product.articleNumber,
+          quantity: 2,
+        })
+        assert.equal(added.totalItems, 2)
+        const cart = await callFromText('getCart')
+        assert.equal(cart.items.length, 1)
+        assert.equal(cart.items[0].articleNumber, product.articleNumber)
+        assert.equal(cart.items[0].quantity, 2)
+        assert.equal(
+          cart.totalAmount,
+          Math.round(product.price * 2 * 100) / 100,
+        )
+      } finally {
+        await client.callTool({
+          name: 'removeFromCart',
+          arguments: {
+            loginId: 'kantine-campus',
+            articleNumber: product.articleNumber,
+          },
+        })
+      }
+    },
+  )
 }
