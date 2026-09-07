@@ -1,8 +1,8 @@
-# Block 3 · WebMCP: Die Agent-gesteuerte App
+# Teil 3 · WebMCP: Die Agent-gesteuerte App
 
 Stand: August 2026. WebMCP ist ein Entwurf der W3C Web Machine Learning Community Group und wird laufend geändert; die Angaben hier entsprechen der Spezifikation und der Chromium-Implementierung zu diesem Zeitpunkt.
 
-## Unterlagen des Blocks
+## Unterlagen dieses Teils
 
 | Schritt                                                            | Ordner                                                                                          |
 | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
@@ -12,7 +12,7 @@ Stand: August 2026. WebMCP ist ein Entwurf der W3C Web Machine Learning Communit
 
 ## 1. Was WebMCP ist
 
-Block 1 hat die KI in die App geholt (die App ruft das Modell, die App zahlt). Block 2 hat die App in die KI gebracht (ein MCP-Server, den ein Host wie Claude aufruft). WebMCP ist der dritte Weg: **Die Webseite selbst exponiert ihre Funktionen als Tools, und ein Agent im Browser ruft sie auf.**
+Teil 1 hat die KI in die App geholt (die App ruft das Modell, die App zahlt). Teil 2 hat die App in die KI gebracht (ein MCP-Server, den ein Host wie Claude aufruft). WebMCP ist der dritte Weg: **Die Webseite selbst exponiert ihre Funktionen als Tools, und ein Agent im Browser ruft sie auf.**
 
 - Die Tools sind JavaScript-Funktionen im Tab. Sie laufen mit der Session, den Cookies und dem DOM der Seite.
 - Es gibt keinen Transport: kein HTTP, kein stdio, kein JSON-RPC. Der Browser vermittelt zwischen Seite und Agent.
@@ -29,7 +29,7 @@ document.modelContext.executeTool(tool, input); // Promise<string | null>
 
 ### Verhältnis zu MCP
 
-|                     | MCP (Block 2)                                     | WebMCP (Block 3)                                                          |
+|                     | MCP (Teil 2)                                     | WebMCP (Teil 3)                                                          |
 | ------------------- | ------------------------------------------------- | ------------------------------------------------------------------------- |
 | Wo laufen die Tools | Server-Prozess                                    | Browser-Tab der Seite                                                     |
 | Transport           | stdio, Streamable HTTP (JSON-RPC)                 | keiner, Browser-API                                                       |
@@ -66,7 +66,7 @@ await document.modelContext.registerTool(
 - `registerTool` liefert ein Promise. Es wird mit `NotAllowedError` abgelehnt, wenn die Permissions Policy `tools` das Feature verbietet; ausserhalb eines Secure Context (`https://` oder `http://localhost`) existiert `document.modelContext` nicht.
 - **Kein `unregisterTool()`**: Abgemeldet wird über das `AbortSignal`, das bei der Registrierung mitgegeben wurde. Das passt zu React: Registrierung im `useEffect`, Cleanup ruft `controller.abort()`. Ein erneutes `registerTool` mit demselben Namen ersetzt das Tool.
 - `execute(input, { signal })`: `input` ist bereits ein Objekt (kein JSON-String). Das `signal` meldet, wenn der Agent die Ausführung abbricht; es kann an `fetch` weitergegeben werden.
-- **Rückgabe**: ein beliebiger JSON-serialisierbarer Wert, synchron oder als Promise. Der Browser ruft `JSON.stringify` auf und übergibt den String an den Agenten. Eine Exception oder ein abgelehntes Promise ist ein Tool-Fehler. Im Workshop liefern die Tools `{ ok: false, error }` als Wert, damit das Modell den Fehler lesen und reagieren kann (derselbe Contract wie in Block 1 und 2).
+- **Rückgabe**: ein beliebiger JSON-serialisierbarer Wert, synchron oder als Promise. Der Browser ruft `JSON.stringify` auf und übergibt den String an den Agenten. Eine Exception oder ein abgelehntes Promise ist ein Tool-Fehler. Im Workshop liefern die Tools `{ ok: false, error }` als Wert, damit das Modell den Fehler lesen und reagieren kann (derselbe Contract wie in Teil 1 und 2).
 - `getTools()` liefert die Tools alphabetisch, mit `inputSchema`, `annotations`, `origin` und `window`. `executeTool(tool, input)` führt eines aus und liefert den JSON-String (oder `null`, wenn das Tool eine Navigation ausgelöst hat). Beide sind für seiteneigene Agenten und für Tests gedacht; die Tool-Konsole in den Beispielen baut darauf auf.
 - Event `toolchange` auf `document.modelContext`, wenn Tools hinzukommen, ändern oder entfernt werden. Chromium feuert zusätzlich `toolactivated` und `toolcancel` auf `window` (noch nicht in der Spezifikation).
 
@@ -144,7 +144,7 @@ Typen: Das npm-Package `webmcp-types` (0.1.5) deklariert `document.modelContext`
 
 - Offene Punkte der Spezifikation: Schema-Ableitung aus Formularen (Abschnitt noch TODO), Resultat über Navigation (`ld+json`), die Chromium-Events `toolactivated`/`toolcancel`, Streaming-Resultate, Kontext über Tools hinaus (das entfernte `provideContext`).
 - Ob WebMCP ausserhalb von Chromium landet, ist offen (Mozilla- und WebKit-Positionen offen). Polyfill: `demos/shared/webmcp-polyfill.js` in GoogleChromeLabs/webmcp-tools.
-- Muster über alle drei Blöcke: Ein Tool-Contract, ein Domain-Core, drei Transportwege. Die Tool-Schicht ist dünn; die Entscheidung, wer das Modell hostet und zahlt, bestimmt die Architektur (App in Block 1, Host in Block 2, Browser-Agent in Block 3).
+- Muster über alle drei Teile: Ein Tool-Contract, ein Domain-Core, drei Transportwege. Die Tool-Schicht ist dünn; die Entscheidung, wer das Modell hostet und zahlt, bestimmt die Architektur (App in Teil 1, Host in Teil 2, Browser-Agent in Teil 3).
 
 ## Quellen
 

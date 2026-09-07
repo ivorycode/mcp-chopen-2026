@@ -1,10 +1,10 @@
-#  Block 2 · App in der KI: MCP und MCP Apps
+#  Teil 2 · App in der KI: MCP und MCP Apps
 
-In Block 1 kam die KI in die App: Die App hostet das Modell, zahlt dafür und bestimmt das Chat-Interface. In Block 2 dreht sich das Verhältnis um. Der KI-Assistent (Claude, ChatGPT, Claude Code, ...) ist die Oberfläche, und der Webshop stellt seine Funktionen über ein standardisiertes Protokoll bereit: das Model Context Protocol (MCP). Dieselben lokal enthaltenen Tools werden dabei nicht mehr im AI SDK registriert, sondern in einem MCP-Server.
+In Teil 1 kam die KI in die App: Die App hostet das Modell, zahlt dafür und bestimmt das Chat-Interface. In Teil 2 dreht sich das Verhältnis um. Der KI-Assistent (Claude, ChatGPT, Claude Code, ...) ist die Oberfläche, und der Webshop stellt seine Funktionen über ein standardisiertes Protokoll bereit: das Model Context Protocol (MCP). Dieselben lokal enthaltenen Tools werden dabei nicht mehr im AI SDK registriert, sondern in einem MCP-Server.
 
-Unterlagen dieses Blocks:
+Unterlagen dieses Teils:
 
-| Teil | Ordner |
+| Schritt | Ordner |
 |---|---|
 | Demo: minimaler Server | [01-hello-mcp/README.md](../20-app-in-the-ai/01-hello-mcp/README.md) |
 | Übung: Webshop als MCP-Server | [02-webshop-mcp-server/README.md](../20-app-in-the-ai/02-webshop-mcp-server/README.md), [EXERCISE.md](../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md) |
@@ -61,7 +61,7 @@ Ein zustandsloser MCP-Transport darf Identität nicht an eine Verbindung koppeln
 - **Skalierung.** Weil kein Request vom vorherigen abhängt, kann jeder Request auf einer anderen Instanz landen. Der Zustand selbst (die Warenkörbe) muss dann in einem gemeinsamen Speicher liegen (Datenbank, Redis); im Workshop ist es eine In-Memory-Map pro Prozess.
 - **Load Balancer und Gateways** sehen in `Mcp-Method`/`Mcp-Name`, was ein Request tut, und können `tools/call checkout` anders behandeln als `tools/list` (Rate-Limits, Auth-Scopes, Audit).
 
-Browser, Chat, HTTP-MCP und MCP Apps teilen im selben Serverprozess den kontogebundenen In-Memory-State. Ein separat gestarteter stdio-Server hat eigenen Zustand. Block 3 verwendet für WebMCP das im Browser ausgewählte Demo-Konto; dort ist keine `loginId` im Tool-Schema nötig.
+Browser, Chat, HTTP-MCP und MCP Apps teilen im selben Serverprozess den kontogebundenen In-Memory-State. Ein separat gestarteter stdio-Server hat eigenen Zustand. Teil 3 verwendet für WebMCP das im Browser ausgewählte Demo-Konto; dort ist keine `loginId` im Tool-Schema nötig.
 
 ## 4. Tool-Design für Modelle
 
@@ -69,7 +69,7 @@ Das Schema eines Tools ist das User Interface gegenüber dem Modell. Regeln, die
 
 - **Beschreibungen** sagen, was das Tool tut, was es zurückgibt und wann es (nicht) aufgerufen werden soll (`toolDescriptions` in lokalen Shop-Core; `checkout` verlangt ausdrückliche Bestätigung). Jeder Parameter bekommt eine `describe()`-Erklärung.
 - **Kleine Resultate.** `searchProducts` liefert fünf Treffer mit den Feldern, die das Modell für eine Antwort braucht, nicht die ganze Katalog-Antwort. Tokens kosten Geld und Aufmerksamkeit.
-- **Duale Resultate.** `content` (Text-JSON) ist für das Modell, `structuredContent` für Code und UI. Mit `outputSchema` validiert das SDK die Struktur und der Host kann sie typisiert weiterverwenden (Block 2c baut darauf die UI).
+- **Duale Resultate.** `content` (Text-JSON) ist für das Modell, `structuredContent` für Code und UI. Mit `outputSchema` validiert das SDK die Struktur und der Host kann sie typisiert weiterverwenden (Teil 2c baut darauf die UI).
 - **Fehler als Werte.** `{ ok: false, error }` plus `isError: true` statt Exceptions: Das Modell liest den Fehler und korrigiert sich (z. B. eine falsche Artikelnummer).
 - **Annotations** (`readOnlyHint`, `destructiveHint`, `idempotentHint`, `openWorldHint`) sind Hinweise an den Host: Lesende Tools darf er ohne Nachfrage ausführen, destruktive bestätigen lassen. Sie sind nicht verbindlich und ersetzen keine Sicherheitsmassnahme im Server.
 

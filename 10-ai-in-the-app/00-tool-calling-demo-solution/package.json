@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Minimal-Demo: ein Tool-Call mit dem Vercel AI SDK, zum Live-Vorprogrammieren zu Beginn von Block 1",
+  "description": "Minimal-Demo: ein Tool-Call mit dem Vercel AI SDK, zum Live-Vorprogrammieren zu Beginn von Teil 1",
   "engines": {
     "node": ">=22.18"
   },

@@ -7,9 +7,9 @@ Diese Schritte vor dem Workshop ausführen. Zeitbedarf: etwa 15 Minuten. Der [Se
 - Node.js 22.18 oder neuer (empfohlen: aktuelle LTS) – `node --version`
 - Git
 - Ein Editor mit TypeScript-Unterstützung (VS Code, WebStorm, ...)
-- Chrome oder Edge in aktueller Version (für Block 3, WebMCP; siehe [Blockunterlagen](00-course-material/30-webmcp.md))
-- Für Block 2: Claude Desktop oder ChatGPT Desktop installieren und anmelden – siehe [Schritt 4](#4-ki-assistent-für-block-2-installieren)
-- Für Block 2 ausserdem: eine **Subscription bei Claude oder ChatGPT** (z. B. Claude Pro oder ChatGPT Plus). Das Einbinden eigener MCP-Server über Custom Connectors bzw. den Developer Mode ist in den kostenlosen Plänen nicht verfügbar. Diese Subscription ist unabhängig vom API-Zugang aus Schritt 3 und ersetzt ihn nicht.
+- Chrome oder Edge in aktueller Version (für Teil 3, WebMCP; siehe [Theorieunterlagen](00-course-material/teil-3-theorie--webmcp.md))
+- Für Teil 2: Claude Desktop oder ChatGPT Desktop installieren und anmelden – siehe [Schritt 4](#4-ki-assistent-installieren-mit-account)
+- Für Teil 2 ausserdem: eine **Subscription bei Claude oder ChatGPT** (z. B. Claude Pro oder ChatGPT Plus). Das Einbinden eigener MCP-Server über Custom Connectors bzw. den Developer Mode ist in den kostenlosen Plänen nicht verfügbar. Diese Subscription ist unabhängig vom API-Zugang aus Schritt 3 und ersetzt ihn nicht.
 
 ## 2. Repository einrichten
 
@@ -46,4 +46,4 @@ Installiere vor dem Workshop mindestens eines dieser Programme und melde dich da
 - **Claude Desktop:** Lade die App über [Claude Download](https://claude.com/download) herunter, installiere und öffne sie und melde dich mit deinem Claude-Konto an.
 - **ChatGPT Desktop:** Lade die App über [ChatGPT Download](https://chatgpt.com/download/) herunter, installiere und öffne sie und melde dich mit deinem OpenAI-Konto an.
 
-In Block 2 verwenden wir einen KI-Assistenten als MCP-Client. Die Verbindung zum Workshop-MCP-Server richten wir gemeinsam ein. Der Zugang und die Abrechnung des gewählten Assistenten sind unabhängig vom API-Key aus Schritt 3; verfügbare MCP-Funktionen hängen vom Client und Account ab. Der Setup-Check prüft die Installation dieser Programme nicht automatisch.
+In Teil 2 verwenden wir einen KI-Assistenten als MCP-Client. Die Verbindung zum Workshop-MCP-Server richten wir gemeinsam ein. Der Zugang und die Abrechnung des gewählten Assistenten sind unabhängig vom API-Key aus Schritt 3; verfügbare MCP-Funktionen hängen vom Client und Account ab. Der Setup-Check prüft die Installation dieser Programme nicht automatisch.

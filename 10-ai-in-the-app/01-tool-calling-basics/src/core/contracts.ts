@@ -1,9 +1,9 @@
 // Tool-Contracts: Name, Beschreibung und Eingabe-Schema der Webshop-Tools.
 //
-// Diese Contracts sind der gemeinsame Nenner aller drei Workshop-Blöcke:
-// - Block 1 registriert sie als Tools im AI SDK (Chatbot in der App)
-// - Block 2 registriert sie als MCP-Tools (App im KI-Assistenten)
-// - Block 3 registriert sie als WebMCP-Tools im Browser (Agent-gesteuerte App)
+// Diese Contracts sind der gemeinsame Nenner aller drei Workshop-Teile:
+// - Teil 1 registriert sie als Tools im AI SDK (Chatbot in der App)
+// - Teil 2 registriert sie als MCP-Tools (App im KI-Assistenten)
+// - Teil 3 registriert sie als WebMCP-Tools im Browser (Agent-gesteuerte App)
 //
 // Die Beschreibungen sind für das Sprachmodell bestimmt: Sie sind das
 // "User Interface" des Tools gegenüber dem Modell.

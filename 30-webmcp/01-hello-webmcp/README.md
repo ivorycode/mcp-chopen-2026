@@ -15,7 +15,7 @@ Dann im für den Workshop vorbereiteten Chromium-Browser mit aktiviertem
 "WebMCP - Model Context Tool Inspector" öffnen: http://localhost:3050
 
 Die Demo wird eigenständig in diesem Projekt installiert. Details
-zum erwarteten Browserzustand stehen in [Blockunterlagen](../../00-course-material/30-webmcp.md). Für diese
+zum erwarteten Browserzustand stehen in [Theorieunterlagen](../../00-course-material/teil-3-theorie--webmcp.md). Für diese
 lokale Workshop-Demo werden bewusst weder ein Origin-Trial noch ein produktiver
 Fallback eingebaut.
 
@@ -37,7 +37,7 @@ Experimente:
 ## Was nicht zu sehen ist
 
 - Kein Agent: Ohne Extension oder eingebauten Browser-Agenten ruft niemand die Tools auf, ausser die Tool-Konsole der Seite selbst.
-- Keine Feature-Detection und kein `navigator.modelContext`: Das Skript ruft `document.modelContext` direkt auf. In einem Browser ohne WebMCP endet es mit einem Fehler in der Konsole, das ist beabsichtigt (siehe [Blockunterlagen](../../00-course-material/30-webmcp.md)).
+- Keine Feature-Detection und kein `navigator.modelContext`: Das Skript ruft `document.modelContext` direkt auf. In einem Browser ohne WebMCP endet es mit einem Fehler in der Konsole, das ist beabsichtigt (siehe [Theorieunterlagen](../../00-course-material/teil-3-theorie--webmcp.md)).
 - Kein Origin-Trial-Token und kein produktiver Browser-Fallback: Die Demo setzt den vorbereiteten Chromium-Browser voraus.
 
 ## Struktur

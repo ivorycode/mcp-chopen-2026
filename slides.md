@@ -84,8 +84,8 @@ Vorlage für die grafische Ausarbeitung. Pro Folie ein Abschnitt mit Titel und B
 - Erkenntnis: Die Patterns sind SDK-unabhängig
 - Demo: `03-chatbot-tanstack-ai-solution`
 
-### Erkenntnisse Block 1
-- Tool Calling ist die Basis aller weiteren Blöcke
+### Erkenntnisse Teil 1
+- Tool Calling ist die Basis aller weiteren Teile
 - Die Tool-Schicht ist dünn, die Domain-Logik bleibt in der App
 - Die App bezahlt das Modell und trägt die Verantwortung für Sicherheit und Kosten
 
@@ -169,8 +169,8 @@ Vorlage für die grafische Ausarbeitung. Pro Folie ein Abschnitt mit Titel und B
 - Remote Streamable-HTTP-Server bleiben wertvoll: zentral betrieben, für Endbenutzer-Assistenten
 - Erkenntnis: MCP ist für Endbenutzer-Szenarien relevanter als für Entwickler-Werkzeuge
 
-### Erkenntnisse Block 2
-- Derselbe Tool-Contract wie in Block 1, anderer Transport
+### Erkenntnisse Teil 2
+- Derselbe Tool-Contract wie in Teil 1, anderer Transport
 - Der Benutzer bringt das Modell mit; die App stellt Funktionalität bereit
 - Zustand explizit über Handles, nicht über Sessions
 - UI wandert als Resource in den Host
@@ -211,7 +211,7 @@ Vorlage für die grafische Ausarbeitung. Pro Folie ein Abschnitt mit Titel und B
 - Permissions-Policy `tools` für iframes
 - Nur exponieren, was auch über die Oberfläche möglich ist
 
-### Erkenntnisse Block 3
+### Erkenntnisse Teil 3
 - Dritte Registrierung desselben Tool-Contracts
 - Kein Server, kein Protokoll: die Seite selbst ist der Tool-Server
 - Der Browser bringt das Modell mit; die App bezahlt nichts

@@ -157,5 +157,5 @@ kannst du mit `npm run client` beziehungsweise dem MCP Inspector durchspielen.
 ## Was nicht zu sehen ist
 
 - Kein Webshop, keine Domain-Logik: nur der Mechanismus.
-- Keine Authentifizierung (siehe [Blockunterlagen, Abschnitt Authorization](../../00-course-material/20-app-in-the-ai.md#8-authorization-überblick)).
+- Keine Authentifizierung (siehe [Theorieunterlagen, Abschnitt Authorization](../../00-course-material/teil-2-theorie--app-in-der-ki.md#8-authorization-überblick)).
 - Kein eigener Legacy-Transport: HTTP und stdio verwenden ausschließlich die eingebaute Versionsaushandlung des SDK. Ein zusätzlicher, projektspezifischer Kompatibilitäts-Layer ist nicht vorgesehen.

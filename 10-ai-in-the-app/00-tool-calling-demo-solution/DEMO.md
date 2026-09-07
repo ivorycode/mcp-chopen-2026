@@ -1,6 +1,6 @@
 # Live-Demo: Tool Calling mit dem Vercel AI SDK
 
-Absolut minimales Demo für den Einstieg in Block 1: ein Modell-Aufruf, ein Tool,
+Absolut minimales Demo für den Einstieg in Teil 1: ein Modell-Aufruf, ein Tool,
 und die Tool-Calling-Schleife wird sichtbar. Dauer live ca. 5–10 Minuten.
 
 Dieses Verzeichnis enthält den fertigen Endstand (`src/index.ts`) als Referenz

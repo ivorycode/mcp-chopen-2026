@@ -2,7 +2,7 @@
 
 Die Übungen stehen hier in der Reihenfolge des Workshops. Die vollständigen Anleitungen befinden sich als `EXERCISE.md` in den jeweiligen Projektverzeichnissen. Vorbereitung und Tagesprogramm findest du in [WORKSHOP.md](WORKSHOP.md).
 
-| Block | Übung | Kurzbeschreibung |
+| Teil | Übung | Kurzbeschreibung |
 |---|---|---|
 | 1a · Tool Calling Basics | [Mini-Übung · Tool Calling Basics](../10-ai-in-the-app/01-tool-calling-basics/EXERCISE.md) | Ein Tool für Artikeldetails ergänzen und durch einen Provider-Wechsel die Tool-Aufrufe vergleichen. Dauer: ca. 10 Minuten. |
 | 1b · Chatbot in der App | [Übung 1 · Warenkorb-Tools im Chat](../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md) | Mit dem Vercel AI SDK Warenkorb-Tools implementieren, Resultate im Chat darstellen, den Shop aktualisieren und Checkout mit Freigabe ergänzen. |

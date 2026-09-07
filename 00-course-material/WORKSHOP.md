@@ -2,7 +2,7 @@
 
 Workshop an den CH Open Workshop-Tagen 2026. Erst kommt die KI in die App – dann die App in die KI.
 
-Der Einstieg zeigt die [Abschlusslösung](../30-webmcp/02-webshop-webmcp-solution/README.md) zunächst nur als klassischen Webshop mit Kontoauswahl, Suche, Warenkorb und Bestellungen. Dafür ist die [öffentliche Demo](https://mcp-webshop-demo.fly.dev) vorgesehen; die lokal vorbereitete Musterlösung dient als Ersatz. Danach erschliessen wir dieselbe Shop-Funktionalität in drei Blöcken:
+Der Einstieg zeigt die [Abschlusslösung](../30-webmcp/02-webshop-webmcp-solution/README.md) zunächst nur als klassischen Webshop mit Kontoauswahl, Suche, Warenkorb und Bestellungen. Dafür ist die [öffentliche Demo](https://mcp-webshop-demo.fly.dev) vorgesehen; die lokal vorbereitete Musterlösung dient als Ersatz. Danach erschliessen wir dieselbe Shop-Funktionalität in drei Teilen:
 
 1. **KI in der App** – Tool Calling und ein Chatbot im Webshop mit dem Vercel AI SDK; TanStack AI als Vergleich und alternative Übung.
 2. **App in der KI** – der Webshop wird über einen MCP-Server und zwei MCP Apps in einen externen KI-Assistenten eingebunden.
@@ -16,42 +16,42 @@ Führe vorab den [Setup-Check](../00-setup-check/README.md) aus: Er prüft Node.
 
 Damit die unten geplanten Übungszeiten für Implementierung und Prüfung verfügbar sind, gehört zusätzlich vor den Workshop:
 
-- **Projekte vorbereiten:** `npm ci` jeweils in den benötigten Projektordnern ausführen; es gibt keine gemeinsame Installation im Repository-Root. Lokale `.env` anhand der jeweiligen Vorlage einrichten und vorhandene Einstellungen erhalten. Den Katalog-Mock und den Vercel-Chatbot-Starter einmal starten, Demo-Konto auswählen und die Suche prüfen. Für Block 1 zusätzlich den echten Chat-Aufruf testen.
+- **Projekte vorbereiten:** `npm ci` jeweils in den benötigten Projektordnern ausführen; es gibt keine gemeinsame Installation im Repository-Root. Lokale `.env` anhand der jeweiligen Vorlage einrichten und vorhandene Einstellungen erhalten. Den Katalog-Mock und den Vercel-Chatbot-Starter einmal starten, Demo-Konto auswählen und die Suche prüfen. Für Teil 1 zusätzlich den echten Chat-Aufruf testen.
 - **Node-Version abstimmen:** Für den gesamten Workshop Node.js ab **22.19** verwenden, wie in den MCP-Übungen verlangt. Der minimale Shop-/Setup-Check ab 22.18 allein deckt diese Voraussetzung nicht ab.
 - **MCP-Zugang vorbereiten:** Einen der in den Übungen beschriebenen Hosts samt Anmeldung bereithalten. Übung 2 beschreibt Claude Code über lokales HTTP und ChatGPT über HTTPS; Übung 3 beschreibt Claude Desktop und ChatGPT mit eingebetteter UI. Für den beschriebenen Remote-Zugang ngrok samt Konto vorbereiten. Einrichtung und Verfügbarkeit stehen in den jeweiligen Übungsanleitungen.
 - **Browser und Tests vorbereiten:** Playwright-Chromium für die Shop-/MCP-App-Tests installieren. Für WebMCP zusätzlich den in der [WebMCP-Testanleitung](../30-webmcp/02-webshop-webmcp/docs/WEBMCP-TESTING.md) beschriebenen Chrome vorbereiten und die API-Verfügbarkeit gemäss [Übung 4](../30-webmcp/02-webshop-webmcp/EXERCISE.md) prüfen. Die native Suite benötigt Google Chrome, nicht nur Playwright-Chromium. Die Inspector-Extension ist ein zusätzlicher Prüfweg.
 
-Die Workshop-Leitung bereitet die Demo-Projekte, Musterlösungen, den lokalen MCP-App-Host und den Chrome-Durchlauf ebenfalls vor. Installationen und erstmalige Konto-/Tunnel-Einrichtung sind keine verlässliche Fünf-Minuten-Aufgabe während eines Übungsblocks.
+Die Workshop-Leitung bereitet die Demo-Projekte, Musterlösungen, den lokalen MCP-App-Host und den Chrome-Durchlauf ebenfalls vor. Installationen und erstmalige Konto-/Tunnel-Einrichtung sind keine verlässliche Fünf-Minuten-Aufgabe während eines Übungsteils.
 
-## Unterlagen nach Block
+## Unterlagen nach Teil
 
-Alle Übungen in Workshop-Reihenfolge mit Kurzbeschreibung: [EXERCISES.md](EXERCISES.md). Für konkrete Implementierungsschritte und Abnahme gelten die `EXERCISE.md` der Starter und die README-Dateien der Projekte. Die Blockunterlagen liefern die Theorie; diese Übersicht legt den Tagesablauf fest.
+Alle Übungen in Workshop-Reihenfolge mit Kurzbeschreibung: [EXERCISES.md](EXERCISES.md). Für konkrete Implementierungsschritte und Abnahme gelten die `EXERCISE.md` der Starter und die README-Dateien der Projekte. Die Theorieunterlagen liefern den Hintergrund; diese Übersicht legt den Tagesablauf fest.
 
-| Zeit | Block | Unterlagen |
+| Zeit | Teil | Unterlagen |
 |---|---|---|
 | 09:00 | Einstieg und Ausgangslage | [Abschlusslösung](../30-webmcp/02-webshop-webmcp-solution/README.md) · [Chatbot-Starter](../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/README.md) |
-| 09:15 | Block 1 · KI in der App | [Blockunterlagen](10-ai-in-the-app.md) · [Tool-Calling-Livedemo](../10-ai-in-the-app/00-tool-calling-demo-solution/DEMO.md) |
-| 11:30 | Block 2a · MCP-Grundlagen | [Blockunterlagen](20-app-in-the-ai.md) · [Hello-MCP-Mini-Übung](../20-app-in-the-ai/01-hello-mcp/EXERCISE.md) |
+| 09:15 | Teil 1 · KI in der App | [Theorieunterlagen](teil-1-theorie--ki-in-der-app.md) · [Tool-Calling-Livedemo](../10-ai-in-the-app/00-tool-calling-demo-solution/DEMO.md) |
+| 11:30 | Teil 2a · MCP-Grundlagen | [Theorieunterlagen](teil-2-theorie--app-in-der-ki.md) · [Hello-MCP-Mini-Übung](../20-app-in-the-ai/01-hello-mcp/EXERCISE.md) |
 | 12:00 | Mittagspause | |
-| 13:00 | Block 2b/2c · MCP-Server und MCP Apps | [Übung 2](../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md) · [Übung 3](../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md) |
-| 15:40 | Block 3 · WebMCP | [Blockunterlagen](30-webmcp.md) · [Übung 4](../30-webmcp/02-webshop-webmcp/EXERCISE.md) |
+| 13:00 | Teil 2b/2c · MCP-Server und MCP Apps | [Übung 2](../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md) · [Übung 3](../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md) |
+| 15:40 | Teil 3 · WebMCP | [Theorieunterlagen](teil-3-theorie--webmcp.md) · [Übung 4](../30-webmcp/02-webshop-webmcp/EXERCISE.md) |
 | 16:50 | Zusammenfassung und Fragen | [Theorie-Stichworte](../slides.md) |
 
 ## Didaktisches Grundmuster
 
-Wir wiederholen **Mechanismus zeigen → am Webshop nachvollziehen → selbst ergänzen → Ergebnis prüfen**. Die Zeiten richten sich nach den tatsächlichen Lücken der Starter; nicht jeder Teil erhält nochmals einen vollständigen Theorie- und Demo-Block.
+Wir wiederholen **Mechanismus zeigen → am Webshop nachvollziehen → selbst ergänzen → Ergebnis prüfen**. Die Zeiten richten sich nach den tatsächlichen Lücken der Starter; nicht jeder Abschnitt erhält nochmals eine vollständige Theorie- und Demo-Einführung.
 
 - **Kleine Beispiele:** Die Wetter-Tool-Livedemo führt Tool Calling ohne Shop ein. `01-tool-calling-basics` vertieft es mit drei fertigen Shop-Tools und einer Mini-Übung. Hello MCP ist eine Erkundungs- und Verbindungsübung an einem fertigen Server. Hello WebMCP bleibt eine Trainer-Demo ohne eigene `EXERCISE.md`.
 - **Vier Hauptübungen:** Chat, MCP-Server, MCP Apps und WebMCP werden schrittweise ergänzt. Die Trainer-Demo verwendet jeweils die Musterlösung; die Teilnehmer arbeiten im Starter.
-- **Unabhängig weiterarbeiten:** Jeder nächste Starter enthält die gelösten Vorstufen. Es werden weder Dateien noch Laufzeitdaten aus der eigenen vorherigen Lösung übernommen. Eine offene Übung blockiert dadurch den nächsten Block nicht.
+- **Unabhängig weiterarbeiten:** Jeder nächste Starter enthält die gelösten Vorstufen. Es werden weder Dateien noch Laufzeitdaten aus der eigenen vorherigen Lösung übernommen. Eine offene Übung blockiert dadurch den nächsten Teil nicht.
 - **TanStack AI:** Der Starter ist eine Alternative zur Vercel-Übung mit vergleichbarem Umfang. Im gemeinsamen Tagesablauf wird nur die fertige Lösung kurz verglichen; eine zweite vollständige Chat-Implementierung ist nicht eingeplant. Die MCP-Hauptkette baut auf Vercel auf.
 - **Prüfung gehört zur Übung:** Toolliste oder grünes `npm test` allein belegen keinen gelösten Starter. Nach den Implementierungsschritten folgen die jeweilige Übungsabnahme und ein sichtbarer fachlicher Durchlauf.
 
 ## Tagesprogramm (09:00–17:00)
 
-Die Planung umfasst **380 Minuten Inhalt und Arbeit**, **60 Minuten Mittag** und **40 Minuten Kurzpausen**, insgesamt 480 Minuten. Sie setzt das vorbereitete Setup und angeleitetes Arbeiten mit den vorhandenen Schrittanleitungen voraus. Die Minutenaufteilung innerhalb der Blöcke dient der Moderation; Prüfungen und Besprechung sind darin enthalten.
+Die Planung umfasst **380 Minuten Inhalt und Arbeit**, **60 Minuten Mittag** und **40 Minuten Kurzpausen**, insgesamt 480 Minuten. Sie setzt das vorbereitete Setup und angeleitetes Arbeiten mit den vorhandenen Schrittanleitungen voraus. Die Minutenaufteilung innerhalb der Teile dient der Moderation; Prüfungen und Besprechung sind darin enthalten.
 
-| Zeit | Dauer | Block | Ablauf und erreichbares Ergebnis |
+| Zeit | Dauer | Teil | Ablauf und erreichbares Ergebnis |
 |---|---|---|---|
 | 09:00–09:15 | 15 min | **0 · Einstieg** | Tagesziel und drei Architekturen; Abschlusslösung als klassischen Shop zeigen. Lokal Katalog und Chatbot-Starter kurz prüfen. Demo-Konten und simulierte Bestellungen erklären. |
 | 09:15–09:50 | 35 min | **1a · Tool Calling Basics** | **5 min** Konzept, **10 min** Wetter-Tool live gemäss `00-tool-calling-demo-solution/DEMO.md`, **5 min** automatische/manuelle Schleife der Shop-CLI, **10 min** Mini-Übung: das vierte Tool `getArticleDetail` ergänzen und Provider-Wechsel vergleichen, **5 min** Auswertung. Das Modell erzeugt Aufruf-Argumente; Anwendung und SDK führen aus. |
@@ -91,7 +91,7 @@ Bei knapper Zeit zuerst den fünfminütigen TanStack-Vergleich, zusätzliche Pro
 - **Strukturierte Resultate bedienen Modell und UI.** MCP liefert `content` und `structuredContent`. Der Chat rendert typisierte Tool-Parts; WebMCP liefert serialisierbare Ergebnisse. Fachliche Fehler bleiben auswertbar.
 - **Freigaben müssen am richtigen Ort durchgesetzt werden.** Der Modell-Checkout im Chat hat eine SDK-Freigabe; direkte Bestellbuttons sind bewusste Aktionen. Die MCP-/WebMCP-Shop-Callbacks selbst enthalten keinen Freigabedialog. Beschreibung und Annotationen sind Hinweise, keine Sperre. MRTR wird separat durch Hello MCPs `confirm-demo` gezeigt.
 - **Shop-UI synchronisieren.** Chat und WebMCP lösen Shop-Events aus. Nach externen MCP-Aktionen werden Browser und andere offene Ansichten neu geladen bzw. Daten erneut abgefragt.
-- **Wer stellt das Modell?** In Block 1 nutzt die App einen Provider-Key. Bei MCP und WebMCP bringt der Host bzw. Agent das Modell mit. Inspector, lokaler MCP-App-Host und manuelle/native WebMCP-Tests benötigen keinen LLM-Aufruf.
+- **Wer stellt das Modell?** In Teil 1 nutzt die App einen Provider-Key. Bei MCP und WebMCP bringt der Host bzw. Agent das Modell mit. Inspector, lokaler MCP-App-Host und manuelle/native WebMCP-Tests benötigen keinen LLM-Aufruf.
 
 ## Aufbau des Repositories
 
@@ -99,9 +99,9 @@ Bei knapper Zeit zuerst den fünfminütigen TanStack-Vergleich, zusätzliche Pro
 00-course-material/                 Zentrale Workshop-Unterlagen
   WORKSHOP.md                       Überblick, Tagesprogramm und Didaktik
   EXERCISES.md                      Übungsindex
-  10-ai-in-the-app.md                Block 1: Theorie und Verweise
-  20-app-in-the-ai.md                Block 2: Theorie und Verweise
-  30-webmcp.md                       Block 3: Theorie und Verweise
+  teil-1-theorie--ki-in-der-app.md  Teil 1: Theorie und Verweise
+  teil-2-theorie--app-in-der-ki.md  Teil 2: Theorie und Verweise
+  teil-3-theorie--webmcp.md         Teil 3: Theorie und Verweise
 00-setup-check/                     Vorab-Check: Node.js, npm und AI-Provider
 01-mock-api/                       Gemeinsamer lokaler Katalogdienst
 10-ai-in-the-app/
@@ -122,7 +122,7 @@ Bei knapper Zeit zuerst den fünfminütigen TanStack-Vergleich, zusätzliche Pro
   02-webshop-webmcp/               Übung 4: fünf Browser-Tools und Cleanup
   02-webshop-webmcp-solution/      Kumulative Abschlusslösung inkl. Deployment
 README_SETUP.md                    Allgemeine Vorbereitung
-slides.md                          Stichworte zu den Theorieblöcken
+slides.md                          Stichworte zur Theorie
 ```
 
 Die Hauptkette lautet **Vercel-Chatbot → MCP-Server → MCP Apps → WebMCP**, jeweils mit Starter und Musterlösung. Alle acht Projekte sind eigenständig installierbare Kopien; die letzte Musterlösung enthält den vollständigen Funktionsumfang. TanStack ist ein paralleles Starter-/Lösungspaar. Setup-Check, Katalogdienst, Wetter-Livedemo, Shop-CLI, Hello MCP und Hello WebMCP stehen ausserhalb der Hauptkette.
@@ -136,13 +136,13 @@ Die Webshop-Stufen verwenden die Demo-Konten `restaurant-baeren`, `hotel-alpenbl
 | Anwendung | Port |
 |---|---|
 | Katalog-Mock-API | 4040 |
-| Block 1 · Chatbot Vercel AI SDK (Starter / Lösung) | 3031 / 3032 |
-| Block 1 · Chatbot TanStack AI (Starter / Lösung) | 3033 / 3034 |
-| Block 2 · Hello MCP (HTTP) | 3040 |
-| Block 2 · Webshop MCP-Server (Starter / Lösung) | 3041 / 3042 |
-| Block 2 · Webshop MCP Apps (Starter / Lösung) | 3043 / 3044 |
-| Block 3 · Hello WebMCP | 3050 |
-| Block 3 · Webshop WebMCP (Starter / Lösung) | 3051 / 3052 |
+| Teil 1 · Chatbot Vercel AI SDK (Starter / Lösung) | 3031 / 3032 |
+| Teil 1 · Chatbot TanStack AI (Starter / Lösung) | 3033 / 3034 |
+| Teil 2 · Hello MCP (HTTP) | 3040 |
+| Teil 2 · Webshop MCP-Server (Starter / Lösung) | 3041 / 3042 |
+| Teil 2 · Webshop MCP Apps (Starter / Lösung) | 3043 / 3044 |
+| Teil 3 · Hello WebMCP | 3050 |
+| Teil 3 · Webshop WebMCP (Starter / Lösung) | 3051 / 3052 |
 | Lokaler MCP-App-Host / Sandbox | 43552 / 43553 |
 | Automatische Shop-/MCP-App-Browser-Tests: Shop / Katalog | 43554 / 43555 |
 | Native WebMCP-Tests: Shop / Katalog | 43556 / 43557 |
