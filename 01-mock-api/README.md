@@ -15,6 +15,8 @@ npm test             # node --test
 ```
 
 Env-Variablen: `PORT` (Default 4040), `MOCK_DELAY_MS` (simulierte Latenz, Default 150).
+Ohne `.env` erscheint keine Meldung dazu. Ist die Datei vorhanden, werden die Namen
+der eingelesenen Variablen ausgegeben. Bereits gesetzte Umgebungsvariablen haben Vorrang.
 
 ## Demo auf den Mock umstellen
 

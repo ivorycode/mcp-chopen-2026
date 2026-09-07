@@ -16,9 +16,24 @@
 import http from 'node:http'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { parseEnv } from 'node:util'
 import path from 'node:path'
 
 import { createMockApi } from './mock-api.mjs'
+
+let envFile
+try {
+  envFile = readFileSync('.env', 'utf8')
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error
+}
+if (envFile !== undefined) {
+  const variables = parseEnv(envFile)
+  for (const [name, value] of Object.entries(variables)) {
+    process.env[name] ??= value
+  }
+  console.log(`.env loaded: ${Object.keys(variables).join(', ') || '(no variables)'}`)
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORT = Number(process.env.PORT ?? 4040)
