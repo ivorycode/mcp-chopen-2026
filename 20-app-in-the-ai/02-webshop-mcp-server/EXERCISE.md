@@ -126,7 +126,7 @@ Lege beim ersten Einrichten die lokale Konfiguration an. Falls schon eine `.env`
 vorhanden ist, behalte sie und prüfe ihre Einstellungen, statt sie zu überschreiben:
 
 ```bash
-if [ ! -f .env ]; then cp .env.example .env; fi
+cp .env.example .env
 ```
 
 Diese Werte müssen in `.env` stehen:
@@ -169,7 +169,7 @@ Die Health-Aufrufe müssen erfolgreich antworten. Die Suche liefert JSON mit
 Produktdaten. Schlägt bereits die Suche fehl, prüfe Terminal A und
 `MOCK_CATALOG_ORIGIN`, bevor du MCP-Code ergänzt.
 
-### 1.5 Was kannst du jetzt schon im Browser tun?
+### 1.5 Was kannst du jetzt schon im Browser tun (bestehende Webshop Funktionalität)?
 
 1. Öffne <http://localhost:3041> und suche nach `Milch`.
 2. Öffne die Details eines Treffers und betrachte Artikelnummer, Preis und Einheit.
@@ -201,7 +201,9 @@ npx @modelcontextprotocol/inspector@latest --web --config inspector.json
 Beim ersten Aufruf kann npm die Installation des Inspectors bestätigen lassen.
 Öffne die im Terminal ausgegebene Browser-Adresse. Wähle den vorkonfigurierten
 Server **webshop-local** und verbinde ihn. Die Datei `inspector.json` enthält
-bereits den Transport `http` und `http://localhost:3041/mcp`.
+bereits den Transport `http` und `http://localhost:3041/mcp`; daneben ist
+**webshop-remote** mit der öffentlichen Demo
+`https://mcp-webshop-demo.fly.dev/mcp` eingetragen (siehe 1.7).
 In der Oberfläche kann der Transport als **HTTP** oder **Streamable HTTP**
 bezeichnet sein. Die Konfiguration wird mit `--config` als schreibgeschützte
 Sitzung geladen. Siehe den
@@ -220,6 +222,40 @@ sichtbar, der Aufruf liefert jedoch `isError: true` und in `structuredContent`
 den Fehler `Noch nicht implementiert.`. Das ist der beabsichtigte Startpunkt.
 Ein direktes Öffnen von `/mcp` in der Browser-Adresszeile ersetzt diesen Test
 nicht: Der Endpunkt erwartet MCP-Protokollnachrichten.
+
+### 1.7 Zum Vergleich: die fertige Demo unter webshop-remote
+
+Damit du siehst, wie sich ein **fertig implementierter** Server verhält, enthält
+`inspector.json` zusätzlich den Eintrag **webshop-remote** mit der öffentlichen
+Demo `https://mcp-webshop-demo.fly.dev/mcp`. Sie läuft im Internet und braucht
+weder deinen lokalen Shop noch den Katalog auf Port 4040.
+
+Verbinde im Inspector zusätzlich **webshop-remote** und rufe dort dasselbe
+`searchProducts` auf:
+
+```json
+{ "term": "Milch", "loginId": "hotel-alpenblick" }
+```
+
+**Erwartung:** dieselbe Toolliste wie lokal, aber ein Ergebnis mit `ok: true`
+und Produktdaten statt `Noch nicht implementiert.`. Genau dieses Verhalten
+stellst du in den nächsten Schritten lokal her. Beim Wechsel zwischen beiden
+Servern lohnt sich der Blick auf Beschreibungen und Eingabeschemas: Sie sind
+identisch, weil beide dieselbe Registrierung aus `server.ts` verwenden.
+
+Auf der Demo gelten dieselben drei Demo-Konten wie lokal: `hotel-alpenblick`,
+`restaurant-baeren` und `kantine-campus`. Bei `searchProducts` ist `loginId`
+optional, bei den übrigen fünf Tools verlangt das Schema es. Probiere deshalb
+zusätzlich `getCart` mit `{ "loginId": "hotel-alpenblick" }` aus – auch dieser
+Aufruf antwortet auf der Demo mit `ok: true`, lokal dagegen noch mit
+`Noch nicht implementiert.`.
+
+Zwei Einschränkungen: Die Demo ist die Abschlusslösung des ganzen Workshops und
+zeigt deshalb auch Resources der MCP-Apps aus der nächsten Übung. Und ihr
+Zustand liegt im Prozessspeicher **einer** öffentlichen Instanz – Warenkörbe und
+Bestellungen teilst du dort mit allen anderen Teilnehmenden und sie gehen bei
+einem Neustart verloren. Für deine eigenen Tests bleibt `webshop-local`
+massgebend; ist die Demo nicht erreichbar, überspringe diesen Vergleich.
 
 ## 2. Suche implementieren
 

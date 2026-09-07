@@ -10,7 +10,6 @@
   "scripts": {
     "dev": "node --watch src/http.ts",
     "start": "node src/http.ts",
-    "start:stdio": "node src/stdio.ts",
     "client": "node src/client.ts",
     "curl": "sh scripts/curl-demo.sh",
     "inspector": "npx @modelcontextprotocol/inspector@latest --web --config inspector.json",

@@ -1,9 +1,12 @@
-<!--
-Markdown-Foliensatz zum Tagesprogramm in WORKSHOP.md, Stand 7. September 2026.
-Jeder Abschnitt zwischen zwei --- ist eine Folie. Die Blocknummer steht im Titel.
-Die Zeitangaben beziehen sich auf den gesamten Block inklusive Demo und Übung.
-Quellen und Moderationshinweise stehen in HTML-Kommentaren.
--->
+<details>
+<summary>Hinweise zum Foliensatz</summary>
+<ul>
+<li>Markdown-Foliensatz zum Tagesprogramm in <a href="WORKSHOP.md"><code>WORKSHOP.md</code></a>, Stand 7. September 2026.</li>
+<li>Jeder Abschnitt zwischen zwei --- ist eine Folie. Die Blocknummer steht im Titel.</li>
+<li>Die Zeitangaben beziehen sich auf den gesamten Block inklusive Demo und Übung.</li>
+<li>Quellen und Moderationshinweise stehen in aufklappbaren Speaker Notes.</li>
+</ul>
+</details>
 
 # 0 · Vom KI-Chatbot zur MCP-App
 
@@ -11,7 +14,12 @@ Quellen und Moderationshinweise stehen in HTML-Kommentaren.
 - Erst kommt die KI in die App, dann die App in die KI
 - Ein Webshop als durchgehendes Beispiel
 
-<!-- 09:00–09:15 · Einstieg, klassische Shop-Demo und kurzer lokaler Check. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>09:00–09:15 · Einstieg, klassische Shop-Demo und kurzer lokaler Check.</li>
+</ul>
+</details>
 
 ---
 
@@ -33,9 +41,13 @@ Quellen und Moderationshinweise stehen in HTML-Kommentaren.
 - Jeder nächste Starter enthält die gelösten Vorstufen und startet mit eigenen Daten
 - **Jetzt:** [Webshop-Demo](https://mcp-webshop-demo.fly.dev) ansehen, danach lokalen Katalog und Chatbot-Starter prüfen
 
-<!-- Lokaler Ersatz: ../30-webmcp/02-webshop-webmcp-solution/README.md.
-Beim Einstieg nur den klassischen Shop zeigen. Lokaler Starter:
-../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/README.md. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Lokaler Ersatz: <a href="../30-webmcp/02-webshop-webmcp-solution/README.md"><code>../30-webmcp/02-webshop-webmcp-solution/README.md</code></a>.</li>
+<li>Beim Einstieg nur den klassischen Shop zeigen. Lokaler Starter: <a href="../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/README.md"><code>../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/README.md</code></a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -61,15 +73,17 @@ console.log(result.text)
 - Das SDK sendet eine API-Anfrage an den Anbieter, der Schlüssel kommt aus `ANTHROPIC_API_KEY`
 - **Als Nächstes:** Wie erhält das Modell Zugriff auf aktuelle Shop-Daten und Funktionen?
 
-<!-- 09:15–09:50 · SDK-Einstieg, Tool Calling und Tool-Schleife zusammen 5 Minuten.
-Das Beispiel zuerst als einfachen Textaufruf erklären. console.log gibt die Antwort
-im Terminal aus. Das Sprachmodell läuft beim Anbieter, nicht im Node.js-Prozess.
-Voraussetzungen: Pakete ai und @ai-sdk/anthropic installiert, API-Key als
-Umgebungsvariable gesetzt. Den Schlüssel nicht in den Quellcode schreiben.
-Modell-ID und Pakete entsprechen der vorbereiteten Wetter-Demo. Dort kapselt
-createModel() die Provider-Auswahl und das Laden der .env für alle drei Anbieter.
-Referenz: ../10-ai-in-the-app/00-tool-calling-demo-solution/src/provider.ts.
-SDK-Dokumentation: https://ai-sdk.dev/docs/ai-sdk-core/generating-text. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>09:15–09:50 · SDK-Einstieg, Tool Calling und Tool-Schleife zusammen 5 Minuten.</li>
+<li>Das Beispiel zuerst als einfachen Textaufruf erklären. <code>console.log</code> gibt die Antwort im Terminal aus. Das Sprachmodell läuft beim Anbieter, nicht im Node.js-Prozess.</li>
+<li>Voraussetzungen: Pakete ai und <code>@ai-sdk/anthropic</code> installiert, API-Key als Umgebungsvariable gesetzt. Den Schlüssel nicht in den Quellcode schreiben.</li>
+<li>Modell-ID und Pakete entsprechen der vorbereiteten Wetter-Demo. Dort kapselt <code>createModel()</code> die Provider-Auswahl und das Laden der <code>.env</code> für alle drei Anbieter.</li>
+<li>Referenz: <a href="../10-ai-in-the-app/00-tool-calling-demo-solution/src/provider.ts"><code>../10-ai-in-the-app/00-tool-calling-demo-solution/src/provider.ts</code></a>.</li>
+<li>SDK-Dokumentation: <a href="https://ai-sdk.dev/docs/ai-sdk-core/generating-text">https://ai-sdk.dev/docs/ai-sdk-core/generating-text</a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -94,12 +108,14 @@ const getWeather = tool({
 - `tools: { getWeather }` bietet das Tool im `generateText`-Aufruf an
 - Das Modell liefert etwa `getWeather({ city: "Bern" })`, das SDK führt `execute` aus
 
-<!-- Das Beispiel zeigt nur die Tool-Definition. Den generateText-Aufruf der
-vorherigen Folie um tools ergänzen und als Prompt «Wie ist das Wetter in Bern?»
-verwenden. Die Wetterwerte sind fest vorgegebene Demo-Daten, keine Live-Abfrage.
-Für die anschliessende Antwort nach dem Tool-Resultat zusätzlich isStepCount aus
-ai importieren und stopWhen: isStepCount(4) setzen. Das erklärt die nächste Folie.
-Die Livedemo variiert ihre simulierte Temperatur anhand des Ortsnamens. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Das Beispiel zeigt nur die Tool-Definition. Den <code>generateText</code>-Aufruf der vorherigen Folie um <code>tools</code> ergänzen und als Prompt «Wie ist das Wetter in Bern?» verwenden. Die Wetterwerte sind fest vorgegebene Demo-Daten, keine Live-Abfrage.</li>
+<li>Für die anschliessende Antwort nach dem Tool-Resultat zusätzlich <code>isStepCount</code> aus ai importieren und <code>stopWhen: isStepCount(4)</code> setzen. Das erklärt die nächste Folie.</li>
+<li>Die Livedemo variiert ihre simulierte Temperatur anhand des Ortsnamens.</li>
+</ul>
+</details>
 
 ---
 
@@ -110,9 +126,31 @@ Die Livedemo variiert ihre simulierte Temperatur anhand des Ortsnamens. -->
 - Die Schleife läuft in der Anwendung, das SDK übernimmt die einzelnen Schritte
 - `stopWhen: isStepCount(4)` begrenzt die Schleife auf höchstens vier Modellaufrufe
 
-<!-- Das Limit kann die Schleife auch vor einer abschliessenden Textantwort beenden.
-Das Modell kann mehrere Tools in einer Runde anfordern. Das Diagramm zeigt zur
-Einführung einen einzelnen Tool-Aufruf. Bearbeitbare Grafik: assets/tool-schleife.svg. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Das Limit kann die Schleife auch vor einer abschliessenden Textantwort beenden.</li>
+<li>Das Modell kann mehrere Tools in einer Runde anfordern. Das Diagramm zeigt zur Einführung einen einzelnen Tool-Aufruf. Bearbeitbare Grafik: <a href="slides-assets/tool-schleife.svg"><code>slides-assets/tool-schleife.svg</code></a>.</li>
+</ul>
+</details>
+
+---
+
+## 1a · Vom Tool-Aufruf zur Geschäftslogik
+
+![Schichten hinter einem Tool-Aufruf: Die Anwendung sendet Auftrag, Verlauf und Tool-Definitionen an das Sprachmodell. Das Modell antwortet mit toolName und input. Die Tool-Schleife prüft die Argumente und ruft execute der Tool-Definition auf, diese ergänzt den Warenkorb-Handle und delegiert an den Tool-Handler. Der Handler nutzt den Warenkorb im Prozessspeicher und den Katalog-Zugriff, der die Katalog-API als eigenen Prozess anfragt. Das Resultat läuft durch alle Schichten zurück in den Verlauf.](slides-assets/tool-call-schichten.svg)
+
+- Das Modell fordert an, die Anwendung validiert, führt aus und antwortet
+- Der Warenkorb liegt im Prozessspeicher, der Katalog ist ein eigener Dienst
+
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Landkarte für die folgende Demo: Die Nummern 1–5 entsprechen den Schritten im Log.</li>
+<li>Die Kette Modell → Tool-Definition → Handler → Datenquelle bleibt in Teil 2 und 3 identisch; nur die oberste Schicht wechselt von SDK-Tool zu MCP-Tool zu WebMCP-Tool.</li>
+<li>Wichtig für die Mini-Übung: <code>getArticleDetail</code> ergänzt eine Tool-Definition, der Katalog-Zugriff dafür existiert bereits. <code>addToCart</code> ist das Gegenbeispiel zur Frage «API oder Speicher?»: Es holt zuerst das Artikeldetail über HTTP und legt die Position danach in den In-Memory-Warenkorb. Bearbeitbare Grafik: <a href="slides-assets/tool-call-schichten.svg"><code>slides-assets/tool-call-schichten.svg</code></a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -120,19 +158,25 @@ Einführung einen einzelnen Tool-Aufruf. Bearbeitbare Grafik: assets/tool-schlei
 
 - **Wetter-Demo:** Tool-Definition, Modell-Argumente und Ausführung live verfolgen
 - **Shop-CLI:** Automatische SDK-Schleife mit manueller Schleife vergleichen
-- **Mini-Übung:** `getArticleDetail` als viertes Tool ergänzen
+- **Mini-Übung:** `getArticleDetail` als viertes Tool ergänzen ([EXERCISE.md](../10-ai-in-the-app/01-tool-calling-basics/EXERCISE.md))
 - **Prüfen:** «Welche Allergene enthält die Vollmilch?» und die Tool-Schritte im Log verfolgen
 - **Vergleich:** Provider wechseln und denselben Auftrag wiederholen
 - **Optional:** Streaming — Antworttext und Tool-Argumente treffen stückweise ein
 
-<!-- Wetter-Demo: ../10-ai-in-the-app/00-tool-calling-demo-solution/DEMO.md.
-Mini-Übung: ../10-ai-in-the-app/01-tool-calling-basics/EXERCISE.md.
-Streaming ist Schritt 5 der Wetter-Demo und Vorgriff auf 1b; bei Zeitdruck
-zuerst diesen Punkt und dann den Provider-Vergleich kürzen. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Wetter-Demo: <a href="../10-ai-in-the-app/00-tool-calling-demo-solution/DEMO.md"><code>../10-ai-in-the-app/00-tool-calling-demo-solution/DEMO.md</code></a>.</li>
+<li>Musterlösung mit Szenarien: <a href="../10-ai-in-the-app/01-tool-calling-basics-solution/README.md"><code>../10-ai-in-the-app/01-tool-calling-basics-solution/README.md</code></a>.</li>
+<li>Streaming ist Schritt 5 der Wetter-Demo und Vorgriff auf 1b; bei Zeitdruck zuerst diesen Punkt und dann den Provider-Vergleich kürzen.</li>
+</ul>
+</details>
 
 ---
 
-## 1b · Chatbot im Webshop
+## 1b · Chatbot im Webshop: Architektur
+
+![Architektur des Webshop-Chatbots: Der Browser sendet Nachrichten mit dem Session-Cookie an die Chat-Route des App-Servers und erhält einen UI-Stream zurück. Der App-Server hält den API-Key, ruft das Sprachmodell beim Anbieter auf und führt angeforderte Tools über die vorhandene Shop-Logik aus.](slides-assets/chatbot-architektur.svg)
 
 - Der Browser sendet Nachrichten an die Chat-Route des App-Servers
 - Der Server hält den Provider-Key und steuert die Tool-Schleife
@@ -140,32 +184,59 @@ zuerst diesen Punkt und dann den Provider-Vergleich kürzen. -->
 - Das gewählte Demo-Konto kommt aus der Browser-Session
 - Die App stellt den Modellzugang und verantwortet dessen Verbrauch
 
-<!-- 10:05–11:25 · Architektur und Demo zusammen 10 Minuten.
-Implementierung: ../10-ai-in-the-app/02-chatbot-vercel-ai-sdk-solution/src/features/chat/. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>10:05–11:25 · Architektur und Demo zusammen 10 Minuten.</li>
+<li>Implementierung: <a href="../10-ai-in-the-app/02-chatbot-vercel-ai-sdk-solution/src/features/chat/"><code>../10-ai-in-the-app/02-chatbot-vercel-ai-sdk-solution/src/features/chat/</code></a>.</li>
+</ul>
+</details>
 
 ---
 
 ## 1b · Streaming und zwei Chat-Oberflächen
 
-- Das Vercel AI SDK streamt Text, Tool-Aufrufe, Resultate und Freigabeanfragen
-- `useChat` stellt diese Nachrichten im Browser als typisierte Parts bereit
-- **Assistant im Shop:** Textdialog, Tools aktualisieren die Shop-Oberfläche
-- **Workspace unter `/chat`:** Produktkarten und Warenkorb direkt im Gespräch
-- Shop-Events sorgen nach Änderungen für aktuelle Warenkorb- und Bestelldaten
+![Ein Tool-Resultat und zwei Wege zur Anzeige: Der Server ändert den Warenkorb mit addToCart und streamt das Resultat an den Browser. useChat stellt es als Tool-Part bereit. Im Workspace entsteht daraus ein Warenkorb-Widget. Ein Effect löst zusätzlich shop:cart-changed aus, worauf aktive Shop-Ansichten ihre Daten über die Web-API neu laden.](slides-assets/tool-resultat-shop-ui.svg)
+
+- **Streaming:** Text und Tool-Status treffen schrittweise ein, die Oberfläche reagiert bereits während der Antwort
+- `useChat` setzt den Stream zu Nachrichten mit Text- und Tool-Parts zusammen
+- **Workspace:** Ein fertiges Tool-Resultat liefert die Daten für Produktkarten oder Warenkorb-Widgets
+- **Assistant im Shop:** Der Dialog zeigt Text, Tool-Aktionen aktualisieren die vorhandene Shop-Oberfläche
+- `shop:cart-changed` meldet eine Änderung, aktive Shop-Ansichten laden Warenkorb und Bestellungen neu
+
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Das Diagramm zeigt einen erfolgreichen <code>addToCart</code>-Aufruf. <code>output-available</code> bedeutet, dass das Tool-Resultat vollständig vorliegt. <code>ToolPartView</code> rendert daraus im Workspace das Widget. Ein separater Effect in <code>ChatbotWidget</code> reagiert auf abgeschlossene Add-/Remove-/Checkout-Parts und ruft <code>dispatchCartChanged()</code> auf.</li>
+<li><code>handledToolCalls</code> verhindert, dass derselbe Tool-Aufruf mehrfach Events auslöst.</li>
+<li>Das Event enthält keine Warenkorbdaten. Aktive Empfänger invalidieren ihre Queries und lesen die Web-API erneut. Events erreichen nur das aktuelle Browserfenster, keinen separat geöffneten Shop-Tab. Die Workspace-Widgets sind Darstellungen der jeweiligen Tool-Resultate und werden durch das Shop-Event nicht neu geladen.</li>
+<li>Bei <code>searchProducts</code> verwendet der Chat stattdessen <code>shop:search</code> mit dem Suchbegriff.</li>
+<li>Referenzen in <a href="../10-ai-in-the-app/02-chatbot-vercel-ai-sdk-solution/src/"><code>../10-ai-in-the-app/02-chatbot-vercel-ai-sdk-solution/src/</code></a>: <code>features/chat/ui/ChatbotWidget.tsx</code>, <code>features/chat/ui/ToolPartView.tsx</code>, <code>lib/shop-events.ts</code> und <code>routes/index.tsx</code>.</li>
+</ul>
+</details>
 
 ---
 
 ## 1b · Checkout mit Freigabe
 
+![Checkout mit Freigabe: Das Modell fordert checkout an. Das SDK hält die Ausführung zurück und fordert im Browser eine Entscheidung an. Der Browser sendet die Entscheidung an den Server. Bei Nein bleibt der Warenkorb erhalten und es entsteht keine Bestellung. Bei Ja führt der Server den Checkout aus und liefert bei Erfolg die Bestell-ID.](slides-assets/checkout-freigabe.svg)
+
 - Ein vom Modell angeforderter Checkout wartet auf Zustimmung
-- Die SDK-Freigabe unterbricht die Ausführung bis zur Antwort
+- `toolApproval: { checkout: 'user-approval' }` aktiviert die Freigabe am `streamText`-Aufruf
 - **Nein:** Warenkorb erhalten, keine Bestellung erzeugen
 - **Ja:** Bestellung ausführen und Bestell-ID anzeigen
 - Ein direkter Bestellbutton ist selbst die bewusste Bestellaktion
 
-<!-- Im Vercel-Projekt: toolApproval am streamText-Aufruf.
-Fachliche Grundlage: ../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md.
-Die Freigabe gehört zum Chat-Ablauf und schützt nicht automatisch andere Adapter. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Im Vercel-Projekt: <code>toolApproval</code> am <code>streamText</code>-Aufruf.</li>
+<li>Der Browser erhält einen Tool-Part mit <code>approval-requested</code>. Im Workspace antwortet der Benutzer per Button, im Assistant mit Ja/Nein. <code>addToolApprovalResponse</code> verknüpft die Entscheidung über die <code>approval.id</code> mit dem angeforderten Tool-Aufruf.</li>
+<li>Der nächste Request setzt den Ablauf auf dem Server fort. Bei Ablehnung führt das SDK <code>checkout</code> nicht aus (<code>output-denied</code>). Bei Zustimmung führt es den Handler aus und liefert das Resultat (<code>output-available</code>). Zustimmung garantiert keinen Erfolg: Ein leerer Warenkorb kann beispielsweise weiterhin einen fachlichen Fehler liefern.</li>
+<li>Fachliche Grundlage: <a href="../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md"><code>../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md</code></a>.</li>
+<li>Die Freigabe gehört zum Chat-Ablauf und schützt nicht automatisch andere Adapter.</li>
+</ul>
+</details>
 
 ---
 
@@ -176,13 +247,18 @@ Die Freigabe gehört zum Chat-Ablauf und schützt nicht automatisch andere Adapt
 - **Ergänzen:** `getCart`, `addToCart`, `removeFromCart` und `checkout`
 - **Verbinden:** Warenkorbdarstellung, Shop-Events und Checkout-Freigabe
 - **Prüfen:** Über Texteingaben suchen, hinzufügen, entfernen und Checkout mit Nein/Ja testen
+- **Übungsanleitung:** [`10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md`](../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md)
 
-<!-- Starter und Abnahme: ../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md.
-Direkte Widget-Buttons ersetzen den Test der Modell-Tools nicht. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Direkte Widget-Buttons ersetzen den Test der Modell-Tools nicht.</li>
+</ul>
+</details>
 
 ---
 
-## 1c · Vergleich: TanStack AI
+## 1c · Vergleich: TanStack AI (Optional - Alternative zu Vercel SDK)
 
 - Gleiche Shop-Funktionen und Chat-Modi, andere SDK-Anbindung
 - Vercel verbindet Schema und Ausführung über `tool()`
@@ -190,14 +266,21 @@ Direkte Widget-Buttons ersetzen den Test der Modell-Tools nicht. -->
 - Vercel nutzt Tool-Approval, TanStack unterbricht per Interrupt bis zur Freigabe
 - **Jetzt:** Diese Stellen in der fertigen TanStack-Lösung vergleichen
 
-<!-- 11:25–11:30 · Eine Folie direkt am Code zeigen.
-Demo: ../10-ai-in-the-app/03-chatbot-tanstack-ai-solution/README.md.
-Alternative Übung: ../10-ai-in-the-app/03-chatbot-tanstack-ai/EXERCISE.md.
-Keine zweite Chat-Implementierung im Tagesprogramm. Die MCP-Kette baut auf Vercel auf. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>11:25–11:30 · Eine Folie direkt am Code zeigen.</li>
+<li>Demo: <a href="../10-ai-in-the-app/03-chatbot-tanstack-ai-solution/README.md"><code>../10-ai-in-the-app/03-chatbot-tanstack-ai-solution/README.md</code></a>.</li>
+<li>Alternative Übung: <a href="../10-ai-in-the-app/03-chatbot-tanstack-ai/EXERCISE.md"><code>../10-ai-in-the-app/03-chatbot-tanstack-ai/EXERCISE.md</code></a>.</li>
+<li>Keine zweite Chat-Implementierung im Tagesprogramm. Die MCP-Kette baut auf Vercel auf.</li>
+</ul>
+</details>
 
 ---
 
 ## 2a · MCP: die App für externe Assistenten
+
+![MCP verpackt denselben Tool-Aufruf für externe Assistenten: Ohne MCP ruft die Anwendung im selben Prozess direkt Tool-Definition und Handler auf. Mit MCP steckt das Modell im Host eines externen Assistenten, der MCP-Client sendet denselben Aufruf als standardisierte tools/call-Nachricht über eine Prozess- oder Netzwerkgrenze an unseren MCP-Server, der denselben Handler wie links aufruft und das Resultat als MCP-Nachricht zurückschickt.](slides-assets/mcp-wrapper.svg)
 
 - Model Context Protocol standardisiert den Zugriff auf externe Funktionen und Inhalte
 - **Host:** KI-Anwendung, in der der Benutzer arbeitet
@@ -205,12 +288,20 @@ Keine zweite Chat-Implementierung im Tagesprogramm. Die MCP-Kette baut auf Verce
 - **Server:** Stellt die Funktionen und Inhalte unserer Anwendung bereit
 - Der Host steuert das Modell, unser Server führt die Shop-Funktionen aus
 
-<!-- 11:30–12:00 · Theorie insgesamt 10 Minuten.
-Quelle: [MCP-Architektur](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture). -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>11:30–12:00 · Theorie insgesamt 10 Minuten.</li>
+<li>MCP ist ein Wrapper um denselben Tool-Aufruf aus Teil 1: gleicher Handler, jetzt hinter einer standardisierten Nachricht statt einem In-Process-Funktionsaufruf. Bearbeitbare Grafik: <a href="slides-assets/mcp-wrapper.svg"><code>slides-assets/mcp-wrapper.svg</code></a>.</li>
+<li>Quelle: <a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture">MCP-Architektur</a>.</li>
+</ul>
+</details>
 
 ---
 
 ## 2a · Tools, Resources und Prompts
+
+![Ein MCP-Server stellt Tools, Resources und Prompts bereit: Tools sind aufrufbare Funktionen wie add(a, b) oder searchProducts, hervorgehoben als Fokus im Workshop. Resources sind abrufbare Inhalte wie hello://about, Prompts sind wiederverwendbare Nachrichtenvorlagen wie greet.](slides-assets/mcp-capabilities.svg)
 
 - **Tools:** Aufrufbare Funktionen, zum Beispiel `add(a, b)`
 - **Resources:** Abrufbare Inhalte, zum Beispiel `hello://about`
@@ -218,8 +309,14 @@ Quelle: [MCP-Architektur](https://modelcontextprotocol.io/docs/2026-07-28/learn/
 - Ein Prompt liefert zunächst eine Vorlage, noch keine Modellantwort
 - Im Webshop stehen Tools für Suche, Warenkorb und Bestellungen im Mittelpunkt
 
-<!-- Quelle: [MCP-Architektur](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture).
-Konkrete Beispiele: ../20-app-in-the-ai/01-hello-mcp/EXERCISE.md. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Alle drei kommen vom selben MCP-Server; für den Webshop bleiben Tools im Fokus, Resources und Prompts sind hier nur der Vollständigkeit halber abgegrenzt. Bearbeitbare Grafik: <a href="slides-assets/mcp-capabilities.svg"><code>slides-assets/mcp-capabilities.svg</code></a>.</li>
+<li>Quelle: <a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture">MCP-Architektur</a>.</li>
+<li>Konkrete Beispiele: <a href="../20-app-in-the-ai/01-hello-mcp/EXERCISE.md"><code>../20-app-in-the-ai/01-hello-mcp/EXERCISE.md</code></a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -231,9 +328,13 @@ Konkrete Beispiele: ../20-app-in-the-ai/01-hello-mcp/EXERCISE.md. -->
 - Diese Revision übermittelt Version und Client-Fähigkeiten pro Anfrage, ohne Initialisierungs-Handshake
 - Fachlichen Zustand verwaltet weiterhin die Anwendung
 
-<!-- Quellen: [MCP-Architektur](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture),
-[Änderungen 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/changelog).
-Header-Details und Migrationen gehören in die Übungsunterlagen. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Quellen: <a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture">MCP-Architektur</a>, <a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">Änderungen 2026-07-28</a>.</li>
+<li>Header-Details und Migrationen gehören in die Übungsunterlagen.</li>
+</ul>
+</details>
 
 ---
 
@@ -244,15 +345,22 @@ Header-Details und Migrationen gehören in die Übungsunterlagen. -->
 - **Verbinden:** Im vorbereiteten Host einen echten Tool-Aufruf nachvollziehen
 - Der Server ist fertig, es ist kein Code zu ergänzen
 - **Optional:** `confirm-demo` zeigt eine Rückfrage über mehrere Request-Runden (MRTR)
+- **Übungsanleitung:** [`20-app-in-the-ai/01-hello-mcp/EXERCISE.md`](../20-app-in-the-ai/01-hello-mcp/EXERCISE.md)
 
-<!-- Anleitung: ../20-app-in-the-ai/01-hello-mcp/EXERCISE.md.
-Inspector und SDK-Client benötigen für diese Beispiele keinen Modellaufruf.
-MRTR: [Änderungen 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28/changelog).
-Nach diesem Block Mittagspause. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Inspector und SDK-Client benötigen für diese Beispiele keinen Modellaufruf.</li>
+<li>MRTR: <a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">Änderungen 2026-07-28</a>.</li>
+<li>Nach diesem Block Mittagspause.</li>
+</ul>
+</details>
 
 ---
 
 ## 2b · Der Webshop als MCP-Server
+
+![Der Webshop als MCP-Server: Links der Host eines externen Assistenten mit Sprachmodell und MCP-Client. Rechts unser App-Server als ein Node-Prozess ohne eigenes Sprachmodell. Der MCP-Client sendet tools/call über Streamable HTTP an POST /mcp, unser MCP-Server registriert sechs Tools und delegiert an bestehende Shop-Handler. Diese Handler und ihr In-Memory-Zustand für Warenkorb und Bestellungen werden im selben Prozess sowohl vom MCP-Server als auch von der Web-UI genutzt.](slides-assets/webshop-mcp-server-architektur.svg)
 
 - Der MCP-Adapter verbindet externe Tool-Aufrufe mit vorhandenen Shop-Handlern
 - Fünf bekannte Tools für Suche und Warenkorb, zusätzlich `getOrders`
@@ -260,8 +368,14 @@ Nach diesem Block Mittagspause. -->
 - Fachliche Fehler sollen für den Aufrufer auswertbar bleiben
 - Der externe Assistent bringt seinen Modellzugang mit
 
-<!-- 13:00–14:05 · Einstieg und Demo zusammen 10 Minuten.
-Grundlage: ../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>13:00–14:05 · Einstieg und Demo zusammen 10 Minuten.</li>
+<li>Das Sprachmodell steckt im Host, nie in unserem Prozess — unser Server bleibt reine Tool-Ausführung. Web-UI und MCP-Server teilen sich im selben Prozess denselben In-Memory-Zustand. Bearbeitbare Grafik: <a href="slides-assets/webshop-mcp-server-architektur.svg"><code>slides-assets/webshop-mcp-server-architektur.svg</code></a>.</li>
+<li>Grundlage: <a href="../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md"><code>../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md</code></a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -283,8 +397,13 @@ Grundlage: ../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md. -->
 - Der MCP-Shop-Checkout führt einen gültigen Aufruf direkt aus
 - Hinweise wie `destructiveHint` ersetzen keine technisch erzwungene Freigabe
 
-<!-- Freigaben: ../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md, Abschnitt 4.1.
-confirm-demo aus Hello MCP ist ein separates Rückfragebeispiel. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Freigaben: <a href="../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md"><code>../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md</code></a>, Abschnitt 4.1.</li>
+<li><code>confirm-demo</code> aus Hello MCP ist ein separates Rückfragebeispiel.</li>
+</ul>
+</details>
 
 ---
 
@@ -295,9 +414,14 @@ confirm-demo aus Hello MCP ist ein separates Rückfragebeispiel. -->
 - **Ergänzen:** Sechs Callbacks und `cartPayload` in `server.ts`
 - **Prüfen:** Suche, Add, Remove, Checkout und `getOrders`, einschliesslich Kontotrennung
 - **Ergebnis:** HTTP-MCP und Browser zeigen nach Reload dieselbe Bestellung
+- **Übungsanleitung:** [`20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md`](../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md)
 
-<!-- Starter und Abnahme: ../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md.
-Im Termin mindestens ein echter Host-Aufruf. Manuelles stdio ist optional. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Im Termin mindestens ein echter Host-Aufruf. Manuelles stdio ist optional.</li>
+</ul>
+</details>
 
 ---
 
@@ -309,8 +433,13 @@ Im Termin mindestens ein echter Host-Aufruf. Manuelles stdio ist optional. -->
 - Ein UI-fähiger Host lädt die Resource und zeigt sie in einer Sandbox
 - Im Webshop: Search-App mit Produktkarten und Cart-App mit Warenkorb
 
-<!-- 14:20–15:30 · Einstieg und Demo zusammen 10 Minuten.
-Quelle: [MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview). -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>14:20–15:30 · Einstieg und Demo zusammen 10 Minuten.</li>
+<li>Quelle: <a href="https://modelcontextprotocol.io/extensions/apps/overview">MCP Apps</a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -323,8 +452,13 @@ Quelle: [MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview). --
 
 - Ein Button kann damit eine Shop-Aktion ohne weiteren Modellaufruf auslösen
 
-<!-- Quelle: [MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview).
-Workshop-Ablauf: ../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Quelle: <a href="https://modelcontextprotocol.io/extensions/apps/overview">MCP Apps</a>.</li>
+<li>Workshop-Ablauf: <a href="../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md"><code>../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md</code></a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -345,10 +479,15 @@ Workshop-Ablauf: ../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md. -->
 - **Ergänzen:** Zwei Resources mit `registerUiResource` registrieren, sechs Tools zuordnen
 - **Verbinden:** Kontoübernahme sowie Add, Remove und Checkout über die Bridge
 - **Prüfen:** Lokal beide Apps bedienen, dann im verfügbaren UI-Host und Webshop vergleichen
+- **Übungsanleitung:** [`20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md`](../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md)
 
-<!-- Starter und Abnahme: ../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md.
-Nach UI-Änderungen npm run build:apps. Konto, Mengen und Order-ID vergleichen.
-Ein Host mit reiner Tool-Unterstützung belegt noch keine funktionierende App-Darstellung. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Nach UI-Änderungen <code>npm run build:apps</code>. Konto, Mengen und Order-ID vergleichen.</li>
+<li>Ein Host mit reiner Tool-Unterstützung belegt noch keine funktionierende App-Darstellung.</li>
+</ul>
+</details>
 
 ---
 
@@ -360,9 +499,14 @@ Ein Host mit reiner Tool-Unterstützung belegt noch keine funktionierende App-Da
 - Der Agent stellt den Modellzugang, die Seite ihre Funktionen
 - Im Workshop prüfen wir die API im vorbereiteten Chrome
 
-<!-- 15:40–16:50 · Konzept und Hello-Demo 10 Minuten, Webshop-Demo weitere 10 Minuten.
-Quelle: [WebMCP-Spezifikation](https://webmachinelearning.github.io/webmcp/).
-Browser-Voraussetzungen: ../30-webmcp/02-webshop-webmcp/docs/WEBMCP-TESTING.md. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>15:40–16:50 · Konzept und Hello-Demo 10 Minuten, Webshop-Demo weitere 10 Minuten.</li>
+<li>Quelle: <a href="https://webmachinelearning.github.io/webmcp/">WebMCP-Spezifikation</a>.</li>
+<li>Browser-Voraussetzungen: <a href="../30-webmcp/02-webshop-webmcp/docs/WEBMCP-TESTING.md"><code>../30-webmcp/02-webshop-webmcp/docs/WEBMCP-TESTING.md</code></a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -374,12 +518,19 @@ Browser-Voraussetzungen: ../30-webmcp/02-webshop-webmcp/docs/WEBMCP-TESTING.md. 
 - **Hello-Demo:** Todo hinzufügen per Formular, Todos auflisten und entfernen per JavaScript
 - **Im Webshop:** Fünf imperative Tools verwenden den vorhandenen API-Client
 
-<!-- Demo: ../30-webmcp/01-hello-webmcp/README.md. Keine eigene Teilnehmerübung.
-Quelle: [WebMCP-Spezifikation](https://webmachinelearning.github.io/webmcp/). -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Demo: <a href="../30-webmcp/01-hello-webmcp/README.md"><code>../30-webmcp/01-hello-webmcp/README.md</code></a>. Keine eigene Teilnehmerübung.</li>
+<li>Quelle: <a href="https://webmachinelearning.github.io/webmcp/">WebMCP-Spezifikation</a>.</li>
+</ul>
+</details>
 
 ---
 
 ## 3 · WebMCP im Webshop
+
+![WebMCP im Webshop: Im Browser laufen ein Browser-Agent mit eigenem Sprachmodell und die geöffnete Webshop-Seite mit den über document.modelContext.registerTool() registrierten WebMCP-Tools getrennt nebeneinander. Der Aufruf vom Agent zu den Tools bleibt im Browser, kein Netzwerk nötig. Erst der Tool-Aufruf gegen die Web-API unseres App-Servers per fetch() mit Session-Cookie ist ein echter Netzwerk-Request. Das Tool-Resultat löst im Browser das Event shop:cart-changed aus, worauf die Shop-UI neu lädt.](slides-assets/webmcp-architektur.svg)
 
 - Der Browser-Agent ruft ein registriertes Tool der Seite auf
 - Das Tool verwendet die bestehende Web-API mit der Session des Tabs
@@ -387,8 +538,14 @@ Quelle: [WebMCP-Spezifikation](https://webmachinelearning.github.io/webmcp/). --
 - Serialisierbare Resultate melden Erfolg oder Fehler zurück
 - Shop-Events aktualisieren die sichtbare Suche, den Warenkorb und die Bestellungen
 
-<!-- Grundlage: ../30-webmcp/02-webshop-webmcp/EXERCISE.md.
-Der Shop benötigt weiterhin sein Backend und den Katalogdienst. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Das Sprachmodell steckt im Browser-Agent, die Tools stecken in der geöffneten Seite — beides ausserhalb unseres Servers. Nur der Aufruf gegen die Web-API ist ein echter Netzwerk-Request, der Aufruf vom Agent zu den Tools bleibt im Browser. Bearbeitbare Grafik: <a href="slides-assets/webmcp-architektur.svg"><code>slides-assets/webmcp-architektur.svg</code></a>.</li>
+<li>Grundlage: <a href="../30-webmcp/02-webshop-webmcp/EXERCISE.md"><code>../30-webmcp/02-webshop-webmcp/EXERCISE.md</code></a>.</li>
+<li>Der Shop benötigt weiterhin sein Backend und den Katalogdienst.</li>
+</ul>
+</details>
 
 ---
 
@@ -400,8 +557,13 @@ Der Shop benötigt weiterhin sein Backend und den Katalogdienst. -->
 - Der WebMCP-Checkout hat keinen eigenen Freigabedialog
 - Die Freigabe im eingebauten Chat gilt nur für dessen Modell-Aufrufe
 
-<!-- Grundlage: ../30-webmcp/02-webshop-webmcp/EXERCISE.md.
-Abort-Signal: [WebMCP-Spezifikation](https://webmachinelearning.github.io/webmcp/). -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Grundlage: <a href="../30-webmcp/02-webshop-webmcp/EXERCISE.md"><code>../30-webmcp/02-webshop-webmcp/EXERCISE.md</code></a>.</li>
+<li>Abort-Signal: <a href="https://webmachinelearning.github.io/webmcp/">WebMCP-Spezifikation</a>.</li>
+</ul>
+</details>
 
 ---
 
@@ -412,10 +574,15 @@ Abort-Signal: [WebMCP-Spezifikation](https://webmachinelearning.github.io/webmcp
 - **Ergänzen:** Fünf Tools, Shop-Events, Registrierung und Abort-Cleanup in `webmcp-tools.ts`
 - **Prüfen:** Suche, Add, Remove und Checkout mit dem sichtbaren Shop vergleichen
 - **Abnahme:** Übungstest und native Chrome-Tests, zusätzlich manueller Browser-Durchlauf
+- **Übungsanleitung:** [`30-webmcp/02-webshop-webmcp/EXERCISE.md`](../30-webmcp/02-webshop-webmcp/EXERCISE.md)
 
-<!-- Starter und Abnahme: ../30-webmcp/02-webshop-webmcp/EXERCISE.md.
-Node-Tests mit Testdoubles ersetzen die native Browser-Prüfung nicht.
-Tool-Konsole und native Tests benötigen keinen Modellaufruf. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Node-Tests mit Testdoubles ersetzen die native Browser-Prüfung nicht.</li>
+<li>Tool-Konsole und native Tests benötigen keinen Modellaufruf.</li>
+</ul>
+</details>
 
 ---
 
@@ -429,9 +596,14 @@ Tool-Konsole und native Tests benötigen keinen Modellaufruf. -->
 | Darstellung | Shop und Chat-Widgets | Host, optional eingebettete Apps | Bestehende Shop-Seite |
 | Modellzugang | App-Provider-Key | Host bzw. Benutzer | Browser-Agent bzw. Benutzer |
 
-<!-- 16:50–17:00 · Auswertung und Fragen.
-Modellzugang beschreibt die Zuständigkeit, nicht ein bestimmtes Bezahlmodell.
-Grundlage: WORKSHOP.md, Patterns für die gemeinsame Auswertung. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>16:50–17:00 · Auswertung und Fragen.</li>
+<li>Modellzugang beschreibt die Zuständigkeit, nicht ein bestimmtes Bezahlmodell.</li>
+<li>Grundlage: <a href="WORKSHOP.md"><code>WORKSHOP.md</code></a>, Patterns für die gemeinsame Auswertung.</li>
+</ul>
+</details>
 
 ---
 
@@ -453,6 +625,10 @@ Grundlage: WORKSHOP.md, Patterns für die gemeinsame Auswertung. -->
 - **Ausblick:** Echte Authentifizierung, dauerhafte Datenspeicherung und Betriebsgrenzen
 - **Vertiefung:** Tasks für lange Abläufe und Distribution an Benutzer
 
-<!-- Übungen: EXERCISES.md. Hintergrund: teil-1-theorie--ki-in-der-app.md,
-teil-2-theorie--app-in-der-ki.md und teil-3-theorie--webmcp.md.
-Offene Abnahmen festhalten. Eine gezeigte Musterlösung ersetzt die eigene Prüfung nicht. -->
+<details>
+<summary>Speaker Notes</summary>
+<ul>
+<li>Übungen: <a href="EXERCISES.md"><code>EXERCISES.md</code></a>. Hintergrund: <a href="teil-1-theorie--ki-in-der-app.md"><code>teil-1-theorie--ki-in-der-app.md</code></a>, <a href="teil-2-theorie--app-in-der-ki.md"><code>teil-2-theorie--app-in-der-ki.md</code></a> und <a href="teil-3-theorie--webmcp.md"><code>teil-3-theorie--webmcp.md</code></a>.</li>
+<li>Offene Abnahmen festhalten. Eine gezeigte Musterlösung ersetzt die eigene Prüfung nicht.</li>
+</ul>
+</details>

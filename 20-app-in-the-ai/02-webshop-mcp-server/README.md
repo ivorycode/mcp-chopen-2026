@@ -57,6 +57,11 @@ npm run inspector      # MCP Inspector als Web-UI, nutzt die lokale inspector.js
 npm run start:stdio    # dieselben Tools über stdio, in einem eigenen Prozess
 ```
 
+Die `inspector.json` enthält zwei Ziele: **webshop-local** für deinen Server auf
+`http://localhost:3041/mcp` und **webshop-remote** für die öffentliche Demo
+<https://mcp-webshop-demo.fly.dev/mcp>. So vergleichst du im Inspector direkt deinen noch
+leeren Server mit einem fertig implementierten.
+
 Weil ein externer Assistent das Session-Cookie des Browsers nicht hat, nennt er das Konto
 als Tool-Argument `loginId`. Später bindest du den Server zusätzlich in Claude Code und
 ChatGPT ein.

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="620" viewBox="0 0 1440 620" role="img" aria-labelledby="title desc">
+  <title id="title">Architektur des Chatbots im Webshop</title>
+  <desc id="desc">Der Browser sendet Nachrichten und das Session-Cookie an die Chat-Route des App-Servers. Der Server hält den Provider-Key und steuert mit dem Vercel AI SDK die Modellaufrufe und die Tool-Schleife. Das Sprachmodell beim Anbieter liefert Text oder Tool-Aufrufe. Die Tools laufen auf dem App-Server und verwenden die vorhandene Shop-Logik mit dem gewählten Demo-Konto. Der Browser erhält Text, Tool-Resultate und Freigabeanfragen als UI-Stream.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .heading { font-size: 28px; font-weight: 700; }
+      .body { font-size: 23px; }
+      .label { font-size: 21px; fill: #475569; }
+      .line { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+      .app { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="620" fill="#fff"/>
+  <rect x="530" y="58" width="430" height="494" rx="20" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+
+  <text x="185" y="103" text-anchor="middle" class="heading">Browser</text>
+  <text x="745" y="103" text-anchor="middle" class="heading">App-Server</text>
+  <text x="1275" y="103" text-anchor="middle" class="heading">Modellanbieter</text>
+
+  <rect x="40" y="160" width="290" height="170" rx="16" class="app"/>
+  <text x="185" y="206" text-anchor="middle" class="heading">Chat-Oberfläche</text>
+  <text x="185" y="250" text-anchor="middle" class="body">Text und Widgets</text>
+  <text x="185" y="292" text-anchor="middle" class="body">Demo-Konto im Cookie</text>
+
+  <path d="M 330 210 H 560" class="line"/>
+  <text x="445" y="163" text-anchor="middle" class="label">Nachrichten</text>
+  <text x="445" y="191" text-anchor="middle" class="label">+ Session-Cookie</text>
+  <path d="M 560 294 H 330" class="line"/>
+  <text x="445" y="279" text-anchor="middle" class="label">UI-Stream</text>
+
+  <rect x="560" y="160" width="370" height="170" rx="16" class="app"/>
+  <text x="745" y="202" text-anchor="middle" class="heading">Chat-Route /api/chat</text>
+  <text x="745" y="244" text-anchor="middle" class="body">Vercel AI SDK + Tool-Schleife</text>
+  <text x="745" y="287" text-anchor="middle" class="body">Provider-Key + Konto aus Session</text>
+
+  <path d="M 930 210 H 1150" class="line"/>
+  <text x="1040" y="163" text-anchor="middle" class="label">Prompt, Verlauf</text>
+  <text x="1040" y="191" text-anchor="middle" class="label">+ Tool-Definitionen</text>
+  <path d="M 1150 294 H 930" class="line"/>
+  <text x="1040" y="279" text-anchor="middle" class="label">Text / Tool-Aufruf</text>
+
+  <rect x="1150" y="160" width="250" height="170" rx="16" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="1275" y="212" text-anchor="middle" class="heading">Sprachmodell</text>
+  <text x="1275" y="256" text-anchor="middle" class="body">Erzeugt Antworten</text>
+  <text x="1275" y="292" text-anchor="middle" class="body">und Aufrufwünsche</text>
+
+  <path d="M 745 335 V 425" class="line" marker-start="url(#arrow)"/>
+  <text x="770" y="374" class="label">Tool-Aufruf</text>
+  <text x="770" y="403" class="label">und Resultat</text>
+
+  <rect x="560" y="430" width="370" height="96" rx="16" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+  <text x="745" y="470" text-anchor="middle" class="heading">Vorhandene Shop-Logik</text>
+  <text x="745" y="508" text-anchor="middle" class="body">Suche, Warenkorb, Checkout</text>
+
+  <text x="720" y="597" text-anchor="middle" class="body">Der API-Key und die Tool-Ausführung bleiben auf dem App-Server.</text>
+</svg>

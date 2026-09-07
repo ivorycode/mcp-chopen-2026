@@ -24,9 +24,22 @@ Weitere Befehle dieses Projekts:
 npm run client       # SDK-Client: Tools auflisten, add, confirm-demo, Resource, Prompt
 npm run curl         # rohe HTTP-Requests mit Pflicht-Headern und _meta-Envelope
 npm run inspector    # MCP Inspector (Web-UI), Konfiguration in inspector.json
-npm run start:stdio  # stdio-Variante (für Host-Konfigurationen)
+npm run start:stdio  # stdio-Variante (für Host-Konfigurationen, siehe Bonus am Ende)
 npm test             # öffentlicher MCP-Smoke-Test
 ```
+
+Die beiden ersten Befehle zeigen denselben Server aus zwei Blickwinkeln:
+
+- `npm run client` startet den SDK-Client `src/client.ts` gegen den laufenden
+  Server und spielt alle Bausteine einmal durch: Tools auflisten, `add` aufrufen,
+  die Rückfrage von `confirm-demo` automatisch bestätigen, die Resource
+  `hello://about` lesen, den Prompt `greet` holen. Header, Versionsaushandlung und
+  die zweite Runde der Rückfrage erledigt das SDK; du siehst nur das Ergebnis.
+- `npm run curl` schickt vergleichbare Aufrufe als rohe HTTP-Requests
+  (`scripts/curl-demo.sh`) und gibt jeden Request komplett aus: Methode, URL,
+  Header und JSON-RPC-Body. So siehst du das Protokoll ohne SDK, inklusive der
+  Pflicht-Header, der zwei Runden von `confirm-demo` als getrennte Requests und
+  eines Fehlerfalls. Gegen eine andere Adresse: `npm run curl -- <URL>`.
 
 Führe in einem zweiten Terminal im selben Verzeichnis den vorbereiteten SDK-Client aus:
 
@@ -174,11 +187,20 @@ Bei HTTP 403 prüfe den Host-Header-Schalter im ngrok-Befehl; bei 404 den Pfad
 `/mcp`; bei Verbindungsfehlern den laufenden Server, den Tunnel und den Port.
 
 Falls kein passender Host-Zugang verfügbar ist, prüfe die öffentliche URL mit dem
-Skript oben und halte die Host-Prüfung als offen fest.
+Skript oben und halte die Host-Prüfung als offen fest. Ohne Claude- oder
+ChatGPT-Abo kannst du den Host-Test stattdessen mit Goose durchführen, siehe den
+Bonus-Abschnitt am Ende dieser Übung; dafür brauchst du weder ein Abo noch ngrok.
 
 Für den ersten Host-Test eignet sich `add`. `confirm-demo`, Resources und Prompts
 hängen zusätzlich von den MCP-Fähigkeiten des Hosts ab; die vollständige Demo
 kannst du mit `npm run client` beziehungsweise dem MCP Inspector durchspielen.
+
+> **Warnung:** `confirm-demo` funktioniert in Claude Desktop derzeit nicht. Der
+> Server beantwortet Runde 1 sofort mit `input_required`; der Host zeigt dazu
+> aber keinen Rückfrage-Dialog an, sodass Runde 2 ausbleibt und der Tool-Aufruf
+> nach rund 180 Sekunden in ein Timeout läuft. Das ist kein Server-Fehler.
+> Demonstriere MRTR stattdessen mit `npm run client`, `npm run curl` oder im
+> MCP Inspector.
 
 ## 5. Abnahme
 
@@ -210,5 +232,125 @@ Bewusst nicht enthalten:
 Lies den Callback von `confirm-demo` in `src/server.ts` und den Rückfrage-Handler in `src/client.ts`. Der vorbereitete Client bestätigt automatisch mit `confirm: true`. Ändere diesen Wert testweise auf `false` und führe `npm run client` erneut aus.
 
 **Prüfung:** `executed` wechselt von `true` auf `false`. Setze deine Änderung danach zurück. Mit `npm run curl` kannst du die beiden Runden der Rückfrage und die HTTP-Header als einzelne Requests nachvollziehen.
+
+## Bonus · Lokal ohne Tunnel: stdio in Claude Code
+
+Schritt 4 verbindet den Server über die Cloud der Anbieter, deshalb der ngrok-Tunnel.
+Mit dem stdio-Transport geht es lokal: Der Host startet den Serverprozess selbst
+und spricht über stdin/stdout. Kein Port, kein Tunnel, keine öffentliche Adresse.
+`src/stdio.ts` verwendet dieselbe Factory `buildServer()` wie die HTTP-Variante.
+
+1. Registriere den Server in Claude Code. Der Pfad muss absolut sein, weil der
+   Host den Prozess in seinem eigenen Arbeitsverzeichnis startet:
+
+   ```bash
+   cd 20-app-in-the-ai/01-hello-mcp   # vom Repository-Wurzelverzeichnis aus
+   claude mcp add hello-stdio -- node "$PWD/src/stdio.ts"
+   claude mcp list
+   ```
+
+2. Starte `claude` im selben Verzeichnis und prüfe mit `/mcp`, dass `hello-stdio`
+   verbunden ist. Der Server aus Schritt 1 muss dafür **nicht** laufen.
+
+3. Sende denselben Testprompt wie in Abschnitt 4.4:
+
+   > Verwende das Tool `add` des Servers `hello-stdio` mit `a = 20` und `b = 22`.
+
+4. Rufe anschliessend `confirm-demo` mit einer beliebigen Aktion auf. Die Rückfrage
+   aus Runde 1 erscheint als Bestätigungsdialog im Host; erst deine Antwort löst
+   Runde 2 aus.
+
+5. Entferne die Registrierung nach der Übung:
+
+   ```bash
+   claude mcp remove hello-stdio
+   ```
+
+**Prüfung:** `/mcp` listet `hello-stdio` mit den Tools `add` und `confirm-demo`.
+Der Tool-Aufruf liefert `{"sum":42}`, obwohl weder `npm run dev` noch ngrok läuft.
+
+`npm run start:stdio` direkt im Terminal aufzurufen ist dagegen wenig sinnvoll:
+Der Prozess wartet stumm auf JSON-RPC-Nachrichten auf stdin. Die Startmeldung
+erscheint auf stderr, weil stdout beim stdio-Transport ausschliesslich dem
+Protokoll gehört. Für einen Vergleich beider Transporte ohne Host verbindet sich
+der MCP Inspector über den bereits vorbereiteten Eintrag `hello-mcp-stdio` in
+`inspector.json`: gleiche Tools, gleiche Resultate, anderer Transport.
+
+Achte darauf, dass jeder stdio-Start ein eigener Prozess mit eigenem Zustand ist.
+Beim Hello-Server fällt das nicht auf, weil er zustandslos ist; ab
+[Übung 2](../02-webshop-mcp-server/EXERCISE.md) hat ein stdio-Prozess einen
+anderen Warenkorb als der Browser.
+
+## Bonus · Ohne Claude- oder ChatGPT-Abo: Hello MCP in Goose
+
+[Goose](https://goose-docs.ai) ist ein quelloffener KI-Agent von Block, der MCP
+nativ spricht. Er läuft lokal auf deinem Rechner und erreicht darum
+`http://localhost:3040/mcp` direkt: kein Abo, kein ngrok-Tunnel, keine
+öffentliche Adresse. Einen LLM-Zugang brauchst du trotzdem — dafür genügt der
+Provider-Key aus [Schritt 3 des Setups](../../README_SETUP.md); Google Gemini
+bietet ein kostenloses Kontingent.
+
+1. Installiere Goose, zum Beispiel per Homebrew:
+
+   ```bash
+   brew install block-goose-cli     # CLI
+   brew install --cask block-goose  # optional: Desktop-App
+   ```
+
+2. Hinterlege deinen Provider: `goose configure` → **Configure Providers** →
+   Provider wählen und den API-Key aus dem Setup-Check eintragen.
+
+3. Binde den laufenden HTTP-Server als Extension ein. Der Server aus Schritt 1
+   muss dafür laufen (`npm run dev`).
+
+   ```bash
+   goose configure
+   # → Add Extension
+   # → Remote Extension (Streamable HTTP)
+   # Name: hello-mcp   URI: http://localhost:3040/mcp   Timeout: 300
+   ```
+
+   In `~/.config/goose/config.yaml` sieht der Eintrag danach so aus:
+
+   ```yaml
+   extensions:
+     hello-mcp:
+       name: hello-mcp
+       type: streamable_http
+       uri: http://localhost:3040/mcp
+       enabled: true
+       timeout: 300
+   ```
+
+   Ohne dauerhafte Konfiguration geht es auch für eine einzelne Sitzung:
+
+   ```bash
+   goose session --with-streamable-http-extension "http://localhost:3040/mcp"
+   ```
+
+   Alternativ die stdio-Variante ohne laufenden HTTP-Server, mit absolutem Pfad:
+
+   ```bash
+   goose session --with-extension "node $PWD/src/stdio.ts"
+   ```
+
+   In der Desktop-App führt der Weg über **Sidebar → Extensions → Add custom
+   extension**.
+
+4. Prüfe mit `goose info -v`, dass die Extension geladen ist, starte mit
+   `goose session` eine Sitzung und sende denselben Testprompt wie in
+   Abschnitt 4.4:
+
+   > Verwende das Tool `add` des Servers `hello-mcp` mit `a = 20` und `b = 22`.
+
+**Prüfung:** Goose zeigt den Tool-Aufruf mit `a = 20` und `b = 22` und das
+Ergebnis `{"sum":42}`. Auch hier gilt: Eine blosse Textantwort mit 42 belegt die
+Verbindung nicht.
+
+`confirm-demo` ist auch in Goose keine verlässliche Demo. Verbindet sich der
+Client als 2025-era-Host, lehnt der Server die Rückfrage mit einer Fehlermeldung
+ab, weil das zustandslose Per-Request-Serving keine Server-zu-Client-Anfragen
+zustellen kann. Für MRTR bleiben `npm run client`, `npm run curl` und der
+MCP Inspector.
 
 Weiter geht es mit [Übung 2 · Webshop über MCP bedienen](../02-webshop-mcp-server/EXERCISE.md).

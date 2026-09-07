@@ -4,6 +4,11 @@
       "type": "http",
       "url": "http://localhost:3041/mcp",
       "protocolEra": "modern"
+    },
+    "webshop-remote": {
+      "type": "http",
+      "url": "https://mcp-webshop-demo.fly.dev/mcp",
+      "protocolEra": "modern"
     }
   }
 }

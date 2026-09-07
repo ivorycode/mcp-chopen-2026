@@ -10,6 +10,7 @@ Diese Schritte vor dem Workshop ausführen. Zeitbedarf: etwa 15 Minuten. Der [Se
 - Chrome oder Edge in aktueller Version (für Teil 3, WebMCP; siehe [Theorieunterlagen](00-course-material/teil-3-theorie--webmcp.md))
 - Für Teil 2: Claude Desktop oder ChatGPT Desktop installieren und anmelden – siehe [Schritt 4](#4-ki-assistent-installieren-mit-account)
 - Für Teil 2 ausserdem: eine **Subscription bei Claude oder ChatGPT** (z. B. Claude Pro oder ChatGPT Plus). Das Einbinden eigener MCP-Server über Custom Connectors bzw. den Developer Mode ist in den kostenlosen Plänen nicht verfügbar. Diese Subscription ist unabhängig vom API-Zugang aus Schritt 3 und ersetzt ihn nicht.
+- Für die Übungen mit öffentlich erreichbaren MCP-Servern: **ngrok installieren und einen Account erstellen. Der Gratis-Account genügt für den Workshop** – siehe [Schritt 5](#5-ngrok-einrichten-gratis-account-genügt).
 
 ## 2. Repository einrichten
 
@@ -47,3 +48,18 @@ Installiere vor dem Workshop mindestens eines dieser Programme und melde dich da
 - **ChatGPT Desktop:** Lade die App über [ChatGPT Download](https://chatgpt.com/download/) herunter, installiere und öffne sie und melde dich mit deinem OpenAI-Konto an.
 
 In Teil 2 verwenden wir einen KI-Assistenten als MCP-Client. Die Verbindung zum Workshop-MCP-Server richten wir gemeinsam ein. Der Zugang und die Abrechnung des gewählten Assistenten sind unabhängig vom API-Key aus Schritt 3; verfügbare MCP-Funktionen hängen vom Client und Account ab. Der Setup-Check prüft die Installation dieser Programme nicht automatisch.
+
+## 5. ngrok einrichten (Gratis-Account genügt)
+
+In mehreren Übungen verwenden wir ngrok, um einen lokalen MCP-Server über eine öffentliche HTTPS-Adresse erreichbar zu machen. ngrok benötigt dafür einen **verifizierten Account und einen Authtoken**. Der **Gratis-Account (Free Plan) genügt für die Workshop-Übungen**; ein kostenpflichtiges ngrok-Abo ist nicht nötig. Siehe die offiziellen Hinweise zur [Account-Pflicht](https://ngrok.com/docs/errors/err_ngrok_4018) und zum [Free Plan](https://ngrok.com/docs/pricing-limits/free-plan-limits).
+
+1. Erstelle einen [kostenlosen ngrok-Account](https://dashboard.ngrok.com/signup) und verifiziere ihn gemäss den Anweisungen bei der Registrierung.
+2. Installiere ngrok für dein Betriebssystem über [ngrok Download](https://ngrok.com/download).
+3. Kopiere deinen [Authtoken aus dem ngrok-Dashboard](https://dashboard.ngrok.com/get-started/your-authtoken) und hinterlege ihn einmalig lokal:
+
+   ```bash
+   ngrok config add-authtoken "DEIN_NGROK_AUTHTOKEN"
+   ngrok version
+   ```
+
+Den Tunnel starten wir in der jeweiligen Übung mit dem dort angegebenen Port. Der Setup-Check prüft ngrok nicht automatisch.

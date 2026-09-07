@@ -237,7 +237,10 @@ Beim ersten Aufruf lädt `npx` das Paket nach; bestätige eine eventuelle Instal
 1. Öffne die vom Inspector ausgegebene Browser-URL. Die mitgelieferte
    [inspector.json](inspector.json) enthält **webshop-local** mit Transport
    **HTTP / Streamable HTTP**, URL `http://localhost:3044/mcp` und
-   `protocolEra: "modern"`. Wähle diesen Server und verbinde dich.
+   `protocolEra: "modern"`. Wähle diesen Server und verbinde dich. Der Eintrag
+   **webshop-remote** zeigt auf die öffentliche Demo
+   <https://mcp-webshop-demo.fly.dev/mcp> und erlaubt dieselben Prüfungen ohne
+   lokal laufenden Shop.
 2. Liste im Bereich **Resources** die Resources auf (`resources/list`).
    Erwartet werden `ui://webshop/search-ui.html` und
    `ui://webshop/cart-ui.html`. Lies beide mit `resources/read`: Sie liefern

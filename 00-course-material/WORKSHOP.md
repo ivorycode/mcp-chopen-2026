@@ -108,6 +108,7 @@ Bei knapper Zeit zuerst den fünfminütigen TanStack-Vergleich, zusätzliche Pro
 10-ai-in-the-app/
   00-tool-calling-demo-solution/    Wetter-Tool-Livedemo; Anleitung in DEMO.md
   01-tool-calling-basics/           Shop-CLI und Mini-Übung: Artikeldetails
+  01-tool-calling-basics-solution/  Musterlösung der Mini-Übung; Szenarien in README.md
   02-chatbot-vercel-ai-sdk/         Übung 1: Warenkorb-Tools und Chat-UI
   02-chatbot-vercel-ai-sdk-solution/
   03-chatbot-tanstack-ai/           Alternative zu Übung 1
@@ -127,7 +128,7 @@ README_SETUP.md                    Allgemeine Vorbereitung
 
 Die Hauptkette lautet **Vercel-Chatbot → MCP-Server → MCP Apps → WebMCP**, jeweils mit Starter und Musterlösung. Alle acht Projekte sind eigenständig installierbare Kopien; die letzte Musterlösung enthält den vollständigen Funktionsumfang. TanStack ist ein paralleles Starter-/Lösungspaar. Setup-Check, Katalogdienst, Wetter-Livedemo, Shop-CLI, Hello MCP und Hello WebMCP stehen ausserhalb der Hauptkette.
 
-Die Übungs-Starter dokumentieren in ihrer `README.md` knapp, wie das Projekt gestartet wird; die Aufgabe selbst steht in der `EXERCISE.md`. Die Wetter-Livedemo verwendet `DEMO.md`. Bei den beiden Mini-Übungen `01-tool-calling-basics` und `01-hello-mcp` enthält die `EXERCISE.md` auch Start und Konfiguration; sie haben deshalb keine eigene `README.md`. Die vier Hauptübungen und die TanStack-Alternative haben jeweils eine Lösung im benachbarten `-solution`-Ordner. Hello MCP und Tool Calling Basics werden direkt im bereits lauffähigen Beispiel erkundet bzw. erweitert.
+Die Übungs-Starter dokumentieren in ihrer `README.md` knapp, wie das Projekt gestartet wird; die Aufgabe selbst steht in der `EXERCISE.md`. Die Wetter-Livedemo verwendet `DEMO.md`. Bei den beiden Mini-Übungen `01-tool-calling-basics` und `01-hello-mcp` enthält die `EXERCISE.md` auch Start und Konfiguration; sie haben deshalb keine eigene `README.md`. Die vier Hauptübungen und die TanStack-Alternative haben jeweils eine Lösung im benachbarten `-solution`-Ordner. Hello MCP und Tool Calling Basics werden direkt im bereits lauffähigen Beispiel erkundet bzw. erweitert; für Tool Calling Basics liegt der fertige Stand zusätzlich in `01-tool-calling-basics-solution/`, dessen `README.md` die Szenarien erklärt.
 
 Die Webshop-Stufen verwenden die Demo-Konten `restaurant-baeren`, `hotel-alpenblick` und `kantine-campus`. Ein Browser-Cookie hält die Kontoauswahl; der Shop hält Warenkörbe und Bestellungen im Prozessspeicher. Checkout macht die aktive `cartId` zur `orderId`; das nächste Hinzufügen erzeugt einen neuen Warenkorb. Ein Shop-Neustart setzt den Zustand zurück. Zwischen Starter und Musterlösung werden keine Daten geteilt.
 

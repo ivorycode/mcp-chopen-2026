@@ -235,6 +235,10 @@ Installationsfrage. Öffne die im Terminal ausgegebene Browser-URL.
    Die Datei [inspector.json](inspector.json) enthält Transport **HTTP**,
    URL `http://localhost:3043/mcp` und `protocolEra: "modern"`.
    Bei manueller Einrichtung wähle HTTP / Streamable HTTP, nicht SSE oder stdio.
+   Der zweite Eintrag **webshop-remote** zeigt auf die öffentliche Demo
+   <https://mcp-webshop-demo.fly.dev/mcp>. Dort sind die MCP-Apps dieser Übung
+   bereits fertig; verbinde ihn zum Vergleich, wenn du sehen willst, wie die
+   Resources und `_meta.ui`-Angaben am Ende aussehen sollen.
 2. Öffne **Tools** und liste die Tools auf (`tools/list`). Du solltest alle
    sechs oben genannten Tools sehen.
 3. Wähle `searchProducts`. Trage die folgenden Argumente im Formular oder

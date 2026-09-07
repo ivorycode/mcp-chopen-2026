@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="660" viewBox="0 0 1440 660" role="img" aria-labelledby="title desc">
+  <title id="title">Checkout erst nach Freigabe durch den Benutzer</title>
+  <desc id="desc">Das Modell fordert das Tool checkout an. Das SDK auf dem App-Server führt das Tool zunächst nicht aus, sondern sendet eine Freigabeanfrage an den Browser. Der Benutzer stimmt zu oder lehnt ab. Der Browser sendet diese Entscheidung an den App-Server. Bei Ablehnung führt das SDK checkout nicht aus: Der Warenkorb bleibt erhalten, es entsteht keine Bestellung. Bei Zustimmung führt der Server den Checkout aus und liefert bei Erfolg eine Bestell-ID. Die Freigabe betrifft den vom Modell angeforderten Checkout.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .heading { font-size: 28px; font-weight: 700; }
+      .body { font-size: 23px; }
+      .label { font-size: 21px; fill: #475569; }
+      .line { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1440" height="660" fill="#fff"/>
+  <text x="200" y="57" text-anchor="middle" class="heading">Modell</text>
+  <text x="720" y="57" text-anchor="middle" class="heading">App-Server / SDK</text>
+  <text x="1230" y="57" text-anchor="middle" class="heading">Benutzer im Browser</text>
+
+  <rect x="40" y="105" width="320" height="155" rx="16" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="151" text-anchor="middle" class="heading">checkout anfordern</text>
+  <text x="200" y="196" text-anchor="middle" class="body">Modell liefert</text>
+  <text x="200" y="230" text-anchor="middle" class="body">einen Tool-Aufruf</text>
+
+  <path d="M 360 182 H 545" class="line"/>
+  <text x="452" y="160" text-anchor="middle" class="label">Tool-Aufruf</text>
+
+  <rect x="545" y="105" width="350" height="155" rx="16" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="720" y="151" text-anchor="middle" class="heading">Freigabe anfordern</text>
+  <text x="720" y="196" text-anchor="middle" class="body">Tool noch nicht ausführen</text>
+  <text x="720" y="230" text-anchor="middle" class="body">Auf Entscheidung warten</text>
+
+  <path d="M 895 182 H 1060" class="line"/>
+  <text x="978" y="160" text-anchor="middle" class="label">Anfrage</text>
+
+  <rect x="1060" y="105" width="340" height="155" rx="16" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="1230" y="151" text-anchor="middle" class="heading">Bestellung freigeben?</text>
+  <text x="1230" y="196" text-anchor="middle" class="body">Workspace: Buttons</text>
+  <text x="1230" y="230" text-anchor="middle" class="body">Assistant: Ja / Nein</text>
+
+  <path d="M 1230 260 V 345 H 440 V 420" class="line"/>
+  <path d="M 1230 345 V 420" class="line"/>
+  <circle cx="1230" cy="345" r="5" fill="#475569"/>
+  <text x="810" y="321" text-anchor="middle" class="body">Browser sendet Entscheidung an den App-Server</text>
+  <text x="465" y="391" class="heading" style="fill:#b45309">Nein</text>
+  <text x="1255" y="391" class="heading" style="fill:#0f766e">Ja</text>
+
+  <rect x="240" y="420" width="400" height="170" rx="16" fill="#fffbeb" stroke="#b45309" stroke-width="2"/>
+  <text x="440" y="465" text-anchor="middle" class="heading">Checkout nicht ausführen</text>
+  <text x="440" y="510" text-anchor="middle" class="body">Warenkorb bleibt erhalten</text>
+  <text x="440" y="549" text-anchor="middle" class="body">Keine Bestellung</text>
+
+  <rect x="1030" y="420" width="370" height="170" rx="16" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+  <text x="1215" y="465" text-anchor="middle" class="heading">Checkout ausführen</text>
+  <text x="1215" y="510" text-anchor="middle" class="body">Server ruft Shop-Handler auf</text>
+  <text x="1215" y="549" text-anchor="middle" class="body">Bei Erfolg: Bestell-ID anzeigen</text>
+
+  <text x="720" y="636" text-anchor="middle" class="body">Die Anwendung erzwingt die Freigabe vor der Ausführung des Modell-Checkouts.</text>
+</svg>

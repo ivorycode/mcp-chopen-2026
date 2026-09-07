@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="900" viewBox="0 0 1760 900" role="img" aria-labelledby="title desc">
+  <title id="title">WebMCP im Webshop: Tools leben in der Seite, das Modell bleibt im Browser-Agent</title>
+  <desc id="desc">Im Browser laufen zwei getrennte Dinge: ein Browser-Agent mit eigenem Sprachmodell, der getTools() und executeTool() kennt, und die geöffnete Webshop-Seite, in der WebMCP-Tools über document.modelContext.registerTool() registriert sind. Der Aufruf vom Agent zu den Tools bleibt vollständig im Browser, kein Netzwerk nötig. Erst wenn ein Tool ausgeführt wird, verlässt ein echter Netzwerk-Request den Browser: ein fetch() mit Session-Cookie an die Web-API unseres App-Servers, der an denselben Shop-Handler und Zustand wie die normale Web-UI delegiert. Das Tool-Resultat löst im Browser das Event shop:cart-changed aus, worauf die Shop-UI ohne Reload neu lädt.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-local" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-net" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#dc2626"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .title { font-size: 28px; font-weight: 700; }
+      .heading { font-size: 25px; font-weight: 700; }
+      .body { font-size: 21px; }
+      .label { font-size: 19px; fill: #475569; }
+      .note { font-size: 18px; fill: #0f766e; }
+      .code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 18px; fill: #475569; }
+      .badge-text { font-size: 17px; font-weight: 700; fill: #fff; }
+      .line { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+      .line-local { fill: none; stroke: #94a3b8; stroke-width: 3; stroke-dasharray: 3 7; marker-end: url(#arrow-local); }
+      .line-net { fill: none; stroke: #dc2626; stroke-width: 4; marker-end: url(#arrow-net); }
+      .loop-net { fill: none; stroke: #dc2626; stroke-width: 4; marker-end: url(#arrow-net); }
+      .app { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+      .model { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 2; }
+      .server { fill: #f0fdfa; stroke: #0f766e; stroke-width: 2; }
+      .store { fill: #ecfdf5; stroke: #059669; stroke-width: 2; }
+      .boundary { fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 10 8; }
+      .badge-net { fill: #dc2626; }
+      .legend { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1760" height="900" fill="#fff"/>
+  <text x="880" y="42" text-anchor="middle" class="title">WebMCP im Webshop</text>
+  <text x="880" y="72" text-anchor="middle" class="label">Nur der Aufruf gegen unseren Server ist ein echter Netzwerk-Request</text>
+
+  <!-- Browser: Agent + geöffnete Seite -->
+  <rect x="60" y="110" width="780" height="610" rx="20" class="boundary"/>
+  <text x="80" y="138" class="label">Browser (ein Tab + Browser-Agent)</text>
+
+  <rect x="90" y="170" width="720" height="150" rx="16" class="model"/>
+  <text x="450" y="208" text-anchor="middle" class="heading">Browser-Agent</text>
+  <text x="450" y="240" text-anchor="middle" class="body">Sprachmodell im Browser oder in einer Extension</text>
+  <text x="450" y="266" text-anchor="middle" class="label">kennt getTools() und executeTool()</text>
+  <text x="450" y="292" text-anchor="middle" class="label">unser Server liefert keinen Modellzugang dafür</text>
+
+  <path d="M 450 320 V 380" class="line-local"/>
+  <text x="450" y="354" text-anchor="middle" class="label">getTools() / executeTool() · kein Netzwerk</text>
+
+  <rect x="90" y="380" width="720" height="310" rx="16" class="app"/>
+  <text x="450" y="414" text-anchor="middle" class="heading">Geöffnete Webshop-Seite (Tab)</text>
+  <text x="450" y="440" text-anchor="middle" class="label">Tools und UI laufen im selben Dokument</text>
+
+  <rect x="120" y="460" width="660" height="110" rx="14" class="server"/>
+  <text x="450" y="490" text-anchor="middle" class="heading">WebMCP-Tools</text>
+  <text x="450" y="518" text-anchor="middle" class="code">document.modelContext.registerTool(...)</text>
+  <text x="450" y="544" text-anchor="middle" class="label">gleiche Tool-Contracts wie Chat &amp; MCP · 6 Tools</text>
+
+  <path d="M 450 570 V 600" class="line-local"/>
+  <text x="474" y="590" class="note">Event</text>
+
+  <rect x="120" y="600" width="660" height="90" rx="14" class="store"/>
+  <text x="450" y="630" text-anchor="middle" class="heading">Shop-UI</text>
+  <text x="450" y="660" text-anchor="middle" class="body">reagiert auf shop:cart-changed, lädt Daten neu</text>
+
+  <!-- Netzwerk-Aufruf: einziger echter Request, Ziel ist der Web-API-Block -->
+  <path d="M 780 515 H 915 V 255 H 1080" class="line-net"/>
+  <path d="M 1080 285 H 950 V 545 H 780" class="loop-net"/>
+
+  <rect x="805" y="380" width="240" height="36" rx="18" class="badge-net"/>
+  <text x="925" y="404" text-anchor="middle" class="badge-text">Netzwerk-Aufruf</text>
+
+  <text x="915" y="300" text-anchor="middle" class="label">fetch() · Session-Cookie</text>
+  <text x="950" y="470" text-anchor="middle" class="note">JSON-Resultat</text>
+
+  <!-- Unser App-Server -->
+  <rect x="1050" y="110" width="650" height="440" rx="20" class="boundary"/>
+  <text x="1070" y="138" class="label">Unser App-Server</text>
+
+  <rect x="1080" y="170" width="590" height="170" rx="16" class="app"/>
+  <text x="1375" y="206" text-anchor="middle" class="heading">Web-API</text>
+  <text x="1375" y="236" text-anchor="middle" class="code">/api/search · /api/cart · /api/checkout</text>
+  <text x="1375" y="264" text-anchor="middle" class="label">gleiche Endpunkte wie Chat- und MCP-Tools</text>
+  <text x="1375" y="290" text-anchor="middle" class="label">prüft Session-Cookie statt loginId</text>
+
+  <path d="M 1375 340 V 390" class="line"/>
+
+  <rect x="1080" y="390" width="590" height="140" rx="16" class="store"/>
+  <text x="1375" y="426" text-anchor="middle" class="heading">Shop-Handler + Zustand</text>
+  <text x="1375" y="456" text-anchor="middle" class="body">In-Memory Warenkorb und Bestellungen</text>
+  <text x="1375" y="482" text-anchor="middle" class="label">gemeinsam mit MCP-Server &amp; normaler Web-UI</text>
+
+  <!-- Merksatz -->
+  <rect x="60" y="760" width="1640" height="100" rx="14" class="legend"/>
+  <text x="90" y="798" class="label"><tspan style="font-weight:700;fill:#172033">Merke:</tspan> Das Sprachmodell steckt im Browser-Agent, die Tools stecken in der geöffneten Seite — beides ausserhalb unseres Servers.</text>
+  <text x="90" y="828" class="label">Nur der Aufruf der Tools gegen unsere Web-API ist ein echter Netzwerk-Request; der Aufruf vom Agent zu den Tools bleibt im Browser.</text>
+</svg>

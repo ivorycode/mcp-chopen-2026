@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
+  <title id="title">Schichten hinter einem Tool-Aufruf in der CLI-Demo</title>
+  <desc id="desc">Die Anwendung sendet Auftrag, Verlauf und Tool-Definitionen an das Sprachmodell beim Anbieter. Das Modell antwortet mit einem Aufruf-Wunsch aus toolName und input. Die Tool-Schleife des SDK prüft die Argumente gegen das Zod-Schema und ruft execute der Tool-Definition auf, diese ergänzt den Warenkorb-Handle und delegiert an den Tool-Handler. Der Handler nutzt den In-Memory-Warenkorb im eigenen Prozess und den Katalog-Zugriff, der die Mock-Katalog-API auf localhost:4040 als eigenen Prozess über HTTP anfragt. Das Resultat läuft als Rückgabewert durch alle Schichten zurück, die Schleife hängt es an den Verlauf und ruft das Modell erneut auf.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <marker id="loop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#0f766e"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .title { font-size: 32px; font-weight: 700; }
+      .heading { font-size: 29px; font-weight: 700; }
+      .body { font-size: 25px; }
+      .label { font-size: 22px; fill: #475569; }
+      .note { font-size: 20px; fill: #0f766e; }
+      .code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 21px; }
+      .line { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+      .loop { fill: none; stroke: #0f766e; stroke-width: 3; marker-end: url(#loop-arrow); }
+      .app { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+      .model { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 2; }
+      .store { fill: #f0fdfa; stroke: #0f766e; stroke-width: 2; }
+      .external { fill: #f8fafc; stroke: #64748b; stroke-width: 2; }
+      .boundary { fill: none; stroke: #94a3b8; stroke-width: 2; stroke-dasharray: 10 8; }
+      .legend { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1100" fill="#fff"/>
+  <text x="800" y="46" text-anchor="middle" class="title">Was hinter einem Tool-Aufruf passiert</text>
+  <text x="800" y="80" text-anchor="middle" class="label">Auftrag: «Finde Vollmilch und lege zwei Stück in den Warenkorb»</text>
+
+  <!-- Sprachmodell (beim Anbieter, ausserhalb unseres Prozesses) -->
+  <rect x="380" y="110" width="760" height="112" rx="16" class="model"/>
+  <text x="760" y="152" text-anchor="middle" class="heading">Sprachmodell beim Anbieter</text>
+  <text x="760" y="184" text-anchor="middle" class="body">antwortet mit einem Aufruf-Wunsch: toolName + input</text>
+  <text x="760" y="211" text-anchor="middle" class="label">führt keinen Code aus · Modellwahl in src/provider.ts</text>
+
+  <!-- Prozessgrenze der Demo -->
+  <rect x="300" y="300" width="950" height="675" rx="20" class="boundary"/>
+  <text x="320" y="328" class="label">Node.js-Prozess der Demo · npm start</text>
+
+  <!-- 1: Hinweg zum Modell -->
+  <path d="M 520 340 V 222" class="line"/>
+  <text x="504" y="252" text-anchor="end" class="label">1 · Auftrag, Verlauf und</text>
+  <text x="504" y="280" text-anchor="end" class="label">Tool-Definitionen senden</text>
+
+  <!-- 2: Rückweg mit Tool-Aufruf -->
+  <path d="M 1000 222 V 340" class="line"/>
+  <text x="1016" y="252" class="label">2 · Modellantwort mit</text>
+  <text x="1016" y="280" class="code">searchProducts({ term: "Vollmilch" })</text>
+
+  <!-- Tool-Schleife -->
+  <rect x="380" y="340" width="760" height="112" rx="16" class="app"/>
+  <text x="760" y="382" text-anchor="middle" class="heading">Tool-Schleife (Vercel AI SDK)</text>
+  <text x="760" y="414" text-anchor="middle" class="body">generateText prüft die Argumente, ruft execute auf</text>
+  <text x="760" y="441" text-anchor="middle" class="label">src/agent-loop.ts · stopWhen: isStepCount(8)</text>
+
+  <path d="M 760 452 V 512" class="line"/>
+  <text x="780" y="490" class="label">3 · execute(input) aufrufen</text>
+
+  <!-- Tool-Definition -->
+  <rect x="380" y="512" width="760" height="112" rx="16" class="app"/>
+  <text x="760" y="554" text-anchor="middle" class="heading">Tool-Definition</text>
+  <text x="760" y="586" text-anchor="middle" class="body">Beschreibung + Zod-Schema, execute ergänzt die cartId</text>
+  <text x="760" y="613" text-anchor="middle" class="label">src/shop-tools.ts · Texte und Schemas aus core/contracts.ts</text>
+
+  <path d="M 760 624 V 684" class="line"/>
+  <text x="780" y="662" class="label">4 · Handler mit cartId aufrufen</text>
+
+  <!-- Handler -->
+  <rect x="380" y="684" width="760" height="112" rx="16" class="app"/>
+  <text x="760" y="726" text-anchor="middle" class="heading">Tool-Handler · Geschäftslogik</text>
+  <text x="760" y="758" text-anchor="middle" class="body">searchProducts · getCart · addToCart</text>
+  <text x="760" y="785" text-anchor="middle" class="label">src/core/handlers.ts · Fehler als Resultat { ok: false, error }</text>
+
+  <!-- 5: Resultat zurück durch die Schichten -->
+  <path d="M 380 740 H 345 V 396 H 380" class="loop"/>
+  <text x="284" y="546" text-anchor="end" class="note">5 · Resultat kommt als</text>
+  <text x="284" y="574" text-anchor="end" class="note">Rückgabewert zurück durch</text>
+  <text x="284" y="602" text-anchor="end" class="note">alle Schichten zur Schleife</text>
+  <text x="284" y="630" text-anchor="end" class="note">und an den Verlauf → 1</text>
+
+  <!-- Datenzugriff -->
+  <path d="M 620 796 V 816 H 565 V 838" class="line"/>
+  <path d="M 900 796 V 816 H 1015 V 838" class="line"/>
+
+  <rect x="400" y="838" width="330" height="118" rx="16" class="store"/>
+  <text x="565" y="880" text-anchor="middle" class="heading">Warenkorb</text>
+  <text x="565" y="912" text-anchor="middle" class="code">Map&lt;cartId, Positionen&gt;</text>
+  <text x="565" y="940" text-anchor="middle" class="label">Prozessspeicher · core/cart.ts</text>
+
+  <rect x="850" y="838" width="330" height="118" rx="16" class="app"/>
+  <text x="1015" y="880" text-anchor="middle" class="heading">Katalog-Zugriff</text>
+  <text x="1015" y="912" text-anchor="middle" class="code">fetch(...)</text>
+  <text x="1015" y="940" text-anchor="middle" class="label">src/core/catalog.ts</text>
+
+  <path d="M 1180 897 H 1290" class="line"/>
+  <text x="1235" y="882" text-anchor="middle" class="label">HTTP</text>
+
+  <rect x="1290" y="838" width="290" height="118" rx="16" class="external"/>
+  <text x="1435" y="880" text-anchor="middle" class="heading">Katalog-API</text>
+  <text x="1435" y="912" text-anchor="middle" class="code">localhost:4040</text>
+  <text x="1435" y="940" text-anchor="middle" class="label">/search · /detail</text>
+  <text x="1435" y="972" text-anchor="middle" class="label">eigener Prozess · 01-mock-api</text>
+
+  <!-- Legende: welcher Handler nutzt welche Quelle -->
+  <rect x="60" y="1000" width="1480" height="88" rx="14" class="legend"/>
+  <text x="90" y="1030" class="label"><tspan class="code">searchProducts</tspan> → nur Katalog-API</text>
+  <text x="530" y="1030" class="label"><tspan class="code">getCart</tspan> → nur Warenkorb im Speicher</text>
+  <text x="990" y="1030" class="label"><tspan class="code">addToCart</tspan> → erst Katalog-API, dann Warenkorb</text>
+  <text x="90" y="1066" class="label"><tspan style="font-weight:700;fill:#172033">Merke:</tspan> Das Modell führt nie selbst aus. Es liefert nur <tspan class="code">toolName</tspan> + <tspan class="code">input</tspan>; ausgeführt wird in der Anwendung.</text>
+</svg>

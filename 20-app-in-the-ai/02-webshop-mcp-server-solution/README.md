@@ -185,6 +185,12 @@ HTTP** und öffne **Tools**. Du solltest genau die sechs Tools aus der Tabelle
 sehen. Ein Aufruf von `/mcp` in der Browser-Adresszeile ersetzt diesen Test nicht;
 der Endpunkt erwartet MCP-Protokollnachrichten.
 
+Zusätzlich ist **webshop-remote** mit der öffentlichen Demo
+<https://mcp-webshop-demo.fly.dev/mcp> eingetragen. Damit lassen sich dieselben
+Aufrufe ohne lokal laufenden Shop ausprobieren. Die Demo ist die Abschlusslösung
+des Workshops und zeigt deshalb auch die MCP-App-Resources der nächsten Übung;
+ihr Zustand liegt im Speicher einer gemeinsam genutzten Instanz.
+
 ### Suche, Hinzufügen und Browser-Vergleich
 
 Rufe `searchProducts` mit diesen Argumenten auf:

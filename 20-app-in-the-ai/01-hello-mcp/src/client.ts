@@ -14,7 +14,7 @@ const client = new Client(
   },
 )
 
-// Handler für Rückfragen (MRTR): Der SDK-Client ruft ihn auf, wenn ein Tool
+// Handler für Rückfragen (MRTR - Multi Round-Trip Requests): Der SDK-Client ruft ihn auf, wenn ein Tool
 // `input_required` liefert, und wiederholt den Aufruf mit der Antwort.
 client.setRequestHandler('elicitation/create', async (req) => {
   console.log(`[elicitation] ${req.params.message} -> accept { confirm: true }`)

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="520" viewBox="0 0 1500 520" role="img" aria-labelledby="title desc">
+  <title id="title">Ein MCP-Server stellt Tools, Resources und Prompts bereit</title>
+  <desc id="desc">Ein MCP-Server, also unsere Anwendung, stellt drei Arten von Fähigkeiten bereit: Tools als aufrufbare Funktionen wie add(a, b) oder searchProducts, Resources als abrufbare Inhalte wie hello://about, und Prompts als wiederverwendbare Nachrichtenvorlagen wie greet. Tools sind für den Webshop-Workshop hervorgehoben, da Suche, Warenkorb und Bestellungen darüber laufen; Resources und Prompts sind vorhanden, stehen aber nicht im Mittelpunkt.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-focus" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#2563eb"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .heading { font-size: 26px; font-weight: 700; }
+      .heading-muted { font-size: 24px; font-weight: 700; fill: #475569; }
+      .body { font-size: 21px; }
+      .body-muted { font-size: 21px; fill: #64748b; }
+      .code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 19px; fill: #475569; }
+      .badge-text { font-size: 17px; font-weight: 700; fill: #fff; }
+      .line { fill: none; stroke: #94a3b8; stroke-width: 3; marker-end: url(#arrow); }
+      .line-focus { fill: none; stroke: #2563eb; stroke-width: 4; marker-end: url(#arrow-focus); }
+      .server { fill: #f0fdfa; stroke: #0f766e; stroke-width: 2; }
+      .focus { fill: #eff6ff; stroke: #2563eb; stroke-width: 4; }
+      .muted { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 2; }
+      .badge { fill: #2563eb; }
+    </style>
+  </defs>
+
+  <rect width="1500" height="520" fill="#fff"/>
+
+  <!-- MCP-Server -->
+  <rect x="60" y="140" width="320" height="220" rx="20" class="server"/>
+  <text x="220" y="212" text-anchor="middle" class="heading">MCP-Server</text>
+  <text x="220" y="248" text-anchor="middle" class="body">unsere Anwendung</text>
+  <text x="220" y="280" text-anchor="middle" class="code">stellt Tools, Resources</text>
+  <text x="220" y="306" text-anchor="middle" class="code">und Prompts bereit</text>
+
+  <!-- Tools: im Fokus des Workshops -->
+  <path d="M 380 220 L 460 115" class="line-focus"/>
+  <rect x="460" y="40" width="900" height="150" rx="18" class="focus"/>
+  <rect x="1170" y="56" width="168" height="36" rx="18" class="badge"/>
+  <text x="1254" y="80" text-anchor="middle" class="badge-text">Fokus im Workshop</text>
+  <text x="910" y="94" text-anchor="middle" class="heading">Tools</text>
+  <text x="910" y="128" text-anchor="middle" class="body">Aufrufbare Funktionen</text>
+  <text x="910" y="158" text-anchor="middle" class="code">z. B. add(a, b) · searchProducts(...)</text>
+
+  <!-- Resources -->
+  <path d="M 380 250 L 460 275" class="line"/>
+  <rect x="460" y="220" width="900" height="110" rx="16" class="muted"/>
+  <text x="910" y="258" text-anchor="middle" class="heading-muted">Resources</text>
+  <text x="910" y="288" text-anchor="middle" class="body-muted">Abrufbare Inhalte</text>
+  <text x="910" y="314" text-anchor="middle" class="code">z. B. hello://about</text>
+
+  <!-- Prompts -->
+  <path d="M 380 280 L 460 405" class="line"/>
+  <rect x="460" y="350" width="900" height="110" rx="16" class="muted"/>
+  <text x="910" y="388" text-anchor="middle" class="heading-muted">Prompts</text>
+  <text x="910" y="418" text-anchor="middle" class="body-muted">Wiederverwendbare Nachrichtenvorlagen</text>
+  <text x="910" y="444" text-anchor="middle" class="code">z. B. greet</text>
+</svg>

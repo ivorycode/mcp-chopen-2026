@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="700" viewBox="0 0 1440 700" role="img" aria-labelledby="title desc">
+  <title id="title">Tool-Resultate im Chat und Aktualisierung des Shops</title>
+  <desc id="desc">Der App-Server ändert den Warenkorb durch addToCart und sendet das Resultat im UI-Stream. Im Browser erstellt useChat daraus einen Tool-Part mit dem Zustand output-available. Im Workspace rendert die Anwendung das Resultat als Warenkorb-Widget. Ein separater Effect löst über dispatchCartChanged das Event shop:cart-changed aus. Aktive Shop-Ansichten im selben Browserfenster laden darauf ihre Daten über die Web-API neu. Das Event selbst enthält keine Warenkorbdaten.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .heading { font-size: 28px; font-weight: 700; }
+      .body { font-size: 23px; }
+      .label { font-size: 21px; fill: #475569; }
+      .code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 21px; }
+      .line { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+      .app { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+      .ui { fill: #f0fdfa; stroke: #0f766e; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="700" fill="#fff"/>
+  <rect x="550" y="40" width="850" height="610" rx="20" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="190" y="90" text-anchor="middle" class="heading">App-Server</text>
+  <text x="740" y="90" text-anchor="middle" class="heading">Browser / Chat-UI</text>
+
+  <rect x="40" y="230" width="300" height="150" rx="16" class="app"/>
+  <text x="190" y="274" text-anchor="middle" class="heading">addToCart</text>
+  <text x="190" y="317" text-anchor="middle" class="body">Ändert den Warenkorb</text>
+  <text x="190" y="355" text-anchor="middle" class="body">Liefert das Tool-Resultat</text>
+
+  <path d="M 340 300 H 585" class="line"/>
+  <text x="462" y="242" text-anchor="middle" class="label">UI-Stream</text>
+  <text x="462" y="271" text-anchor="middle" class="label">mit Tool-Resultat</text>
+
+  <rect x="585" y="230" width="315" height="150" rx="16" class="app"/>
+  <text x="742" y="274" text-anchor="middle" class="heading">useChat</text>
+  <text x="742" y="315" text-anchor="middle" class="body">Nachricht mit Tool-Part</text>
+  <text x="742" y="352" text-anchor="middle" class="code">output-available</text>
+
+  <path d="M 900 270 H 950 V 175 H 1020" class="line"/>
+  <rect x="1020" y="105" width="350" height="140" rx="16" class="ui"/>
+  <text x="1195" y="146" text-anchor="middle" class="heading">Workspace /chat</text>
+  <text x="1195" y="187" text-anchor="middle" class="body">Tool-Part als Widget rendern</text>
+  <text x="1195" y="222" text-anchor="middle" class="code">Daten aus part.output</text>
+
+  <path d="M 900 340 H 950 V 400 H 1020" class="line"/>
+  <rect x="1020" y="345" width="350" height="110" rx="16" class="app"/>
+  <text x="1195" y="379" text-anchor="middle" class="body">Effect meldet Änderung</text>
+  <text x="1195" y="422" text-anchor="middle" class="code">dispatchCartChanged()</text>
+
+  <path d="M 1195 455 V 535" class="line"/>
+  <text x="1170" y="502" text-anchor="end" class="code">shop:cart-changed</text>
+
+  <rect x="1020" y="535" width="350" height="90" rx="16" class="ui"/>
+  <text x="1195" y="571" text-anchor="middle" class="heading">Shop-Ansichten</text>
+  <text x="1195" y="606" text-anchor="middle" class="body">Daten über Web-API neu laden</text>
+
+  <text x="742" y="485" text-anchor="middle" class="label">Ein Resultat, zwei Reaktionen:</text>
+  <text x="742" y="521" text-anchor="middle" class="body">Widget anzeigen</text>
+  <text x="742" y="556" text-anchor="middle" class="body">und Shop aktualisieren</text>
+
+  <text x="720" y="684" text-anchor="middle" class="label">Das Shop-Event meldet die Änderung. Die aktuellen Daten kommen aus der Web-API.</text>
+</svg>
