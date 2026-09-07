@@ -1,11 +1,14 @@
 # Live-Demo: Tool Calling mit dem Vercel AI SDK
 
 Absolut minimales Demo für den Einstieg in Teil 1: ein Modell-Aufruf, ein Tool,
-und die Tool-Calling-Schleife wird sichtbar. Dauer live ca. 5–10 Minuten.
+und die Tool-Calling-Schleife wird sichtbar. Dauer live ca. 5–10 Minuten, mit
+dem optionalen Streaming-Schritt am Ende ca. 3 Minuten mehr.
 
 Dieses Verzeichnis enthält den fertigen Endstand (`src/index.ts`) als Referenz
 und Fallback, falls beim Live-Coding etwas schiefgeht. Die folgende Anleitung
-baut das Demo Schritt für Schritt from scratch auf.
+baut das Demo Schritt für Schritt from scratch auf. Der optionale Schritt 5
+ergänzt Streaming und bringt dafür ein zweites, eigenständiges Skript mit
+(`src/streaming.ts`).
 
 ## Voraussetzungen
 
@@ -197,8 +200,11 @@ Tool-Ergebnisse. `logs/` ist im Workshop-Repository durch `.gitignore` ausgeschl
 Bei einer Kopie ausserhalb des Repositories `logs/` ebenfalls ignorieren.
 
 Der schlanke Logger ist für diese `generateText`-Demo ausgelegt: Er liest die
-Response zum Logging vollständig, bevor das SDK sie erhält. Für eine spätere
-Live-Streaming-Demo müsste das Mitschreiben parallel zum Stream erfolgen.
+Response zum Logging vollständig, bevor das SDK sie erhält. Bei einer
+gestreamten Antwort käme der Text deshalb erst am Stück beim SDK an und der
+Streaming-Effekt wäre unsichtbar; für einen Mitschnitt parallel zum Stream
+müsste der Logger die Antwort durchreichen statt abzuwarten. Schritt 5 läuft
+darum bewusst ohne Wire-Log.
 
 ## Schritt 4: Varianten (nach Zeit und Lust)
 
@@ -224,6 +230,158 @@ Modell ruft das Tool *nicht* auf. Es entscheidet selbst, wann Tools nötig sind.
 Tool-Definition und Schleife sind providerunabhängig, jeder Anbieter bringt
 nur seinen Adapter (`@ai-sdk/google`, `@ai-sdk/openai`, `@ai-sdk/anthropic`).
 
+## Schritt 5: Streaming (optional, ca. 3 Minuten)
+
+Bis hierher kommt die Antwort am Stück. In Teil 1b streamt der Chatbot — dieser
+Schritt zeigt vorab, was das heisst. Er ist zweigeteilt: erst Streaming allein,
+dann Streaming zusammen mit der Tool-Schleife. Bei Zeitdruck ganz streichbar,
+oder nur 5a zeigen.
+
+### 5a: Streaming pur
+
+Ein eigenes Skript, ohne Tool und ohne Wire-Log, damit nur eine Sache sichtbar
+ist. Live in `src/streaming.ts` tippen:
+
+```ts
+import { streamText } from 'ai'
+import { createModel } from './provider.ts'
+
+const model = createModel({ logWire: false })
+
+const start = Date.now()
+let firstChunk: number | undefined
+
+const result = streamText({
+  model,
+  prompt: 'Erkläre in drei Absätzen, warum Streaming für Chat-Oberflächen wichtig ist.',
+})
+
+for await (const text of result.textStream) {
+  firstChunk ??= Date.now() - start
+  process.stdout.write(text)
+}
+
+console.log(`\n\n(erster Chunk nach ${firstChunk} ms, fertig nach ${((Date.now() - start) / 1000).toFixed(1)} s)`)
+```
+
+Ausführen: `npm run start:streaming` (im nachgebauten Projekt ohne
+Skripteintrag: `node src/streaming.ts`).
+
+**Zeigen:**
+
+- Der Text erscheint stückweise statt auf einen Schlag.
+- `streamText` gibt sofort zurück; erst die `for await`-Schleife zieht die
+  Antwort. `generateText` hätte hier gewartet, bis alles da ist.
+- Die beiden Zeiten am Ende sind der eigentliche Punkt: Der Nutzer sieht die
+  ersten Wörter nach Bruchteilen der Gesamtdauer. Streaming beschleunigt nichts,
+  es verteilt die Wartezeit anders.
+- `createModel({ logWire: false })` schaltet den Mitschnitt aus Schritt 3a
+  bewusst ab — er würde die Antwort puffern und den Effekt zunichtemachen. Ohne
+  diese Angabe würde ein `AI_LOG_WIRE=1` aus der `.env` hier durchschlagen.
+
+Der fertige Endstand liest den Prompt zusätzlich von der Kommandozeile und gibt
+Provider, Modell und Tokenverbrauch aus:
+
+```bash
+npm run start:streaming -- "Erkläre den Unterschied zwischen HTTP und WebSockets."
+```
+
+Kommt der Text in wenigen grossen Brocken statt flüssig, liegt das am Provider,
+nicht am Code. Ein längerer Prompt hilft; alternativ zerlegt
+`experimental_transform: smoothStream({ chunking: 'word' })` (Import
+`smoothStream` aus `ai`) den Strom wortweise nach. Das ist dann allerdings ein
+nachträglich erzeugter Effekt und sollte als solcher benannt werden.
+
+### 5b: Streaming und die Tool-Schleife
+
+Zurück in `src/index.ts`: `generateText` durch `streamText` ersetzen und statt
+`textStream` den vollständigen Ereignisstrom `result.stream` auswerten. Die
+Tool-Definition, `tools` und `stopWhen` bleiben unverändert.
+
+```ts
+import { isStepCount, streamText, tool } from 'ai'
+
+const result = streamText({
+  model,
+  prompt,
+  tools: { getWeather },
+  stopWhen: isStepCount(4),
+})
+
+for await (const part of result.stream) {
+  switch (part.type) {
+    case 'tool-input-start':
+      process.stdout.write(`\n  [Argumente] ${part.toolName}(`)
+      break
+    case 'tool-input-delta':
+      process.stdout.write(part.delta)
+      break
+    case 'tool-input-end':
+      process.stdout.write(')\n')
+      break
+    case 'tool-result':
+      console.log(`  [Resultat] ${JSON.stringify(part.output)}`)
+      break
+    case 'text-delta':
+      process.stdout.write(part.text)
+      break
+    case 'finish-step':
+      console.log('\n  --- Schritt zu Ende ---')
+      break
+  }
+}
+
+console.log(`\n(${(await result.steps).length} Schritte)`)
+```
+
+Ausführen, am besten mit mehreren Orten:
+
+```bash
+npm start -- "Wie ist das Wetter in Bern, Zürich und Genf? Wo ist es am wärmsten?"
+```
+
+```text
+  [Argumente] getWeather({"city":"Bern"})
+  [Argumente] getWeather({"city":"Zürich"})
+  [Argumente] getWeather({"city":"Genf"})
+  [Tool] getWeather("Bern")
+  [Tool] getWeather("Zürich")
+  [Tool] getWeather("Genf")
+  [Resultat] {"city":"Bern","temperature":11,"condition":"sonnig"}
+  …
+  --- Schritt zu Ende ---
+Das aktuelle Wetter in den drei Städten ist wie folgt: …
+```
+
+**Zeigen:**
+
+- Nicht nur Text wird gestreamt: Auch die **Argumente des Tool-Aufrufs** kommen
+  als eigene Ereignisse an (`tool-input-start` / `tool-input-delta`), bevor der
+  Aufruf vollständig ist. Bei kurzen Argumenten wie `{"city":"Bern"}` steckt
+  meist alles in einem einzigen Delta — die Zerlegung wird erst bei längeren
+  Argumenten sichtbar. Das Ereignis ist trotzdem der Punkt: Eine Oberfläche kann
+  „sucht gerade …" anzeigen, bevor der Aufruf fertig formuliert ist.
+- Das Modell fordert alle drei Aufrufe in **einem** Schritt an; das SDK führt sie
+  aus, sammelt die Resultate und stellt dann erst die zweite Frage. Am Ende
+  stehen deshalb nur zwei Schritte.
+- Die Reihenfolge im Terminal ist die Tool-Schleife von Schritt 3, nur live:
+  Argumente → `[Tool]`-Log aus `execute` → `[Resultat]` → Schrittende →
+  Antworttext.
+- Der erste Schritt liefert gar keinen Text, nur die Tool-Aufrufe. Der
+  Textstrom setzt erst im zweiten Schritt ein.
+- Bei `streamText` sind `steps`, `text` und `usage` Promises: Sie stehen erst
+  fest, wenn der Strom durchgelaufen ist. Deshalb `await result.steps`.
+- Die Schleife selbst hat sich nicht geändert. Streaming betrifft die Ausgabe,
+  nicht die Orchestrierung.
+
+Diese Zustände tauchen in Teil 1b wieder auf: `useChat` reicht dieselben
+Ereignisse als typisierte Parts an die Oberfläche, `tool-input-delta` entspricht
+dort dem Zustand `input-streaming` des Such-Widgets.
+
+Der Endstand in `src/index.ts` bleibt bewusst bei `generateText` — sonst wäre
+der Wire-Log aus Schritt 3a nicht mehr sinnvoll zu zeigen. 5b ist also eine
+Live-Änderung; der Fallback für das Streaming-Thema ist `src/streaming.ts`.
+
 ## Anschluss an den Workshop
 
 - Der fertige Endstand hier liest den Prompt zusätzlich von der Kommandozeile
@@ -233,7 +391,8 @@ nur seinen Adapter (`@ai-sdk/google`, `@ai-sdk/openai`, `@ai-sdk/anthropic`).
   (Webshop), Schritt-Logging mit `onStepEnd` und eine manuell ausprogrammierte
   Schleife, die zeigt, was `generateText` intern macht.
 - `02-chatbot-vercel-ai-sdk/` hebt dasselbe Muster dann in einen streamenden
-  Chatbot im Webshop.
+  Chatbot im Webshop. Nach Schritt 5 ist dessen Streaming keine Blackbox mehr:
+  Dieselben Ereignisse erscheinen dort als typisierte Parts in der Oberfläche.
 
 ## Checks
 

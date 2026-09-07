@@ -4,7 +4,7 @@ Ein Chatbot im Webshop macht die Funktionalität der Anwendung über ein Chat-In
 
 | Schritt | Ordner | Art |
 |---|---|---|
-| Tool Calling Basics | [01-tool-calling-basics](../10-ai-in-the-app/01-tool-calling-basics/README.md) | Demo (CLI) |
+| Tool Calling Basics | [01-tool-calling-basics](../10-ai-in-the-app/01-tool-calling-basics/EXERCISE.md) | Demo (CLI) |
 | Chatbot mit Vercel AI SDK | [02-chatbot-vercel-ai-sdk](../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/README.md) · [EXERCISE](../10-ai-in-the-app/02-chatbot-vercel-ai-sdk/EXERCISE.md) · [Lösung](../10-ai-in-the-app/02-chatbot-vercel-ai-sdk-solution/README.md) | Übung |
 | Chatbot mit TanStack AI | [Starter](../10-ai-in-the-app/03-chatbot-tanstack-ai/README.md) · [EXERCISE](../10-ai-in-the-app/03-chatbot-tanstack-ai/EXERCISE.md) · [Lösung](../10-ai-in-the-app/03-chatbot-tanstack-ai-solution/README.md) | Alternative Übung / Vergleichsdemo |
 

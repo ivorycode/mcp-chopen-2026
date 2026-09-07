@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc">
+  <title id="title">Die Tool-Schleife zwischen Anwendung und Sprachmodell</title>
+  <desc id="desc">Die Anwendung sendet Prompt, Tool-Definitionen und den bisherigen Verlauf an das Sprachmodell. Fordert das Modell ein Tool an, validiert das SDK die Argumente und führt die Funktion in der Anwendung aus. Das Resultat ergänzt den Verlauf für den nächsten Modellaufruf. Ohne weiteren Tool-Aufruf gibt die Anwendung die Textantwort aus. Ein Schritt-Limit kann die Schleife früher beenden.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#475569"/>
+    </marker>
+    <marker id="loop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#0f766e"/>
+    </marker>
+    <style>
+      text { font-family: Inter, Arial, Helvetica, sans-serif; fill: #172033; }
+      .heading { font-size: 29px; font-weight: 700; }
+      .body { font-size: 25px; }
+      .label { font-size: 22px; fill: #475569; }
+      .code { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 21px; }
+      .line { fill: none; stroke: #475569; stroke-width: 3; marker-end: url(#arrow); }
+      .loop { fill: none; stroke: #0f766e; stroke-width: 3; marker-end: url(#loop-arrow); }
+      .app { fill: #eff6ff; stroke: #2563eb; stroke-width: 2; }
+      .model { fill: #f5f3ff; stroke: #7c3aed; stroke-width: 2; }
+      .result { fill: #f0fdfa; stroke: #0f766e; stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="760" fill="#fff"/>
+  <text x="720" y="54" text-anchor="middle" class="heading">Auftrag: «Wie ist das Wetter in Bern?»</text>
+
+  <rect x="100" y="120" width="440" height="112" rx="16" class="app"/>
+  <text x="320" y="162" text-anchor="middle" class="heading">Modellaufruf vorbereiten</text>
+  <text x="320" y="202" text-anchor="middle" class="body">Auftrag + bisheriger Verlauf</text>
+
+  <path d="M 540 176 H 900" class="line"/>
+  <text x="720" y="133" text-anchor="middle" class="label">1 · Prompt + Tools</text>
+  <text x="720" y="159" text-anchor="middle" class="label">+ Verlauf senden</text>
+
+  <rect x="900" y="120" width="420" height="112" rx="16" class="model"/>
+  <text x="1110" y="164" text-anchor="middle" class="heading">Anfrage verarbeiten</text>
+  <text x="1110" y="202" text-anchor="middle" class="body">Sprachmodell beim Anbieter</text>
+
+  <path d="M 1110 232 V 326" class="line"/>
+  <text x="1132" y="286" class="label">Antwort</text>
+
+  <rect x="900" y="326" width="420" height="112" rx="16" class="app"/>
+  <text x="1110" y="373" text-anchor="middle" class="heading">Tool-Aufruf enthalten?</text>
+  <text x="1110" y="410" text-anchor="middle" class="body">SDK prüft die Modellantwort</text>
+
+  <path d="M 900 382 H 540" class="line"/>
+  <text x="720" y="304" text-anchor="middle" class="label">2 · Ja: Tool anfordern</text>
+  <text x="720" y="336" text-anchor="middle" class="code">getWeather</text>
+  <text x="720" y="362" text-anchor="middle" class="code">({ city: "Bern" })</text>
+
+  <rect x="100" y="326" width="440" height="112" rx="16" class="app"/>
+  <text x="320" y="370" text-anchor="middle" class="heading">Tool ausführen</text>
+  <text x="320" y="410" text-anchor="middle" class="body">Eingabe prüfen, execute aufrufen</text>
+
+  <path d="M 320 438 V 540" class="loop"/>
+  <text x="345" y="485" class="label">3 · Tool-Resultat</text>
+
+  <rect x="100" y="540" width="440" height="112" rx="16" class="result"/>
+  <text x="320" y="583" text-anchor="middle" class="heading">Verlauf ergänzen</text>
+  <text x="320" y="623" text-anchor="middle" class="body">Aufruf und Resultat hinzufügen</text>
+
+  <path d="M 100 596 H 46 V 176 H 100" class="loop"/>
+  <text x="320" y="696" text-anchor="middle" class="label" style="fill:#0f766e">4 · Erneuter Modellaufruf mit Resultat</text>
+
+  <path d="M 1110 438 V 540" class="line"/>
+  <text x="1132" y="480" class="label">Nein: Textantwort</text>
+  <text x="1132" y="509" class="label">an die Anwendung</text>
+
+  <rect x="900" y="540" width="420" height="112" rx="16" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+  <text x="1110" y="583" text-anchor="middle" class="heading">Antwort ausgeben</text>
+  <text x="1110" y="623" text-anchor="middle" class="body">Anwendung zeigt result.text</text>
+  <text x="1110" y="696" text-anchor="middle" class="label">Oder früherer Stopp durch Schritt-Limit</text>
+</svg>

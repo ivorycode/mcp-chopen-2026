@@ -1,45 +1,65 @@
-# Webshop mit MCP (Starter)
+# Webshop als MCP-Server · Starter zu Teil 2b
 
-Eigenständig installierbare Workshop-Stufe auf der aktuellen Shop-Grundlage der Abschlusslösung. Web-UI, Web-API, Kontoauswahl, Suche, Warenkorb und Bestellhistorie verwenden denselben Prozessspeicher.
+Der Webshop aus Teil 1 – inklusive eingebautem Chatbot – ist hier fertig. Neu in diesem
+Teil: Der Shop öffnet seine Funktionen für **externe** KI-Assistenten. Statt selbst ein
+Modell aufzurufen, bietet er einen MCP-Server an, und Claude, ChatGPT oder der MCP
+Inspector rufen dessen Tools auf. Dieser Ordner ist eine eigenständige Kopie – du musst
+nichts aus der vorherigen Übung übernehmen.
+
+Dieses README bringt nur das Projekt zum Laufen. **Die Aufgabe steht in
+[EXERCISE.md](EXERCISE.md).**
+
+## 1. Katalog starten (Terminal 1)
+
+Die Artikeldaten kommen von einem lokalen Mock-Katalog. Er läuft als eigener Prozess und
+wird von allen Workshop-Projekten geteilt.
 
 ```bash
+cd 01-mock-api        # vom Repository-Wurzelverzeichnis aus
+npm ci
+npm start
+```
+
+Prüfen: `curl http://localhost:4040/health` → `{"ok":true,"articles":94,…}`
+
+## 2. Webshop starten (Terminal 2)
+
+```bash
+cd 20-app-in-the-ai/02-webshop-mcp-server   # vom Repository-Wurzelverzeichnis aus
 npm ci
 cp .env.example .env
 npm run dev
 ```
 
-Öffne http://localhost:3041. Starte den Katalog separat in `../../01-mock-api` auf Port 4040. Provider und Key aus der lokalen `.env` werden nur für echte Chat-Anfragen benötigt. Gültige Demo-Konten: `restaurant-baeren`, `hotel-alpenblick`, `kantine-campus`.
+In der `.env` zeigt `MOCK_CATALOG_ORIGIN` bereits auf den Katalog aus Schritt 1. Einen
+AI-Provider-Key brauchst du **für diese Übung nicht** – nur, falls du zusätzlich den
+eingebauten Chatbot aus Teil 1 ausprobieren willst.
 
-## Chat und Struktur
+Prüfen: `curl http://localhost:3041/health` → `{"status":"ok"}`
 
-- **Assistant** im Shop: Text-Chat, Tool-Aufrufe steuern die sichtbare Oberfläche; Modell-Checkout mit Ja/Nein-Freigabe.
-- **Workspace** unter `/chat`: Produkte, Warenkorb und Bestellungen als Widgets. Produkt- und Bestellbuttons verwenden direkt die Web-API und dokumentieren die Aktion im Verlauf. Ein vom Modell angeforderter Checkout verwendet eine Freigabe-UI.
-- `src/lib/shop.server.ts`, `shop-state.ts`, `tools/handlers.server.ts`: gemeinsame accountgebundene Domain und Tools.
-- `src/components/shop`: Shop-Komponenten; `src/features/chat`: Vercel AI SDK mit typisierten Tool-Parts und `toolApproval`.
+Dann http://localhost:3041 öffnen und oben ein Demo-Konto wählen: `restaurant-baeren`,
+`hotel-alpenblick` oder `kantine-campus`. Andere Benutzernamen gibt es nicht.
 
-## Übung
+## 3. Was du hier machst
 
-Die sechs MCP-Callbacks sind Stubs. Schemas, Account-Prüfung und beide Transporte sind vorbereitet. Die Pfade sind relativ zu `src/`. Details und Schrittprüfungen: [EXERCISE.md](EXERCISE.md). Die oben beschriebenen Ziel-Funktionen sind im Starter nur soweit implementiert, wie die Übung es vorsieht.
+Der Shop im Browser funktioniert bereits vollständig – du verwendest ihn als Gegenprobe:
+Was ein Assistent über MCP tut, muss nach einem Reload auch im Browser sichtbar sein.
 
-## MCP
+Der MCP-Server unter `http://localhost:3041/mcp` meldet schon sechs Tools, aber alle
+Callbacks sind leer und antworten mit «Noch nicht implementiert». Diese sechs Callbacks
+füllst du in der Übung aus: suchen, Warenkorb lesen, hinzufügen, entfernen, bestellen und
+Bestellungen anzeigen.
 
-`/mcp` und `npm run start:stdio` verwenden `src/features/mcp/server.ts`. `npm run inspector` nutzt die lokale `inspector.json`. Externe Agenten nennen das Konto als `loginId`. HTTP teilt den Zustand mit dem Browser; stdio läuft in einem eigenen Prozess mit eigenem Zustand. Der öffentliche Guard ist lokal standardmässig deaktiviert.
-
-Der Chat-Guard übergibt standardmässig höchstens die letzten 15 Nachrichten an das Modell (`CHAT_MAX_MESSAGES`). Führende Nachrichten vor der ersten Nutzernachricht im Ausschnitt werden zusätzlich entfernt; ohne Nutzernachricht wird die Anfrage mit HTTP 400 abgewiesen. Der sichtbare Chat-Verlauf bleibt erhalten.
-
-## Prüfen
+Aufgerufen wird von aussen, ohne eigenen Modell-Key:
 
 ```bash
-npm test
-npm run typecheck
-npm run build
-npm run test:browser
+npm run inspector      # MCP Inspector als Web-UI, nutzt die lokale inspector.json
+npm run start:stdio    # dieselben Tools über stdio, in einem eigenen Prozess
 ```
 
-Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Echte Provider, externe Hosts und native WebMCP-Registrierung werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
+Weil ein externer Assistent das Session-Cookie des Browsers nicht hat, nennt er das Konto
+als Tool-Argument `loginId`. Später bindest du den Server zusätzlich in Claude Code und
+ChatGPT ein.
 
-`npm run test:exercise` prüft die fertig ausgefüllte Übung und ist vor dem Ausfüllen absichtlich rot. Die normale Testsuite prüft das Starter-Gerüst; Details zum Abschluss stehen in `EXERCISE.md`.
-
-Nur den MCP-Server prüfen: `npm run test:mcp`. Mit einem echten LLM: `npm run test:mcp:llm`
-(Provider und API-Key erforderlich). Szenarien, Limits und Berichte stehen in
-[docs/MCP-TESTING.md](docs/MCP-TESTING.md).
+Schritte, Prüfungen und Testbefehle: [EXERCISE.md](EXERCISE.md).
+Fertige Lösung zum Vergleich: [`../02-webshop-mcp-server-solution`](../02-webshop-mcp-server-solution/README.md).

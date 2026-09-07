@@ -10,6 +10,7 @@
   "scripts": {
     "start": "node src/index.ts",
     "start:logged": "node src/index.ts --log-wire",
+    "start:streaming": "node src/streaming.ts",
     "test": "node --test src/*.test.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },

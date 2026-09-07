@@ -1,39 +1,59 @@
-# Chatbot mit TanStack AI (Starter)
+# Chatbot mit TanStack AI · Starter zu Teil 1 (Alternative)
 
-Eigenständig installierbare Workshop-Stufe auf der aktuellen Shop-Grundlage der Abschlusslösung. Web-UI, Web-API, Kontoauswahl, Suche, Warenkorb und Bestellhistorie verwenden denselben Prozessspeicher.
+Derselbe Webshop und dieselbe Aufgabe wie im Vercel-Starter, aber mit **TanStack AI**
+statt dem Vercel AI SDK: Tools werden mit `toolDefinition()` deklariert und mit `.server()`
+ausgeführt, der Chat läuft über einen offenen AG-UI-Stream, und die Freigabe vor einer
+Bestellung verwendet Interrupts. Dieser Ordner ist eine eigenständige Kopie.
+
+Bearbeite entweder diese Variante **oder** `02-chatbot-vercel-ai-sdk` – die MCP-Übungen in
+Teil 2 bauen auf der Vercel-Lösung auf.
+
+Dieses README bringt nur das Projekt zum Laufen. **Die Aufgabe steht in
+[EXERCISE.md](EXERCISE.md).**
+
+## 1. Katalog starten (Terminal 1)
+
+Die Artikeldaten kommen von einem lokalen Mock-Katalog. Er läuft als eigener Prozess und
+wird von allen Workshop-Projekten geteilt.
 
 ```bash
+cd 01-mock-api        # vom Repository-Wurzelverzeichnis aus
+npm ci
+npm start
+```
+
+Prüfen: `curl http://localhost:4040/health` → `{"ok":true,"articles":94,…}`
+
+## 2. Webshop starten (Terminal 2)
+
+```bash
+cd 10-ai-in-the-app/03-chatbot-tanstack-ai   # vom Repository-Wurzelverzeichnis aus
 npm ci
 cp .env.example .env
 npm run dev
 ```
 
-Öffne http://localhost:3033. Starte den Katalog separat in `../../01-mock-api` auf Port 4040. Provider und Key aus der lokalen `.env` werden nur für echte Chat-Anfragen benötigt. Gültige Demo-Konten: `restaurant-baeren`, `hotel-alpenblick`, `kantine-campus`.
+In der `.env` zeigt `MOCK_CATALOG_ORIGIN` bereits auf den Katalog aus Schritt 1. Für den
+Chat brauchst du zusätzlich einen **AI-Provider-Key**: genau einen Provider-Block aktiv
+lassen und den Key eintragen (siehe [Setup-Check](../../00-setup-check/README.md)).
 
-## Chat und Struktur
+Prüfen: `curl http://localhost:3033/health` → `{"status":"ok"}`
 
-- **Assistant** im Shop: Text-Chat, Tool-Aufrufe steuern die sichtbare Oberfläche; Modell-Checkout mit Ja/Nein-Freigabe.
-- **Workspace** unter `/chat`: Produkte, Warenkorb und Bestellungen als Widgets. Produkt- und Bestellbuttons verwenden direkt die Web-API und dokumentieren die Aktion im Verlauf. Ein vom Modell angeforderter Checkout verwendet eine Freigabe-UI.
-- `src/lib/shop.server.ts`, `shop-state.ts`, `tools/handlers.server.ts`: gemeinsame accountgebundene Domain und Tools.
-- `src/components/shop`: Shop-Komponenten; `src/features/chat`: TanStack AI mit AG-UI, `toolDefinition().server()` und Interrupts.
+Dann http://localhost:3033 öffnen und oben ein Demo-Konto wählen: `restaurant-baeren`,
+`hotel-alpenblick` oder `kantine-campus`. Andere Benutzernamen gibt es nicht.
 
-## Übung
+## 3. Was du hier machst
 
-Warenkorb-Callbacks in `features/chat/server/chat-route.server.ts`, Darstellung, Shop-Events und Freigabe-UI im Widget sowie `needsApproval` in `features/chat/shared/tools.ts`. Die Pfade sind relativ zu `src/`. Details und Schrittprüfungen: [EXERCISE.md](EXERCISE.md). Die oben beschriebenen Ziel-Funktionen sind im Starter nur soweit implementiert, wie die Übung es vorsieht.
+Öffne den Chat und sende «Suche Milch» – die Suche ist als Tool bereits angebunden.
+«Zeig mir meinen Warenkorb» antwortet mit «Noch nicht implementiert». Im Netzwerk-Tab
+liefert `POST /api/chat` dabei einen AG-UI-SSE-Stream.
 
-Der Chat-Guard übergibt standardmässig höchstens die letzten 15 Nachrichten an das Modell (`CHAT_MAX_MESSAGES`). Führende Nachrichten vor der ersten Nutzernachricht im Ausschnitt werden zusätzlich entfernt; ohne Nutzernachricht wird die Anfrage mit HTTP 400 abgewiesen. Der sichtbare Chat-Verlauf bleibt erhalten.
+Genau diese Lücke schliesst du in der Übung:
 
-## Prüfen
+- die Warenkorb-Tools anzeigen, hinzufügen, entfernen und bestellen,
+- ihre Darstellung im Workspace unter http://localhost:3033/chat,
+- die Aktualisierung der Shop-Oberfläche nach einem Tool-Aufruf,
+- und die Bestätigung per Interrupt, bevor das Modell eine Bestellung auslöst.
 
-```bash
-npm test
-npm run typecheck
-npm run build
-npm run test:browser
-```
-
-Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Echte Provider, externe Hosts und native WebMCP-Registrierung werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
-
-`@tanstack/openai-base` ist per npm-Override auf 0.10.3 fixiert: Diese Version unterstützt die hier verwendete `@tanstack/ai`-Version 0.48.0.
-
-TanStack AI übermittelt den Chat-Modus im AG-UI-Feld `forwardedProps.mode`. Die Route validiert ihn und verwendet wie die Hauptkette Nachrichten-, Schritt-, Token- und Zeitlimits.
+Schritte, Prüfungen und Testbefehle: [EXERCISE.md](EXERCISE.md).
+Fertige Lösung zum Vergleich: [`../03-chatbot-tanstack-ai-solution`](../03-chatbot-tanstack-ai-solution/README.md).

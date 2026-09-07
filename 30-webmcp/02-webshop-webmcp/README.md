@@ -1,79 +1,73 @@
-# Webshop mit WebMCP (Starter)
+# Webshop mit WebMCP · Starter zu Teil 3
 
-Eigenständig installierbare Workshop-Stufe auf der aktuellen Shop-Grundlage der Abschlusslösung. Web-UI, Web-API, Kontoauswahl, Suche, Warenkorb und Bestellhistorie verwenden denselben Prozessspeicher.
+Alles aus Teil 1 und 2 ist hier fertig: der Shop, der eingebaute Chatbot, der MCP-Server
+und die beiden MCP Apps. Neu in diesem Teil: Die **geöffnete Webseite selbst** bietet ihre
+Funktionen als Tools an. Ein Agent im Browser ruft sie über `document.modelContext` auf –
+im ausgewählten Demo-Konto des Tabs, ohne Server-Anbindung und ohne `loginId`-Argument.
+Dieser Ordner ist eine eigenständige Kopie.
+
+Dieses README bringt nur das Projekt zum Laufen. **Die Aufgabe steht in
+[EXERCISE.md](EXERCISE.md).**
+
+## 1. Katalog starten (Terminal 1)
+
+Die Artikeldaten kommen von einem lokalen Mock-Katalog. Er läuft als eigener Prozess und
+wird von allen Workshop-Projekten geteilt.
 
 ```bash
+cd 01-mock-api        # vom Repository-Wurzelverzeichnis aus
+npm ci
+npm start
+```
+
+Prüfen: `curl http://localhost:4040/health` → `{"ok":true,"articles":94,…}`
+
+## 2. Webshop starten (Terminal 2)
+
+```bash
+cd 30-webmcp/02-webshop-webmcp   # vom Repository-Wurzelverzeichnis aus
 npm ci
 cp .env.example .env
 npm run dev
 ```
 
-Öffne http://localhost:3051. Starte den Katalog separat in `../../01-mock-api` auf Port 4040. Provider und Key aus der lokalen `.env` werden nur für echte Chat-Anfragen benötigt. Gültige Demo-Konten: `restaurant-baeren`, `hotel-alpenblick`, `kantine-campus`.
+Einen AI-Provider-Key brauchst du **für diese Übung nicht**: Du rufst die Tools selbst auf
+und übernimmst damit die Rolle des Agenten.
 
-## Chat und Struktur
+Prüfen: `curl http://localhost:3051/health` → `{"status":"ok"}`
 
-- **Assistant** im Shop: Text-Chat, Tool-Aufrufe steuern die sichtbare Oberfläche; Modell-Checkout mit Ja/Nein-Freigabe.
-- **Workspace** unter `/chat`: Produkte, Warenkorb und Bestellungen als Widgets. Produkt- und Bestellbuttons verwenden direkt die Web-API und dokumentieren die Aktion im Verlauf. Ein vom Modell angeforderter Checkout verwendet eine Freigabe-UI.
-- `src/lib/shop.server.ts`, `shop-state.ts`, `tools/handlers.server.ts`: gemeinsame accountgebundene Domain und Tools.
-- `src/components/shop`: Shop-Komponenten; `src/features/chat`: Vercel AI SDK mit typisierten Tool-Parts und `toolApproval`.
+## 3. Chrome vorbereiten
 
-## Übung
+WebMCP ist ein Entwurf und in Chrome hinter einem Flag versteckt. Öffne
+`chrome://flags/#enable-webmcp-testing`, setze das Flag auf **Enabled** und starte Chrome
+neu. Danach http://localhost:3051 öffnen und oben ein Demo-Konto wählen:
+`restaurant-baeren`, `hotel-alpenblick` oder `kantine-campus`.
 
-Die Browser-Toolliste ist leer; Registrierung und Cleanup sind TODOs. Die gesamte vorherige MCP-App-Stufe funktioniert. Die Pfade sind relativ zu `src/`. Details und Schrittprüfungen: [EXERCISE.md](EXERCISE.md). Die oben beschriebenen Ziel-Funktionen sind im Starter nur soweit implementiert, wie die Übung es vorsieht.
+Prüfen: In der DevTools-Konsole liefert `document.modelContext` ein Objekt statt
+`undefined`. Ohne das Flag bleibt der Shop normal bedienbar, nur die Tools fehlen.
 
-## MCP
+## 4. Was du hier machst
 
-`/mcp` und `npm run start:stdio` verwenden `src/features/mcp/server.ts`. `npm run inspector` nutzt die lokale `inspector.json`. Externe Agenten nennen das Konto als `loginId`. HTTP teilt den Zustand mit dem Browser; stdio läuft in einem eigenen Prozess mit eigenem Zustand. Der öffentliche Guard ist lokal standardmässig deaktiviert.
+`await document.modelContext.getTools()` liefert im Starter eine leere Liste, und das
+eingebaute Tool-Panel unten im Shop zeigt keine Tools an. In der Übung registrierst du
+fünf Browser-Tools – suchen, Warenkorb lesen, hinzufügen, entfernen und bestellen – und
+meldest sie beim Verlassen der Seite wieder ab.
 
-## MCP Apps
+Getestet wird direkt in der DevTools-Konsole. Ein Aufruf besteht aus dem **Tool-Deskriptor**
+aus `getTools()` und der Eingabe als **JSON-String**:
 
-Search- und Cart-App liegen unter `src/features/mcp-apps`. `npm run build:apps` baut die zwei HTML-Resources. Metadaten und CSP stehen in `resource-meta.ts`, die Registrierung in `register-ui-resources.ts`.
-
-Für den lokalen Testhost zuerst den Katalog und `npm run dev` starten, dann in einem weiteren Terminal `npm run dev:mcp-host`. Öffne http://127.0.0.1:43552; der Host verbindet sich mit http://localhost:3051/mcp und nutzt Sandbox-Port 43553. Nach App-Änderungen neu bauen und die Host-App neu laden. Vor Browser-Tests den manuellen Host beenden. Das App-Starter-Gerüst kann erst nach den entsprechenden Übungsschritten Resources liefern.
-
-## WebMCP
-
-Native Browser-Tools werden in `src/features/webmcp` ergänzt. Für die manuelle Abnahme Chrome mit `chrome://flags/#enable-webmcp-testing` und Inspector-Extension verwenden. Kein Origin-Trial. Ohne API bleibt der klassische Shop bedienbar.
-
-Der Chat-Guard übergibt standardmässig höchstens die letzten 15 Nachrichten an das Modell (`CHAT_MAX_MESSAGES`). Führende Nachrichten vor der ersten Nutzernachricht im Ausschnitt werden zusätzlich entfernt; ohne Nutzernachricht wird die Anfrage mit HTTP 400 abgewiesen. Der sichtbare Chat-Verlauf bleibt erhalten.
-
-## Native WebMCP-E2E-Tests
-
-```bash
-# Falls Google Chrome noch nicht installiert ist:
-npx playwright install chrome
-npm run test:webmcp:native
-# Optional mit sichtbarem Browser:
-npm run test:webmcp:native -- --headed
+```js
+var tools = await document.modelContext.getTools()
+var search = tools.find((tool) => tool.name === 'searchProducts')
+JSON.parse(
+  await document.modelContext.executeTool(search, JSON.stringify({ term: 'Milch' })),
+)
 ```
 
-Diese separate Suite verwendet echtes Chrome mit `WebMCPTesting` und ruft
-`document.modelContext.executeTool()` auf. Vier Tests prüfen Registrierung,
-Suche, Anmeldefehler, Kontowechsel, Warenkorb, Checkout, ungültige Eingaben sowie
-die eingebaute Tool-Konsole nach einem Reload. Resultate und sichtbare
-Shop-Änderungen werden gemeinsam geprüft, ohne `modelContext` oder `fetch` zu ersetzen.
+Jeder erfolgreiche Aufruf muss zweierlei bewirken: ein strukturiertes Resultat für den
+Aufrufer **und** eine sichtbare Änderung in der Shop-Oberfläche. Zusätzlich stehen das
+eingebaute Tool-Panel, der WebMCP-Bereich der Chrome DevTools und eine Inspector-Extension
+zur Verfügung.
 
-Die Suite startet Shop und Katalog-Mock selbst auf `43556`/`43557`. Sie benötigt
-keinen Modell-Key und keine Extension. Die bisherigen Tests bleiben separat.
-Im unausgefüllten Starter ist diese Suite absichtlich rot; nach Schritt 5 sollen
-alle vier Tests erfolgreich sein.
-Voraussetzungen, Testablauf und Grenzen: [docs/WEBMCP-TESTING.md](docs/WEBMCP-TESTING.md).
-
-## Prüfen
-
-```bash
-npm test
-npm run typecheck
-npm run build
-npm run test:browser
-```
-
-Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Native WebMCP-Aufrufe prüft `npm run test:webmcp:native`; echte Provider und externe Hosts werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
-
-`npm run test:exercise` prüft die fertig ausgefüllte Übung und ist vor dem Ausfüllen absichtlich rot. Die normale Testsuite prüft das Starter-Gerüst; Details zum Abschluss stehen in `EXERCISE.md`.
-
-`npm run test:e2e:mcp-apps` prüft die fertigen MCP Apps im lokalen Host (beim App-Starter erst nach dem Ausfüllen).
-
-Nur den MCP-Server prüfen: `npm run test:mcp`. Mit einem echten LLM: `npm run test:mcp:llm`
-(Provider und API-Key erforderlich). Szenarien, Limits und Berichte stehen in
-[docs/MCP-TESTING.md](docs/MCP-TESTING.md).
+Schritte, Prüfungen und Testbefehle: [EXERCISE.md](EXERCISE.md).
+Fertige Lösung zum Vergleich: [`../02-webshop-webmcp-solution`](../02-webshop-webmcp-solution/README.md).

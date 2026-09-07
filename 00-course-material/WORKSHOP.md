@@ -35,7 +35,7 @@ Alle Übungen in Workshop-Reihenfolge mit Kurzbeschreibung: [EXERCISES.md](EXERC
 | 12:00 | Mittagspause | |
 | 13:00 | Teil 2b/2c · MCP-Server und MCP Apps | [Übung 2](../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md) · [Übung 3](../20-app-in-the-ai/03-webshop-mcp-app/EXERCISE.md) |
 | 15:40 | Teil 3 · WebMCP | [Theorieunterlagen](teil-3-theorie--webmcp.md) · [Übung 4](../30-webmcp/02-webshop-webmcp/EXERCISE.md) |
-| 16:50 | Zusammenfassung und Fragen | [Theorie-Stichworte](../slides.md) |
+| 16:50 | Zusammenfassung und Fragen | [Slides für alle Workshop-Blöcke](slides.md) |
 
 ## Didaktisches Grundmuster
 
@@ -99,6 +99,7 @@ Bei knapper Zeit zuerst den fünfminütigen TanStack-Vergleich, zusätzliche Pro
 00-course-material/                 Zentrale Workshop-Unterlagen
   WORKSHOP.md                       Überblick, Tagesprogramm und Didaktik
   EXERCISES.md                      Übungsindex
+  slides.md                         Theorie-Einstiege und Übergänge zu Demo/Übung
   teil-1-theorie--ki-in-der-app.md  Teil 1: Theorie und Verweise
   teil-2-theorie--app-in-der-ki.md  Teil 2: Theorie und Verweise
   teil-3-theorie--webmcp.md         Teil 3: Theorie und Verweise
@@ -122,12 +123,11 @@ Bei knapper Zeit zuerst den fünfminütigen TanStack-Vergleich, zusätzliche Pro
   02-webshop-webmcp/               Übung 4: fünf Browser-Tools und Cleanup
   02-webshop-webmcp-solution/      Kumulative Abschlusslösung inkl. Deployment
 README_SETUP.md                    Allgemeine Vorbereitung
-slides.md                          Stichworte zur Theorie
 ```
 
 Die Hauptkette lautet **Vercel-Chatbot → MCP-Server → MCP Apps → WebMCP**, jeweils mit Starter und Musterlösung. Alle acht Projekte sind eigenständig installierbare Kopien; die letzte Musterlösung enthält den vollständigen Funktionsumfang. TanStack ist ein paralleles Starter-/Lösungspaar. Setup-Check, Katalogdienst, Wetter-Livedemo, Shop-CLI, Hello MCP und Hello WebMCP stehen ausserhalb der Hauptkette.
 
-Die Projekte dokumentieren Start und Konfiguration in ihrer `README.md`; die Wetter-Livedemo verwendet stattdessen `DEMO.md`. Aufgaben stehen in den `EXERCISE.md` der Starter bzw. der beiden Mini-Übungen. Die vier Hauptübungen und die TanStack-Alternative haben jeweils eine Lösung im benachbarten `-solution`-Ordner. Hello MCP und Tool Calling Basics werden direkt im bereits lauffähigen Beispiel erkundet bzw. erweitert.
+Die Übungs-Starter dokumentieren in ihrer `README.md` knapp, wie das Projekt gestartet wird; die Aufgabe selbst steht in der `EXERCISE.md`. Die Wetter-Livedemo verwendet `DEMO.md`. Bei den beiden Mini-Übungen `01-tool-calling-basics` und `01-hello-mcp` enthält die `EXERCISE.md` auch Start und Konfiguration; sie haben deshalb keine eigene `README.md`. Die vier Hauptübungen und die TanStack-Alternative haben jeweils eine Lösung im benachbarten `-solution`-Ordner. Hello MCP und Tool Calling Basics werden direkt im bereits lauffähigen Beispiel erkundet bzw. erweitert.
 
 Die Webshop-Stufen verwenden die Demo-Konten `restaurant-baeren`, `hotel-alpenblick` und `kantine-campus`. Ein Browser-Cookie hält die Kontoauswahl; der Shop hält Warenkörbe und Bestellungen im Prozessspeicher. Checkout macht die aktive `cartId` zur `orderId`; das nächste Hinzufügen erzeugt einen neuen Warenkorb. Ein Shop-Neustart setzt den Zustand zurück. Zwischen Starter und Musterlösung werden keine Daten geteilt.
 

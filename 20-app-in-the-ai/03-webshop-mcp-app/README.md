@@ -1,53 +1,74 @@
-# Webshop mit MCP Apps (Starter)
+# Webshop mit MCP Apps · Starter zu Teil 2c
 
-Eigenständig installierbare Workshop-Stufe auf der aktuellen Shop-Grundlage der Abschlusslösung. Web-UI, Web-API, Kontoauswahl, Suche, Warenkorb und Bestellhistorie verwenden denselben Prozessspeicher.
+Der MCP-Server aus Teil 2b ist hier fertig: Ein Assistent kann suchen, den Warenkorb
+verwalten und bestellen – aber nur als Text. Neu in diesem Teil: Ein Tool liefert seine
+eigene **Oberfläche** mit. Der Host zeigt zum Suchresultat Produktkarten mit Mengenwahl
+(Search-App) und zum Warenkorb eine Tabelle mit Entfernen- und Bestellbutton (Cart-App).
+Dieser Ordner ist eine eigenständige Kopie.
+
+Dieses README bringt nur das Projekt zum Laufen. **Die Aufgabe steht in
+[EXERCISE.md](EXERCISE.md).**
+
+## 1. Katalog starten (Terminal 1)
+
+Die Artikeldaten kommen von einem lokalen Mock-Katalog. Er läuft als eigener Prozess und
+wird von allen Workshop-Projekten geteilt.
 
 ```bash
+cd 01-mock-api        # vom Repository-Wurzelverzeichnis aus
+npm ci
+npm start
+```
+
+Prüfen: `curl http://localhost:4040/health` → `{"ok":true,"articles":94,…}`
+
+## 2. Webshop starten (Terminal 2)
+
+```bash
+cd 20-app-in-the-ai/03-webshop-mcp-app   # vom Repository-Wurzelverzeichnis aus
 npm ci
 cp .env.example .env
 npm run dev
 ```
 
-Öffne http://localhost:3043. Starte den Katalog separat in `../../01-mock-api` auf Port 4040. Provider und Key aus der lokalen `.env` werden nur für echte Chat-Anfragen benötigt. Gültige Demo-Konten: `restaurant-baeren`, `hotel-alpenblick`, `kantine-campus`.
+`npm run dev` baut zuerst die beiden App-Oberflächen (`npm run build:apps`) und startet
+dann den Shop. Einen AI-Provider-Key brauchst du **für diese Übung nicht**.
 
-## Chat und Struktur
+Prüfen: `curl http://localhost:3043/health` → `{"status":"ok"}`
 
-- **Assistant** im Shop: Text-Chat, Tool-Aufrufe steuern die sichtbare Oberfläche; Modell-Checkout mit Ja/Nein-Freigabe.
-- **Workspace** unter `/chat`: Produkte, Warenkorb und Bestellungen als Widgets. Produkt- und Bestellbuttons verwenden direkt die Web-API und dokumentieren die Aktion im Verlauf. Ein vom Modell angeforderter Checkout verwendet eine Freigabe-UI.
-- `src/lib/shop.server.ts`, `shop-state.ts`, `tools/handlers.server.ts`: gemeinsame accountgebundene Domain und Tools.
-- `src/components/shop`: Shop-Komponenten; `src/features/chat`: Vercel AI SDK mit typisierten Tool-Parts und `toolApproval`.
+Dann http://localhost:3043 öffnen und oben ein Demo-Konto wählen: `restaurant-baeren`,
+`hotel-alpenblick` oder `kantine-campus`.
 
-## Übung
+## 3. Testhost starten (Terminal 3)
 
-Resource-Registrierung, Tool-Metadaten, Login-Übernahme in der Such-App und schreibende Bridge-Aufrufe sind offen. Die Pfade sind relativ zu `src/`. Details und Schrittprüfungen: [EXERCISE.md](EXERCISE.md). Die oben beschriebenen Ziel-Funktionen sind im Starter nur soweit implementiert, wie die Übung es vorsieht.
-
-## MCP
-
-`/mcp` und `npm run start:stdio` verwenden `src/features/mcp/server.ts`. `npm run inspector` nutzt die lokale `inspector.json`. Externe Agenten nennen das Konto als `loginId`. HTTP teilt den Zustand mit dem Browser; stdio läuft in einem eigenen Prozess mit eigenem Zustand. Der öffentliche Guard ist lokal standardmässig deaktiviert.
-
-## MCP Apps
-
-Search- und Cart-App liegen unter `src/features/mcp-apps`. `npm run build:apps` baut die zwei HTML-Resources. Metadaten und CSP stehen in `resource-meta.ts`, die Registrierung in `register-ui-resources.ts`.
-
-Für den lokalen Testhost zuerst den Katalog und `npm run dev` starten, dann in einem weiteren Terminal `npm run dev:mcp-host`. Öffne http://127.0.0.1:43552; der Host verbindet sich mit http://localhost:3043/mcp und nutzt Sandbox-Port 43553. Nach App-Änderungen neu bauen und die Host-App neu laden. Vor Browser-Tests den manuellen Host beenden. Das App-Starter-Gerüst kann erst nach den entsprechenden Übungsschritten Resources liefern.
-
-Der Chat-Guard übergibt standardmässig höchstens die letzten 15 Nachrichten an das Modell (`CHAT_MAX_MESSAGES`). Führende Nachrichten vor der ersten Nutzernachricht im Ausschnitt werden zusätzlich entfernt; ohne Nutzernachricht wird die Anfrage mit HTTP 400 abgewiesen. Der sichtbare Chat-Verlauf bleibt erhalten.
-
-## Prüfen
+Die Apps werden nicht im Shop angezeigt, sondern in einem **Host**. Für die Übung genügt
+der mitgelieferte lokale Testhost; Claude Desktop und ChatGPT kommen später dazu.
 
 ```bash
-npm test
-npm run typecheck
-npm run build
-npm run test:browser
+npm run dev:mcp-host   # im selben Projektordner
 ```
 
-Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Echte Provider, externe Hosts und native WebMCP-Registrierung werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
+Dann http://127.0.0.1:43552 öffnen. Der Host verbindet sich mit
+`http://localhost:3043/mcp` und zeigt die Apps in einer Sandbox auf Port 43553.
+Nach Änderungen an den Apps neu bauen und die Host-Seite neu laden.
 
-`npm run test:exercise` prüft die fertig ausgefüllte Übung und ist vor dem Ausfüllen absichtlich rot. Die normale Testsuite prüft das Starter-Gerüst; Details zum Abschluss stehen in `EXERCISE.md`.
+## 4. Was du hier machst
 
-`npm run test:e2e:mcp-apps` prüft die fertigen MCP Apps im lokalen Host (beim App-Starter erst nach dem Ausfüllen).
+Im Testhost siehst du zu Beginn nur Text-Resultate: Die beiden HTML-Oberflächen sind zwar
+im Projekt vorhanden, aber noch nicht als MCP-Resources registriert und keinem Tool
+zugeordnet.
 
-Nur den MCP-Server prüfen: `npm run test:mcp`. Mit einem echten LLM: `npm run test:mcp:llm`
-(Provider und API-Key erforderlich). Szenarien, Limits und Berichte stehen in
-[docs/MCP-TESTING.md](docs/MCP-TESTING.md).
+In der Übung ergänzt du:
+
+- die Registrierung der Search- und der Cart-Oberfläche als MCP-Resources,
+- die Verknüpfung Tool → Oberfläche über `_meta.ui.resourceUri`,
+- die Übernahme des Demo-Kontos aus der Konversation in die App,
+- und die schreibenden Aktionen der Apps, die über die **Host-Bridge** wieder Tools
+  aufrufen (hinzufügen, entfernen, bestellen).
+
+Am Ende demonstrierst du den Ablauf suchen → per Button in den Warenkorb → Warenkorb
+anzeigen → bestellen vollständig im Host, während der parallel geöffnete Shop nach dem
+Aktualisieren dieselben Daten zeigt.
+
+Schritte, Prüfungen und Testbefehle: [EXERCISE.md](EXERCISE.md).
+Fertige Lösung zum Vergleich: [`../03-webshop-mcp-app-solution`](../03-webshop-mcp-app-solution/README.md).

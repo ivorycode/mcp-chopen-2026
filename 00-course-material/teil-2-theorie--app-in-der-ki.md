@@ -6,7 +6,7 @@ Unterlagen dieses Teils:
 
 | Schritt | Ordner |
 |---|---|
-| Demo: minimaler Server | [01-hello-mcp/README.md](../20-app-in-the-ai/01-hello-mcp/README.md) |
+| Demo: minimaler Server | [01-hello-mcp/EXERCISE.md](../20-app-in-the-ai/01-hello-mcp/EXERCISE.md) |
 | Übung: Webshop als MCP-Server | [02-webshop-mcp-server/README.md](../20-app-in-the-ai/02-webshop-mcp-server/README.md), [EXERCISE.md](../20-app-in-the-ai/02-webshop-mcp-server/EXERCISE.md) |
 | Musterlösung | [02-webshop-mcp-server-solution/README.md](../20-app-in-the-ai/02-webshop-mcp-server-solution/README.md) |
 | Übung: MCP-App mit UI | 03-webshop-mcp-app (siehe Abschnitt "MCP Apps") |

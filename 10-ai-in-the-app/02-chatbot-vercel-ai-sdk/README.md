@@ -1,37 +1,56 @@
-# Chatbot mit Vercel AI SDK (Starter)
+# Chatbot mit Vercel AI SDK · Starter zu Teil 1
 
-Eigenständig installierbare Workshop-Stufe auf der aktuellen Shop-Grundlage der Abschlusslösung. Web-UI, Web-API, Kontoauswahl, Suche, Warenkorb und Bestellhistorie verwenden denselben Prozessspeicher.
+Ein fertiger Webshop mit Suche, Warenkorb und Bestellungen. Neu in diesem Teil: Die App
+ruft selbst ein Sprachmodell auf und stellt ihm ihre Shop-Funktionen als **Tools** zur
+Verfügung. Dieser Ordner ist eine eigenständige Kopie – du musst nichts aus einem anderen
+Projekt übernehmen.
+
+Dieses README bringt nur das Projekt zum Laufen. **Die Aufgabe steht in
+[EXERCISE.md](EXERCISE.md).**
+
+## 1. Katalog starten (Terminal 1)
+
+Die Artikeldaten kommen von einem lokalen Mock-Katalog. Er läuft als eigener Prozess und
+wird von allen Workshop-Projekten geteilt.
 
 ```bash
+cd 01-mock-api        # vom Repository-Wurzelverzeichnis aus
+npm ci
+npm start
+```
+
+Prüfen: `curl http://localhost:4040/health` → `{"ok":true,"articles":94,…}`
+
+## 2. Webshop starten (Terminal 2)
+
+```bash
+cd 10-ai-in-the-app/02-chatbot-vercel-ai-sdk   # vom Repository-Wurzelverzeichnis aus
 npm ci
 cp .env.example .env
 npm run dev
 ```
 
-Öffne http://localhost:3031. Starte den Katalog separat in `../../01-mock-api` auf Port 4040. Provider und Key aus der lokalen `.env` werden nur für echte Chat-Anfragen benötigt. Gültige Demo-Konten: `restaurant-baeren`, `hotel-alpenblick`, `kantine-campus`.
+In der `.env` zeigt `MOCK_CATALOG_ORIGIN` bereits auf den Katalog aus Schritt 1. Für den
+Chat brauchst du zusätzlich einen **AI-Provider-Key**: genau einen Provider-Block aktiv
+lassen und den Key eintragen (siehe [Setup-Check](../../00-setup-check/README.md)).
 
-## Chat und Struktur
+Prüfen: `curl http://localhost:3031/health` → `{"status":"ok"}`
 
-- **Assistant** im Shop: Text-Chat, Tool-Aufrufe steuern die sichtbare Oberfläche; Modell-Checkout mit Ja/Nein-Freigabe.
-- **Workspace** unter `/chat`: Produkte, Warenkorb und Bestellungen als Widgets. Produkt- und Bestellbuttons verwenden direkt die Web-API und dokumentieren die Aktion im Verlauf. Ein vom Modell angeforderter Checkout verwendet eine Freigabe-UI.
-- `src/lib/shop.server.ts`, `shop-state.ts`, `tools/handlers.server.ts`: gemeinsame accountgebundene Domain und Tools.
-- `src/components/shop`: Shop-Komponenten; `src/features/chat`: Vercel AI SDK mit typisierten Tool-Parts und `toolApproval`.
+Dann http://localhost:3031 öffnen und oben ein Demo-Konto wählen: `restaurant-baeren`,
+`hotel-alpenblick` oder `kantine-campus`. Andere Benutzernamen gibt es nicht.
 
-## Übung
+## 3. Was du hier machst
 
-Vier Warenkorb-Callbacks in `features/chat/server/ai-tools.server.ts`, Cart-Darstellung und Checkout-Freigabe in `features/chat/ui/ToolPartView.tsx`, Shop-Events im Widget und `toolApproval` in der Chat-Route. Die Pfade sind relativ zu `src/`. Details und Schrittprüfungen: [EXERCISE.md](EXERCISE.md). Die oben beschriebenen Ziel-Funktionen sind im Starter nur soweit implementiert, wie die Übung es vorsieht.
+Öffne den **Assistant** unten rechts im Shop und sende «Suche Milch» – die Suche ist als
+Tool bereits angebunden und steuert die sichtbare Produktliste. «Zeig mir meinen Warenkorb»
+antwortet dagegen mit «Noch nicht implementiert».
 
-Der Chat-Guard übergibt standardmässig höchstens die letzten 15 Nachrichten an das Modell (`CHAT_MAX_MESSAGES`). Führende Nachrichten vor der ersten Nutzernachricht im Ausschnitt werden zusätzlich entfernt; ohne Nutzernachricht wird die Anfrage mit HTTP 400 abgewiesen. Der sichtbare Chat-Verlauf bleibt erhalten.
+Genau diese Lücke schliesst du in der Übung:
 
-## Prüfen
+- die vier Warenkorb-Tools anzeigen, hinzufügen, entfernen und bestellen,
+- ihre Darstellung im Workspace unter http://localhost:3031/chat,
+- die Aktualisierung der Shop-Oberfläche nach einem Tool-Aufruf,
+- und die ausdrückliche Freigabe, bevor das Modell eine Bestellung auslöst.
 
-```bash
-npm test
-npm run typecheck
-npm run build
-npm run test:browser
-```
-
-Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Echte Provider, externe Hosts und native WebMCP-Registrierung werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
-
-`npm run test:exercise` prüft die fertig ausgefüllte Übung und ist vor dem Ausfüllen absichtlich rot. Die normale Testsuite prüft das Starter-Gerüst; Details zum Abschluss stehen in `EXERCISE.md`.
+Schritte, Prüfungen und Testbefehle: [EXERCISE.md](EXERCISE.md).
+Fertige Lösung zum Vergleich: [`../02-chatbot-vercel-ai-sdk-solution`](../02-chatbot-vercel-ai-sdk-solution/README.md).
