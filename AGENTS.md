@@ -32,7 +32,7 @@ eigene Übung. Die zugehörige Musterlösung schliesst diese Lücken.
 Ausserhalb der Hauptkette stehen `00-setup-check/`, der gemeinsame Katalogdienst
 `01-mock-api/` und die eigenständigen Demos:
 
-- `10-ai-in-the-app/01-tool-calling-basics/`
+- `10-ai-in-the-app/01-tool-calling-basics/` mit `01-tool-calling-basics-solution/`
 - `20-app-in-the-ai/01-hello-mcp/`
 - `30-webmcp/01-hello-webmcp/`
 
