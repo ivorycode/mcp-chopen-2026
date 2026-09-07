@@ -46,7 +46,7 @@ dort deinen API-Key ein (siehe [Setup-Check](../../00-setup-check/README.md)).
 
 ## Aufgaben
 
-1. Ein viertes Tool `getArticleDetail` in `src/shop-tools.ts` ergänzen. Der Core liefert die Funktion `getArticleDetail(articleNumber)`:
+1. Ein **viertes Tool** `getArticleDetail` in `src/shop-tools.ts` ergänzen. Der Core liefert die Funktion `getArticleDetail(articleNumber)`:
 
    ```ts
    import { getArticleDetail } from './core/catalog.ts'
@@ -64,6 +64,8 @@ dort deinen API-Key ein (siehe [Setup-Check](../../00-setup-check/README.md)).
 
    Danach: `npm start -- "Welche Allergene enthält die Vollmilch?"` – im Log erscheint der zusätzliche Schritt.
 
-2. Provider wechseln: In der lokalen `.env` den bisherigen Provider-Block vollständig auskommentieren, die drei Zeilen des gewünschten Blocks aktivieren, den API-Key eintragen und das Skript erneut starten. Der Code bleibt unverändert, nur `createModel()` liefert ein anderes Modell. Vergleichen: Anzahl Schritte, Reihenfolge der Tool-Aufrufe, Tokens.
+2. **Provider wechseln**: In der lokalen `.env` den bisherigen Provider-Block vollständig auskommentieren, die drei Zeilen des gewünschten Blocks aktivieren, den API-Key eintragen und das Skript erneut starten. Der Code bleibt unverändert, nur `createModel()` liefert ein anderes Modell. Vergleichen: Anzahl Schritte, Reihenfolge der Tool-Aufrufe, Tokens.
 
 **Erkenntnis:** Tool-Beschreibung und Schema sind das "User Interface" des Tools für das Modell. Eine ungenaue Beschreibung führt zu falschen oder fehlenden Aufrufen, unabhängig vom Provider.
+
+Musterlösung: [`../01-tool-calling-basics-solution`](../01-tool-calling-basics-solution/README.md) – fertiger Stand mit dem vierten Tool, den Logs beider Schleifen und den Szenarien im README.

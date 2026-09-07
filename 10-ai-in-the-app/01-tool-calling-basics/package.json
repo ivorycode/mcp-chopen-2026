@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "node src/agent-loop.ts",
+    "start:example": "node src/agent-loop.ts 'Was kostet Reis?'",
     "manual": "node src/manual-loop.ts",
+    "manual:example": "node src/manual-loop.ts 'Was kostet Milch?'",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "node --test \"src/**/*.test.ts\""
   },
