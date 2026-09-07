@@ -67,31 +67,9 @@ Die Planung umfasst **380 Minuten Inhalt und Arbeit**, **60 Minuten Mittag** und
 | 15:40–16:50 | 70 min | **3 · WebMCP / Übung 4** | **10 min** Konzept und Hello-Demo mit deklarativem Todo-Formular sowie imperativen Tools, **10 min** Webshop-Demo und `document.modelContext` prüfen, **30 min** fünf Tools, Shop-Events, Registrierung und Abort-Cleanup in `webmcp-tools.ts` ergänzen, **15 min** Node-Abnahme, native Browser-Tests und sichtbaren Shop-Durchlauf prüfen, **5 min** Debrief. Der Browser-Adapter nutzt den bestehenden API-Client mit der Session des Tabs. |
 | 16:50–17:00 | 10 min | **4 · Abschluss** | Gemeinsamkeiten und Unterschiede der drei Zugänge, Zuständigkeit für Modellkosten und Freigaben, offene Prüfungen, Fragen und nächste Schritte. Authentifizierung, Tasks und Distribution als Ausblick. |
 
-### Prüfungen und Umgang mit Zeitdruck
 
-Die langen Übungsanleitungen enthalten Einrichtung, schrittweise Erklärungen, Fehlerfälle, mehrere Host-Wege und vollständige Prüfungen. Diese werden nicht alle im Plenum vorgelesen. Im Termin arbeitet die Gruppe an den markierten Lücken; wiederholte Grundlagendemos und zusätzliche Host-Einrichtungen entfallen.
 
-| Übung | Schwerpunkt der Prüfphase im Termin |
-|---|---|
-| Chat (Vercel; TanStack alternativ) | `npm run typecheck`, `npm run test:exercise` und echter Provider-Durchlauf: Suche, Add, Remove, Checkout mit Nein/Ja. Direkte Widget-Buttons ersetzen den Test der Modell-Tools nicht. Bei TanStack die Interrupt-Freigabe zusätzlich mit echtem Provider prüfen. |
-| MCP-Server | `npm run typecheck`, `npm run test:exercise`, Inspector-Durchlauf mit Kontotrennung und Bestellhistorie sowie mindestens ein echter Host-Aufruf. Die automatische Übungsabnahme prüft HTTP und stdio; ein manueller stdio-Durchlauf ist optional. |
-| MCP Apps | Nach UI-Änderungen `npm run build:apps`; danach Typecheck, `npm run test:exercise` und `npm run test:e2e:mcp-apps`. Im lokalen Host Search- und Cart-Buttons sowie Konto und Order-ID prüfen; externe Darstellung in Claude Desktop oder ChatGPT ergänzen. |
-| WebMCP | `npm run typecheck`, `npm run test:exercise` und `npm run test:webmcp:native`. Zusätzlich die Tool-Konsole bzw. DevTools bedienen und Resultate mit dem sichtbaren Shop vergleichen. Native Tests sind separat von `npm test` und `npm run test:browser`. |
 
-Die übrigen in der jeweiligen `EXERCISE.md` geforderten Tests und Builds bleiben Teil der vollständigen Abnahme. Sie laufen während der Arbeitsphase oder werden als offene Nacharbeit festgehalten, wenn sie im Termin nicht fertig werden. Für WebMCP sind die übernommenen Regressionstests früherer Stufen ausdrücklich optional. Eine vorgeführte Musterlösung gilt nicht als Abnahme des eigenen Starters.
-
-Bei knapper Zeit zuerst den fünfminütigen TanStack-Vergleich, zusätzliche Provider-Wechsel, MRTR-/Wire-Log-Vertiefungen und zweite Host-Durchläufe kürzen. Für MCP genügt im gemeinsamen Ablauf ein verfügbarer Host; weitere Integrationen sind Vertiefung. Ohne passenden Zugang lokal prüfen und den externen Test als offen notieren. Bei grösserem Rückstand die nächste Stufe mit deren vorbereitetem Starter beginnen und die noch offene eigene Implementierung benennen. Checkout-Freigabe in Übung 1 sowie Search- und Cart-App in Übung 3 bleiben reguläre Lernziele.
-
-### Patterns für die gemeinsame Auswertung
-
-- **Tool = Beschreibung + Schema + Funktion.** Das Modell erzeugt strukturierte Aufrufwünsche; die Anwendung führt sie aus. Die Wetter-Demo und die Shop-CLI machen diese Grenze sichtbar.
-- **Gemeinsame Fachlogik, passende Adapter.** Chat und MCP verwenden serverseitige Handler. WebMCP ruft im Browser die bestehende Web-API auf. Gemeinsame Contracts bedeuten nicht identische Protokollnachrichten.
-- **Konto ist kein Transportzustand.** Chat und WebMCP verwenden das gewählte Browser-Konto; MCP übergibt `loginId` ausdrücklich. Die Demo implementiert keine echte Authentifizierung.
-- **Zustandsloses Protokoll bedeutet nicht zustandslosen Shop.** HTTP-MCP und Web-UI teilen den Prozessspeicher. stdio sowie andere Projektinstanzen haben jeweils eigene Warenkörbe und Bestellungen.
-- **Strukturierte Resultate bedienen Modell und UI.** MCP liefert `content` und `structuredContent`. Der Chat rendert typisierte Tool-Parts; WebMCP liefert serialisierbare Ergebnisse. Fachliche Fehler bleiben auswertbar.
-- **Freigaben müssen am richtigen Ort durchgesetzt werden.** Der Modell-Checkout im Chat hat eine SDK-Freigabe; direkte Bestellbuttons sind bewusste Aktionen. Die MCP-/WebMCP-Shop-Callbacks selbst enthalten keinen Freigabedialog. Beschreibung und Annotationen sind Hinweise, keine Sperre. MRTR wird separat durch Hello MCPs `confirm-demo` gezeigt.
-- **Shop-UI synchronisieren.** Chat und WebMCP lösen Shop-Events aus. Nach externen MCP-Aktionen werden Browser und andere offene Ansichten neu geladen bzw. Daten erneut abgefragt.
-- **Wer stellt das Modell?** In Teil 1 nutzt die App einen Provider-Key. Bei MCP und WebMCP bringt der Host bzw. Agent das Modell mit. Inspector, lokaler MCP-App-Host und manuelle/native WebMCP-Tests benötigen keinen LLM-Aufruf.
 
 ## Aufbau des Repositories
 
