@@ -1,0 +1,31 @@
+{
+  "name": "tool-calling-basics-solution",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Musterlösung: Tool-Calling-Schleife als Node-CLI mit dem Vercel AI SDK und vier Webshop-Tools",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node src/agent-loop.ts",
+    "start:example": "node src/agent-loop.ts 'Was kostet Reis?'",
+    "start:detail": "node src/agent-loop.ts 'Welche Allergene enthält die Quality Vollmilch?'",
+    "manual": "node src/manual-loop.ts",
+    "manual:example": "node src/manual-loop.ts 'Was kostet Milch?'",
+    "manual:detail": "node src/manual-loop.ts 'Welche Allergene enthält die Quality Vollmilch?'",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test \"src/**/*.test.ts\""
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.41",
+    "@ai-sdk/google": "^4.0.50",
+    "@ai-sdk/openai": "^4.0.46",
+    "ai": "^7.0.77",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  }
+}
