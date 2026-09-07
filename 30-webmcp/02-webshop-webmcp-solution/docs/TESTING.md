@@ -43,6 +43,25 @@ Playwright startet automatisch vier lokale Dienste; die Ports müssen frei sein:
 
 Alle Projects verwenden einen Worker, weil die Demo-Konten ihren Zustand im Serverprozess teilen. Vor jedem MCP-App-Test werden die Demo-Warenkörbe über MCP geleert. Bei Fehlern speichert Playwright Traces unter `test-results/`; öffnen mit `npx playwright show-trace <pfad>/trace.zip`.
 
+## Native WebMCP-Aufrufe mit Chrome
+
+```bash
+# Falls Google Chrome noch nicht installiert ist:
+npx playwright install chrome
+npm run test:webmcp:native
+```
+
+Die eigenständige Konfiguration `playwright.webmcp.config.ts` führt vier Tests in
+`test/webmcp-native/` aus. Sie prüft echte `document.modelContext.executeTool()`-Aufrufe,
+Browser-Session und sichtbare Shop-Änderungen. Shop und Mock-Katalog laufen dafür
+auf `43556` und `43557`; ein MCP-App-Host wird nicht gestartet.
+
+Diese Suite ist nicht Teil der vier oben aufgeführten Projects. Deren
+WebMCP-Einbindungstests verwenden weiterhin ein Testdouble bzw. prüfen den Shop
+ohne experimentelle API. Die native Suite benötigt ein kompatibles installiertes
+Chrome und schlägt bei fehlender Unterstützung fehl. Details und Grenzen stehen
+in [WEBMCP-TESTING.md](WEBMCP-TESTING.md).
+
 ### Testhost für die MCP Apps
 
 Der kleine Host in [`test/support/mcp-host/`](../test/support/mcp-host/) folgt dem offiziellen [`basic-host`](https://github.com/modelcontextprotocol/ext-apps/tree/main/examples/basic-host). Er lädt die gebauten HTML-Resources über den echten MCP-Endpunkt und verbindet sie über `AppBridge` mit dem Server. Die App läuft in einem inneren iframe mit opaker Origin; ein äusserer iframe auf einer separaten Origin vermittelt Nachrichten und prüft deren Absender. Der Host ist eine lokale Testhilfe, kein vollständiger MCP-App-Host, und wird nicht in den Produktionsbuild eingebunden.

@@ -37,6 +37,28 @@ Native Browser-Tools werden in `src/features/webmcp` ergänzt. Für die manuelle
 
 Der Chat-Guard übergibt standardmässig höchstens die letzten 15 Nachrichten an das Modell (`CHAT_MAX_MESSAGES`). Führende Nachrichten vor der ersten Nutzernachricht im Ausschnitt werden zusätzlich entfernt; ohne Nutzernachricht wird die Anfrage mit HTTP 400 abgewiesen. Der sichtbare Chat-Verlauf bleibt erhalten.
 
+## Native WebMCP-E2E-Tests
+
+```bash
+# Falls Google Chrome noch nicht installiert ist:
+npx playwright install chrome
+npm run test:webmcp:native
+# Optional mit sichtbarem Browser:
+npm run test:webmcp:native -- --headed
+```
+
+Diese separate Suite verwendet echtes Chrome mit `WebMCPTesting` und ruft
+`document.modelContext.executeTool()` auf. Vier Tests prüfen Registrierung,
+Suche, Anmeldefehler, Kontowechsel, Warenkorb, Checkout, ungültige Eingaben sowie
+die eingebaute Tool-Konsole nach einem Reload. Resultate und sichtbare
+Shop-Änderungen werden gemeinsam geprüft, ohne `modelContext` oder `fetch` zu ersetzen.
+
+Die Suite startet Shop und Katalog-Mock selbst auf `43556`/`43557`. Sie benötigt
+keinen Modell-Key und keine Extension. Die bisherigen Tests bleiben separat.
+Im unausgefüllten Starter ist diese Suite absichtlich rot; nach Schritt 5 sollen
+alle vier Tests erfolgreich sein.
+Voraussetzungen, Testablauf und Grenzen: [docs/WEBMCP-TESTING.md](docs/WEBMCP-TESTING.md).
+
 ## Prüfen
 
 ```bash
@@ -46,7 +68,7 @@ npm run build
 npm run test:browser
 ```
 
-Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Echte Provider, externe Hosts und native WebMCP-Registrierung werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
+Die Node-Tests prüfen Shop-Regeln, Katalog und Events; MCP-Stufen zusätzlich HTTP und stdio mit einem echten SDK-Client. Browser-Tests verwenden einen isolierten Mock-Katalog und deterministische Chat-Streams, ohne kostenpflichtige Modellaufrufe. Native WebMCP-Aufrufe prüft `npm run test:webmcp:native`; echte Provider und externe Hosts werden separat manuell geprüft. Browser-Testports: 43554 (Shop), 43555 (Katalog), bei MCP Apps zusätzlich 43552/43553 (Host/Sandbox).
 
 `npm run test:exercise` prüft die fertig ausgefüllte Übung und ist vor dem Ausfüllen absichtlich rot. Die normale Testsuite prüft das Starter-Gerüst; Details zum Abschluss stehen in `EXERCISE.md`.
 

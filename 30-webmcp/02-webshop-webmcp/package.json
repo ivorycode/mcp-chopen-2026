@@ -23,7 +23,8 @@
     "test:browser": "playwright test",
     "test:exercise": "node --test src/features/webmcp/webmcp-tools.acceptance.ts",
     "test:mcp": "npm run build:apps && node --test test/mcp-smoke.test.mjs",
-    "test:mcp:llm": "node --test test/mcp-llm.eval.mjs"
+    "test:mcp:llm": "node --test test/mcp-llm.eval.mjs",
+    "test:webmcp:native": "playwright test --config playwright.webmcp.config.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.41",

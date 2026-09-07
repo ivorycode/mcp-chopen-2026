@@ -19,6 +19,8 @@ Die Seite registriert `searchProducts`, `getCart`, `addToCart`, `removeFromCart`
 
 Relevante Dateien: [`src/features/webmcp/webmcp-tools.ts`](./src/features/webmcp/webmcp-tools.ts) (Tool-Definitionen), [`WebMCPProvider.tsx`](./src/features/webmcp/WebMCPProvider.tsx) (Registrierung und Abmeldung per `AbortController`), [`ToolConsole.tsx`](./src/features/webmcp/ToolConsole.tsx) (Dev-Panel unten rechts).
 
+Aufgabenstellung: [Starter](../02-webshop-webmcp/EXERCISE.md). Alle Übungsschritte sind implementiert.
+
 ### Manueller Smoke im Browser
 
 1. In Chrome `chrome://flags/#enable-webmcp-testing` aktivieren und Chrome neu starten.
@@ -52,6 +54,27 @@ await callWebMcpTool('getCart', {})
 ```
 
 Für die Warenkorb-Tools zuerst im Webshop eines der Demo-Konten auswählen.
+
+## Native WebMCP-E2E-Tests
+
+```bash
+# Falls Google Chrome noch nicht installiert ist:
+npx playwright install chrome
+npm run test:webmcp:native
+# Optional mit sichtbarem Browser:
+npm run test:webmcp:native -- --headed
+```
+
+Diese separate Suite verwendet echtes Chrome mit `WebMCPTesting` und ruft
+`document.modelContext.executeTool()` auf. Vier Tests prüfen Registrierung,
+Suche, Anmeldefehler, Kontowechsel, Warenkorb, Checkout, ungültige Eingaben sowie
+die eingebaute Tool-Konsole nach einem Reload. Resultate und sichtbare
+Shop-Änderungen werden gemeinsam geprüft, ohne `modelContext` oder `fetch` zu ersetzen.
+
+Die Suite startet Shop und Katalog-Mock selbst auf `43556`/`43557`. Sie benötigt
+keinen Modell-Key und keine Extension. Die bisherigen Tests bleiben separat.
+In dieser Musterlösung sollen alle vier Tests erfolgreich sein.
+Voraussetzungen, Testablauf und Grenzen: [docs/WEBMCP-TESTING.md](docs/WEBMCP-TESTING.md).
 
 ## Zwei Chat-Modi
 

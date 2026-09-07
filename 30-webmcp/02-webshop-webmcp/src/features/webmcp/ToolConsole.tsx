@@ -43,7 +43,10 @@ export default function ToolConsole() {
     if (!tool || !context) return
     setBusy(true)
     try {
-      const raw = await context.executeTool(tool, JSON.parse(input))
+      const raw = await context.executeTool(
+        tool,
+        JSON.stringify(JSON.parse(input)),
+      )
       setOutput(
         raw === null
           ? 'null (Navigation)'
@@ -59,7 +62,7 @@ export default function ToolConsole() {
   }
 
   return (
-    <div className="fixed right-4 bottom-4 z-40 w-[min(28rem,calc(100vw-2rem))] text-sm">
+    <div className="fixed right-4 bottom-24 z-40 w-[min(28rem,calc(100vw-2rem))] text-sm">
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}

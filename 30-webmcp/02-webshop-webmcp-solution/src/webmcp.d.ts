@@ -1,4 +1,6 @@
-// Typen für die WebMCP-API (document.modelContext), Stand der Spezifikation August 2026.
+// Typen für die native WebMCP-API (document.modelContext), geprüft mit Chrome 152.
+// Chrome erwartet executeTool-Eingaben als JSON-String; der Spezifikationsentwurf
+// mit Objekt-Eingabe ist noch nicht die hier getestete Browser-Schnittstelle.
 //
 // Lokal statt `webmcp-types` von npm: Das Package (0.1.5) kennt `executeTool()`
 // noch nicht. Diese Datei ist ein Script (kein `export`), damit die
@@ -50,7 +52,7 @@ interface WebMCPModelContext extends EventTarget {
   /** Liefert den JSON-String des Resultats, oder null wenn das Tool eine Navigation auslöste. */
   executeTool: (
     tool: WebMCPRegisteredTool,
-    input?: object,
+    input?: string,
     options?: { signal?: AbortSignal },
   ) => Promise<string | null>
   ontoolchange: ((this: WebMCPModelContext, ev: Event) => unknown) | null
