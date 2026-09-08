@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node src/index.ts",
+    "start:demo": "node src/index.ts 'Wie ist das Wetter in Zürich'",
     "start:logged": "node src/index.ts --log-wire",
     "start:streaming": "node src/streaming.ts",
     "test": "node --test src/*.test.ts",
