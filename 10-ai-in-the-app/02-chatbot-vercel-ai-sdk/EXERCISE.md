@@ -16,7 +16,24 @@ Teil B für den Warenkorb folgst.
 
 ### Die beiden Modi ausprobieren
 
-Im schwebenden **Assistant** erscheint Text; erfolgreiche Tools steuern die Shop-Oberfläche. Unter **`/chat` (Workspace)** erscheinen Produktkarten und zunächst generische Warenkorb-Parts. Sende in beiden Modi «Suche Milch». Die Suchfunktion ist fertig. «Zeig mir meinen Warenkorb» liefert angemeldet «Noch nicht implementiert», abgemeldet die Aufforderung zur Kontoauswahl.
+Der Chat ist auf der Webseite in zwei Ausprägungen eingebaut, die sich in
+Zweck und Verhalten unterscheiden. Im Code sind sie als **Modi** derselben
+Chat-Komponente umgesetzt, mit den Werten `assistant` und `workspace`
+(`ChatMode` in `src/features/chat/shared/chat-config.ts`):
+
+- **Assistant** (`mode="assistant"`): der schwebende Chat unten rechts auf der
+  Shop-Seite `/`. Er ist eine Fernsteuerung für den Shop: Das Modell antwortet
+  mit kurzem Text, und erfolgreiche Tools steuern die Shop-Oberfläche hinter
+  dem Chat – etwa die Suchliste.
+- **Workspace** (`mode="workspace"`): die eigene Seite `/chat`. Hier ist der
+  Chat selbst die Arbeitsfläche: Tool-Resultate erscheinen als Widgets im
+  Verlauf, etwa Produktkarten für die Suche. Die Warenkorb-Tools zeigen im
+  Starter noch generische Parts.
+
+Die Suchfunktion ist als Start-Punkt bereits implementiert: Sende in beiden Modi «Suche Milch». 
+Im Assistant ändert sich die Suchliste des Shops, im Workspace erscheinen Produktkarten im
+Chat. «Zeig mir meinen Warenkorb» liefert angemeldet «Noch nicht
+implementiert», abgemeldet die Aufforderung zur Kontoauswahl.
 
 ### Die Artikelsuche im Detail
 
