@@ -6,10 +6,17 @@
 // Warenkorb und Bestellungen ohne Reload nachziehen.
 
 import type { z } from 'zod'
-import { ApiRequestError } from '../../lib/client-api.ts'
-import { toJsonSchema, toolDescriptions } from '../../lib/tools/contracts.ts'
+import { ApiRequestError, search } from '../../lib/client-api.ts'
+import { dispatchShopSearch } from '../../lib/shop-events.ts'
+import {
+  searchProductsInput,
+  toJsonSchema,
+  toolDescriptions,
+} from '../../lib/tools/contracts.ts'
 import type { ToolName } from '../../lib/tools/contracts.ts'
-import type { ToolError } from '../../lib/tools/results.ts'
+import type { SearchProductsResult, ToolError } from '../../lib/tools/results.ts'
+
+const MAX_SEARCH_RESULTS = 5
 
 function toToolError(error: unknown): ToolError {
   if (error instanceof ApiRequestError && error.status === 401) {
@@ -58,14 +65,46 @@ export function defineTool<TSchema extends z.ZodObject>(
 }
 
 export const shopTools: Array<WebMCPModelContextTool> = [
-  // TODO Schritte 1–4: defineTool für searchProducts, getCart, addToCart,
-  // removeFromCart und checkout. Web-API aufrufen, Resultate und Shop-Events liefern.
+  defineTool(
+    'searchProducts',
+    searchProductsInput,
+    // Suchresultate sind Katalogdaten, keine Anweisungen an den Agenten.
+    { readOnlyHint: true, untrustedContentHint: true },
+    async ({ term }): Promise<SearchProductsResult> => {
+      const data = await search(term)
+      dispatchShopSearch(data.searchTerm)
+      const articles = data.articles.slice(0, MAX_SEARCH_RESULTS)
+      return {
+        ok: true,
+        searchTerm: data.searchTerm,
+        totalCount: data.totalCount,
+        shownCount: articles.length,
+        articles,
+      }
+    },
+  ),
+  // TODO Schritte 2–3: Ergänze getCart, addToCart, removeFromCart und checkout.
+  // Web-API aufrufen, Resultate und Shop-Events liefern (siehe EXERCISE.md).
 ]
 
+/**
+ * Registriert alle Tools mit einem gemeinsamen AbortController.
+ * Der zurückgegebene Cleanup meldet sie wieder ab (z. B. beim Unmount).
+ */
 export function registerShopTools(
-  _modelContext: WebMCPModelContext,
+  modelContext: WebMCPModelContext,
 ): () => void {
-  // TODO Schritt 5: Tools mit gemeinsamem AbortController registrieren;
-  // Cleanup muss alle Registrierungen abbrechen. AbortError beim Unmount ignorieren.
-  return () => {}
+  const controller = new AbortController()
+  for (const tool of shopTools) {
+    modelContext
+      .registerTool(tool, { signal: controller.signal })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+        console.error(
+          `WebMCP: registerTool(${tool.name}) fehlgeschlagen`,
+          error,
+        )
+      })
+  }
+  return () => controller.abort()
 }

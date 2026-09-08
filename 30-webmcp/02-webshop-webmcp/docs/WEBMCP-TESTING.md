@@ -97,8 +97,9 @@ insbesondere werden mutierende Aufrufe nicht auf Verdacht erneut ausgeführt.
 ## Ergebnis und Abgrenzung
 
 In der Musterlösung und nach dem Ausfüllen des Starters müssen **vier Tests grün**
-sein. Der unausgefüllte Starter scheitert absichtlich an der erwarteten Liste von
-fünf Tools. Die Meldung verweist auf die Übungsschritte 1–5. Fehlendes Chrome,
+sein. Im Starter ist `searchProducts` bereits implementiert und registriert.
+Die Suite scheitert dort trotzdem absichtlich an der erwarteten Liste von fünf
+Tools, bis die vier übrigen Tools ergänzt sind. Die Meldung verweist auf die Übungsschritte 1–5. Fehlendes Chrome,
 eine fehlende native API oder inkompatible Tool-Aufrufe führen zu einem Fehler;
 Tests werden nicht stillschweigend übersprungen und verwenden keinen Fallback.
 

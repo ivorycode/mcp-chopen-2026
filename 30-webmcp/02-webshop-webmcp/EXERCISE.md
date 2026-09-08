@@ -2,7 +2,9 @@
 
 ## Ziel der Übung
 
-Du machst den geöffneten Webshop über fünf **WebMCP-Tools** bedienbar:
+Das erste **WebMCP-Tool** `searchProducts` ist bereits fertig und im Browser
+aufrufbar. Du ergänzt die vier übrigen Tools und machst damit den geöffneten
+Webshop über insgesamt fünf **WebMCP-Tools** bedienbar:
 Ein Browser-Agent kann Produkte suchen, den Warenkorb lesen, Artikel hinzufügen
 und entfernen sowie eine Bestellung abschicken. Die Aktionen verwenden das im
 Browser ausgewählte Demo-Konto und werden unmittelbar in der Shop-Oberfläche
@@ -58,13 +60,17 @@ diesen Ordner kopieren.
 - **WebMCP-Gerüst:** `WebMCPProvider` und die eingebaute Tool-Konsole sind bereits
   eingebunden. Der Provider prüft im React-Effect, ob `document.modelContext`
   vorhanden ist, ruft `registerShopTools` auf und verwendet dessen Cleanup.
+- **Erstes WebMCP-Tool:** `searchProducts` inklusive Such-Event und Begrenzung
+  auf fünf Treffer ist fertig. `registerShopTools` registriert alle Einträge
+  aus `shopTools` und meldet sie beim Cleanup wieder ab.
 - **Gemeinsame Bausteine:** Eingabeschemas, Beschreibungen, API-Client,
   Shop-Events, Resultat-Typen sowie Validierung und Fehlerbehandlung sind fertig.
 
 **Deine Änderung findet in genau einer Datei statt:**
 [`src/features/webmcp/webmcp-tools.ts`](src/features/webmcp/webmcp-tools.ts).
-Dort ist `shopTools` noch leer und `registerShopTools` enthält noch keine
-Registrierung. Diese beiden Lücken füllst du in den Schritten 1–5.
+Dort enthält `shopTools` bereits `searchProducts`. In den Schritten 2–3 ergänzt
+du `getCart`, `addToCart`, `removeFromCart` und `checkout`. Die fertige Suche und
+die Registrierung dienen dir als Vorlage; dort ist keine Änderung nötig.
 
 | Vorbereitete Datei                       | Wofür du sie verwendest                                                   |
 | ---------------------------------------- | ------------------------------------------------------------------------- |
@@ -196,9 +202,9 @@ Die Beispiele verwenden die im Starter typisierte API `document.modelContext`.
 await document.modelContext.getTools()
 ```
 
-**Vor der Implementierung ist `[]` richtig.** Die eingebaute Schaltfläche unten
-rechts zeigt dann **WebMCP Tool-Konsole (0)**. Ohne verfügbare Browser-API steht
-hier **WebMCP nicht verfügbar**; die bisherigen Shop-Funktionen bleiben bedienbar.
+**Vor der Implementierung enthält die Liste bereits `searchProducts`.** Die
+eingebaute Schaltfläche unten rechts zeigt **WebMCP Tool-Konsole (1)**. Ohne
+verfügbare Browser-API steht hier **WebMCP nicht verfügbar**; die bisherigen Shop-Funktionen bleiben bedienbar.
 
 ### F. Terminal 3: Ausgangszustand optional prüfen
 
@@ -224,12 +230,46 @@ die genaue Abgrenzung zu den neuen WebMCP-Tests steht im Abschlussabschnitt.
 `npm run test:exercise` ist dagegen **bis zum Ausfüllen absichtlich rot**, weil
 es die fünf fertigen Tools und ihre Registrierung verlangt.
 
-## Schritt 1: Imports ergänzen und Suche definieren
+## Schritt 1: Die fertige Suche ausprobieren und nachvollziehen
 
-Öffne `src/features/webmcp/webmcp-tools.ts` im Editor. Ersetze den bisherigen
-Importblock durch diesen Block. `toToolError` und `defineTool` darunter bleiben
-erhalten. Einige Imports werden erst in den nächsten Schritten verwendet;
-führe den vollständigen Typecheck nach Schritt 5 aus.
+Öffne `src/features/webmcp/webmcp-tools.ts` im Editor und lies den vorhandenen
+`searchProducts`-Eintrag in `shopTools`. Du musst ihn nicht ergänzen oder ersetzen.
+
+Teste die fertige Suche bereits jetzt in der DevTools-Konsole:
+
+```js
+var tools = await document.modelContext.getTools()
+var searchTool = tools.find((tool) => tool.name === 'searchProducts')
+JSON.parse(
+  await document.modelContext.executeTool(searchTool, JSON.stringify({ term: 'Milch' })),
+)
+```
+
+Erwartet: `ok: true`, höchstens fünf Artikel im Tool-Resultat und `Milch` in der
+sichtbaren Shop-Suche. Eine Anmeldung ist für die Suche nicht nötig.
+
+Der vorhandene Helper `defineTool(name, schema, annotations, run)` erledigt vier
+Dinge für dich: Er übernimmt die gemeinsame Beschreibung, erzeugt JSON Schema,
+validiert die Eingabe mit Zod und wandelt Fehler in `{ ok: false, error }` um.
+Dein asynchroner Callback erhält somit bereits validierte Eingaben.
+
+`search(term)` ruft `/api/search` auf. Das Event übernimmt den Suchbegriff in die
+sichtbare Shop-Suche. `totalCount` bleibt die Gesamtzahl der Treffer aus der API;
+`shownCount` zählt nur die höchstens fünf im Tool-Resultat enthaltenen Artikel.
+Die Shop-Oberfläche kann deshalb mehr Treffer anzeigen als das kompakte Resultat.
+
+`readOnlyHint: true` beschreibt eine lesende Katalogaktion.
+`untrustedContentHint: true` kennzeichnet die gelieferten Produktdaten als Inhalte,
+die ein Agent nicht als Anweisungen behandeln soll. Annotationen sind Hinweise;
+die Eingabevalidierung übernimmt weiterhin `defineTool`.
+
+**Zwischenstand:** Das erste Tool ist implementiert, registriert und aufrufbar.
+Die vier übrigen Tools ergänzt du nach demselben Muster.
+
+## Schritt 2: Warenkorb lesen und Artikel hinzufügen
+
+Erweitere zunächst den Importblock um die Bausteine für die übrigen Tools.
+Der vollständige Block sieht so aus:
 
 ```ts
 import type { z } from 'zod'
@@ -262,55 +302,8 @@ import type {
 } from '../../lib/tools/results.ts'
 ```
 
-Ergänze direkt unter den Imports:
-
-```ts
-const MAX_SEARCH_RESULTS = 5
-```
-
-Der vorhandene Helper `defineTool(name, schema, annotations, run)` erledigt vier
-Dinge für dich: Er übernimmt die gemeinsame Beschreibung, erzeugt JSON Schema,
-validiert die Eingabe mit Zod und wandelt Fehler in `{ ok: false, error }` um.
-Dein asynchroner Callback erhält somit bereits validierte Eingaben.
-
-Ersetze das leere `shopTools`-Array durch den ersten Eintrag:
-
-```ts
-export const shopTools: Array<WebMCPModelContextTool> = [
-  defineTool(
-    'searchProducts',
-    searchProductsInput,
-    { readOnlyHint: true, untrustedContentHint: true },
-    async ({ term }): Promise<SearchProductsResult> => {
-      const data = await search(term)
-      dispatchShopSearch(data.searchTerm)
-      const articles = data.articles.slice(0, MAX_SEARCH_RESULTS)
-      return {
-        ok: true,
-        searchTerm: data.searchTerm,
-        totalCount: data.totalCount,
-        shownCount: articles.length,
-        articles,
-      }
-    },
-  ),
-]
-```
-
-`search(term)` ruft `/api/search` auf. Das Event übernimmt den Suchbegriff in die
-sichtbare Shop-Suche. `totalCount` bleibt die Gesamtzahl der Treffer aus der API;
-`shownCount` zählt nur die höchstens fünf im Tool-Resultat enthaltenen Artikel.
-Die Shop-Oberfläche kann deshalb mehr Treffer anzeigen als das kompakte Resultat.
-
-`readOnlyHint: true` beschreibt eine lesende Katalogaktion.
-`untrustedContentHint: true` kennzeichnet die gelieferten Produktdaten als Inhalte,
-die ein Agent nicht als Anweisungen behandeln soll. Annotationen sind Hinweise;
-die Eingabevalidierung übernimmt weiterhin `defineTool`.
-
-**Zwischenstand:** Ein Tool ist definiert, aber noch keines im Browser
-registriert. Dass `getTools()` weiterhin leer ist, ist bis Schritt 5 zu erwarten.
-
-## Schritt 2: Warenkorb lesen und Artikel hinzufügen
+Einige Imports verwendest du erst in Schritt 3; prüfe die Typen danach.
+`MAX_SEARCH_RESULTS`, `toToolError`, `defineTool` und die fertige Suche bleiben erhalten.
 
 Füge die folgenden **zwei Einträge innerhalb von `shopTools`** direkt nach dem
 Such-Tool und vor der schliessenden `]` ein. Erstelle kein zweites Array.
@@ -426,9 +419,11 @@ Lies ergänzend die Event-Listener in `src/routes/index.tsx`: `shop:search`
 aktualisiert die Suche; `shop:cart-changed` invalidiert die Query-Daten für
 Warenkorb und Aufträge. Du musst dort nichts ergänzen.
 
-## Schritt 5: Tools registrieren und beim Unmount abmelden
+## Schritt 5: Die fertige Registrierung und den Cleanup nachvollziehen
 
-Ersetze die vorbereitete Funktion `registerShopTools` am Dateiende vollständig:
+Die Funktion `registerShopTools` am Dateiende ist bereits implementiert. Sie
+registriert automatisch auch deine vier neuen Einträge. Lies den vorhandenen
+Code; du musst ihn nicht ersetzen:
 
 ```ts
 export function registerShopTools(
@@ -450,9 +445,9 @@ export function registerShopTools(
 }
 ```
 
-Der Parameter heisst nun `modelContext`, weil du ihn verwendest. Jeder Aufruf von
-`registerShopTools` erzeugt einen eigenen `AbortController`. Alle fünf
-Registrierungen erhalten dasselbe Signal; die zurückgegebene Funktion bricht
+Jeder Aufruf von `registerShopTools` erzeugt einen eigenen `AbortController`.
+Im Starter erhält die Suche dieses Signal, nach deiner Ergänzung alle fünf
+Registrierungen; die zurückgegebene Funktion bricht
 beim Cleanup den gesamten Registrierungssatz ab.
 
 `registerTool` liefert ein Promise. Beim React-Cleanup ist ein `AbortError`
@@ -786,8 +781,9 @@ node --test src/features/webmcp/webmcp-tools.acceptance.ts
 ```
 
 **Erwartet nach Schritt 5: sechs erfolgreiche Tests, keine Fehler.** Beim noch
-leeren Starter schlägt diese Prüfung absichtlich fehl. Du brauchst dafür weder
-einen laufenden Shop noch den Katalog-Mock, Chrome, das WebMCP-Flag oder einen
+unausgefüllten Starter schlägt diese Prüfung wegen der vier fehlenden Tools
+absichtlich fehl; Suche und Abbruchbehandlung sind bereits grün. Du brauchst
+dafür weder einen laufenden Shop noch den Katalog-Mock, Chrome, das WebMCP-Flag oder einen
 LLM-API-Key.
 
 So prüft die Datei deine Implementierung automatisiert:
@@ -830,8 +826,8 @@ die Zod-Validierung und der Browser-API-Client werden dabei ausgeführt.
 **Grenze dieser Tests:** Sie rufen die Tool-Callbacks direkt auf, nicht
 `document.modelContext.executeTool` in Chrome. Sie prüfen weder die native
 Registrierung noch reale Session-Cookies oder die sichtbare UI-Aktualisierung.
-Auch die Begrenzung auf fünf Treffer und das Such-Event werden vom vorhandenen
-Suchtest mit leerer Trefferliste nicht gesondert nachgewiesen. Deshalb bleiben
+Die Begrenzung auf fünf Treffer und das Such-Event prüft zusätzlich der
+Starter-Test in `webmcp-tools.test.ts`, ebenfalls mit Testdoubles. Deshalb bleiben
 die native E2E-Suite und die Konsolentests aus Schritt 6 wichtig: Sie prüfen
 diese Abläufe über die echte Browser-API.
 
@@ -904,10 +900,11 @@ Für das neue WebMCP-Gerüst gibt es ausserdem diesen kurzen Node-Test:
 node --test src/features/webmcp/webmcp-tools.test.ts
 ```
 
-Er prüft, dass das Modul ohne native Browser-API geladen werden kann, keine
-Tool-Namen doppelt vorkommen und eine aufrufbare Cleanup-Funktion zurückgegeben
-wird. **Er darf bereits beim leeren Starter grün sein** und ersetzt daher den
-Übungstest nicht. Dieser Gerüsttest läuft auch innerhalb von `npm test`.
+Er prüft die Registrierung ohne native Browser-API samt Cleanup sowie die
+fertige Suche inklusive Trefferlimit, Such-Event und Eingabevalidierung.
+**Er muss bereits beim unveränderten Starter grün sein** und ersetzt daher den
+Übungstest für die übrigen Tools nicht. Diese Starter-Tests laufen auch innerhalb
+von `npm test`.
 
 Zwei WebMCP-bezogene Browser-Tests lassen sich gezielt ausführen:
 
@@ -957,7 +954,7 @@ dass die WebMCP-Ergänzung keine vorhandenen Abläufe beeinträchtigt hat:
 
 | Optionaler Befehl      | Herkunft und geprüfte bestehende Funktionalität                                                                                                                                                                                                                                        |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm test`             | Node-Tests der Shop-/Chat-Grundlage sowie der MCP-Stufe: unter anderem Warenkorbregeln, Checkout, Kontotrennung, Katalogkonfiguration, Chat-Verarbeitung und MCP-Aufrufe über HTTP und stdio. Dazu kommt der oben beschriebene WebMCP-Gerüsttest.                                      |
+| `npm test`             | Node-Tests der Shop-/Chat-Grundlage sowie der MCP-Stufe: unter anderem Warenkorbregeln, Checkout, Kontotrennung, Katalogkonfiguration, Chat-Verarbeitung und MCP-Aufrufe über HTTP und stdio. Dazu kommt der oben beschriebene WebMCP-Starter-Test.                                      |
 | `npm run test:browser` | Vollständige Playwright-Suite: übernommene Shop-Abläufe wie Suche, Mengenänderung, Entfernen und Checkout, direkte Widget-Aktionen aus der Chat-Stufe sowie Search- und Cart-App-Abläufe im MCP-App-Host. Zusätzlich laufen die beiden oben beschriebenen WebMCP-Einbindungstests mit. |
 
 ```bash

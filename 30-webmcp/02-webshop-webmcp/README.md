@@ -48,10 +48,12 @@ Prüfen: In der DevTools-Konsole liefert `document.modelContext` ein Objekt stat
 
 ## 4. Was du hier machst
 
-`await document.modelContext.getTools()` liefert im Starter eine leere Liste, und das
-eingebaute Tool-Panel unten im Shop zeigt keine Tools an. In der Übung registrierst du
-fünf Browser-Tools – suchen, Warenkorb lesen, hinzufügen, entfernen und bestellen – und
-meldest sie beim Verlassen der Seite wieder ab.
+`searchProducts` ist bereits implementiert und registriert.
+`await document.modelContext.getTools()` und das eingebaute Tool-Panel zeigen dieses
+erste Tool an; du kannst damit sofort die sichtbare Shop-Suche steuern. In der Übung
+ergänzt du die vier übrigen Tools: `getCart`, `addToCart`, `removeFromCart` und
+`checkout`. Registrierung und Abmeldung sind vorbereitet und erfassen deine Ergänzungen
+automatisch.
 
 Getestet wird direkt in der DevTools-Konsole. Ein Aufruf besteht aus dem **Tool-Deskriptor**
 aus `getTools()` und der Eingabe als **JSON-String**:
