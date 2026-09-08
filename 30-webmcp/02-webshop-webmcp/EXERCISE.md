@@ -388,14 +388,10 @@ desselben Arrays:
 ihrer Menge. Das Tool benötigt deshalb keinen `quantity`-Parameter.
 
 `checkoutCart()` erstellt die Bestellung auf dem Server und leert den Warenkorb.
-Übernimm Bestellnummer, Zeitpunkt, Menge und Betrag aus der API-Antwort. Das
-anschliessende Cart-Event lässt die Oberfläche sowohl Warenkorb als auch Aufträge
-neu laden.
+Das anschliessende Cart-Event lässt die Oberfläche sowohl Warenkorb als auch
+Aufträge neu laden.
 
-Die gemeinsame Tool-Beschreibung verlangt eine ausdrückliche Bestätigung vor
-einem Agenten-Checkout. Der hier implementierte Callback selbst öffnet keinen
-Bestätigungsdialog: Beim manuellen Test löst du den Demo-Checkout bewusst aus.
-Die Freigabe-UI des vorhandenen Modell-Chats gehört zu dessen eigenem Ablauf.
+
 
 ## Schritt 4: Resultate und Shop-Events nachvollziehen
 
