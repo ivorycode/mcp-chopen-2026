@@ -56,7 +56,7 @@ curl --fail http://localhost:3000/health
 
 ## Smoke-Test nach dem Deploy
 
-Über `https://<app>.fly.dev` prüfen (für das Demo https://mcp-webshop-demo) :
+Über `https://<app>.fly.dev` prüfen (für die Demo `https://mcp-webshop-demo.fly.dev`):
 
 1. `/health` liefert `{"status":"ok"}`.
 2. Die Website lädt; eine Produktsuche liefert Daten und Bilder aus dem Live-Katalog.
